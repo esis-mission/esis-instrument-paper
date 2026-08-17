@@ -8,96 +8,99 @@ __all__ = [
 def introduction() -> aastex.Section:
     result = aastex.Section("Introduction")
     result.append(r"""
-The solar \TR\ and corona, as viewed from space in its characteristic short wavelengths (\FUV, \EUV, and soft X-ray),
-is a three-dimensional scene evolving in time:  $I(x, y, \lambda, t)$.
-Here, the helioprojective cartesian coordinates, $x$ and $y$ \citep{Thompson2006}, and the wavelength axis, $\lambda$,
-comprise the three dimensions of the scene, while $t$ represents the temporal axis.
-An ideal instrument would capture a spatial/spectral data cube, at a rapid temporal cadence, however, practical
-limitations lead us to accept various compromises of the sampling rate along each of these four dimensions.
-Approaching this ideal is the fast tunable filtergraph (\ie\ fast tunable Fabry--P\'erot etalons, \eg\ the GREGOR
-Fabry--P{\'e}rot Interferometer, \citep{Puschmann12}), but the materials do not exist to extend this technology to
-\EUV\ wavelengths shortward of $\sim$\SI{150}{\nano\meter}~\citep{2000WuelserFP}.
-Imagers like the \TRACE~\citep{Handy99} and the \AIA~\citep{Lemen12} collect
-narrowband \EUV\ images of the solar atmosphere at high cadence, but their passbands are too wide to isolate a single emission line.
-In principle, filter ratios that make use of spectrally-adjacent multilayer \EUV\ passbands could detect Doppler
-shifts~\citep{Sakao99}.
-However, the passbands of the multilayer coatings are still wide enough that the presence of weaker contaminant lines
-limits resolution of Doppler shifts to $\sim$\SI{1000}{\kilo\meter\per\second}~\citep{Kobayashi00}.
-Slit spectrographs (\eg\ the \IRIS~\citep{IRIS14} and the \SPICE\ aboard Solar Orbiter~\citep{Spice2020}) obtain fast,
-high-resolution spatial and spectral observations, but are
-limited by the narrow \FOV\ of the spectrograph slit.
-The $I(x, y, \lambda)$ data cube can be built up by rastering the slit pointing, but it cannot be co-temporal along the
-raster axis.
-Moreover, extended and dynamic scenes can change significantly in the time required to raster over their extent.
-The upcoming \MUSE\ \citep{DePontieu2020,DePontieu2022,Cheung2022} mission addresses this problem in yet another way by
-using 37 slits to obtain simultaneous spectra over a 2D \FOV.
-With the multiple slits, it requires only a short raster to acquire a dense, $170'' \times 170''$ spatial/spectral
-cube at $0.4''$ resolution, with a raster cadence as fast as \SI{12}{\second} for active region
-targets \citep{DePontieu2022}.
-Integral field spectrographs offer yet another route to snapshot imaging spectroscopy,
-recently demonstrated at visible wavelengths by the microlensed hyperspectral imager prototype
-of \citet{vanNoort2022} and in the \FUV\ by the \SNIFS~\citep{Herde2024},
-but this technique has not yet been extended to \EUV\ wavelengths.
+The light emitted by the solar \TR\ and corona varies significantly as a function
+of position, wavelength, and time.
+When viewed from Earth, the spectral radiance from the Sun can be written as: $I(x, y, \lambda, t)$,
+where $x$ and $y$ are the helioprojective Cartesian coordinates \citep{Thompson2006},
+$\lambda$ is wavelength, and $t$ is time.
+The ideal solar imaging spectrograph would capture $I(x, y, \lambda, t)$ with high resolution in $x$, $y$, $\lambda$,
+and $t$ \textit{and} over a wide \FOV, wavelength range, and time period.
+Of course, the temporal dimension is privileged, so we often reduce the problem to capturing a 3D spatial/spectral
+cube at a particular time $t_0$: $I(x, y, \lambda, t_0)$.
+Since we use 2D detectors, this means that we must find a way to flatten the 3D cube into two dimensions
+without losing information.
 
-A different and radical approach is to use a \textit{slitless spectrograph}.
-Traditionally, imaging spectrographs use a slit to provide an unambiguous spectrum as a function of a single spatial
-dimension $y$, along the slit.
-Without a slit, spatial variations are obtained in the orthogonal spatial dimension, $x$, at the cost of degeneracy
-between $x$ and $\lambda$.
-In \EUV, where we find negligible continuum, the grating forms a series of overlapping images in the strong emission lines.
-Such an image may be described as an \textit{overlappogram}.
-The \Acposs{NRL} S082A spectroheliograph~\citep{Tousey73,Tousey77}  was one of the first instruments to pioneer this method.
-The overlappograms obtained by S082A identified hundreds of spectral line transitions~\citep{Feldman85}, and have more
-recently been used to determine line ratios in solar flares~\citep{Keenan06}.
-The overlappogram technique has also recently been extended to soft X-ray wavelengths by
-the \MaGIXS~\citep{Savage2023}.
-Unfortunately, for closely-spaced \EUV\ lines, the dispersed images from the single diffraction order suffer from
-considerable ambiguity from overlapping images.
-Image overlap is all but unavoidable with this configuration, however, overlappograms can be disentangled, or inverted,
-to recover the spatial/spectral cube under the right
-circumstances~\citep[\eg][]{Winebarger2019,Davila2019,Kamaci2026}.
+One obvious way to accomplish this is to multiplex one of the three remaining dimensions in time.
+Narrowband, tunable filters,
+such as the GREGOR Fabry--P{\'e}rot Interferometer \citep{Puschmann12},
+multiplex the wavelength dimension in time,
+and can change the selected wavelength in \SI{100}{\milli\second} or less \citep{vanNoort2022},
+but the technology does not exist to use this technique for wavelengths shorter than
+$\sim$\SI{150}{\nano\meter}~\citep{2000WuelserFP}.
+The nearest \EUV\ equivalent is a multilayer-coated imager such as \TRACE~\citep{Handy99} or
+\AIA~\citep{Lemen12}, which abandons the wavelength dimension entirely and integrates over a passband
+holding many emission lines.
+Two such passbands can be compared to infer a Doppler shift \citep{Sakao99}, but weaker lines within them
+bound the velocity resolution near $\sim$\SI{1000}{\kilo\meter\per\second} \citep{Kobayashi00},
+coarser than the flows that characterize \TR\ dynamics.
 
-In analogy to a tomographic imaging problem~\citep{Kak88}, inversion of an overlapping spatial/spectral scene can be
-facilitated by increasing the number of independent spectral projections, or viewing angles, through the 3D
-$(x,y,\lambda)$ scene~\citep{Descour97}.
-The quality of the inversion (\eg\ recovery of higher order spectral line moments) can be improved by additional
-projections~\citep{Kak88,Descour97}, generally at the cost of computational complexity~\citep{Hagen08}.
-\Acp{CTIS}~\citep{okamoto1991,Bulygin91,Descour95} leverage this concept by obtaining multiple, simultaneous dispersed
-images of an object or scene;
-upwards of 25 grating diffraction orders may be projected onto a single detector plane~\citep{Descour97}.
-Through post-processing of these images, \CTISs\ can recover a 3D data cube from a (spectrally) smooth and continuous
-scene over a large bandpass (\eg\ \citet{Hagen08}; see \citet{Hagen2013} for a review of snapshot spectral imaging
-techniques).
-A very similar technique, operating at much higher spectral resolution, was independently pioneered for solar physics by
-\citet{DeForest04}, who demonstrated synthesis of a magnetogram from a single exposure using two dispersed spectral
-orders of a grating at the Dunn Solar Telescope.
+A spatial dimension can be multiplexed instead.
+An entrance slit admits a single column of the scene, so the detector records $\lambda$ against $y$ without
+ambiguity, and $x$ is recovered by stepping the slit across the target.
+\IRIS~\citep{IRIS14} and \SPICE\ aboard Solar Orbiter \citep{Spice2020} work this way, and the spectra they
+return are the most faithful of any technique discussed here.
+What is sacrificed is simultaneity: neighboring columns of the reconstructed cube are separated in time by the
+raster, and structure that evolves faster than the raster completes is smeared along $x$.
+\MUSE\ \citep{DePontieu2020,DePontieu2022,Cheung2022} narrows this gap considerably by ruling 37 slits across
+the field and separating their overlapping spectra afterward, which shortens the raster of an active region
+to as little as \SI{12}{\second}.
 
-The \MOSES~\citep{Fox10,Fox11} demonstrated the unique capability of simultaneous imaging and spectroscopy for
-solar \EUV\ observations.
-\MOSES\ is a three-order slitless spectrograph that seeks to combine the simplicity of the S082A concept with the
-advantages of a \CTIS\ instrument.
-A single diffraction grating (in conjunction with a fold mirror) projects the $m=\pm1$ and the undispersed  $m=0$ order
-onto three different detectors.
-Through a combination of dispersion and multi-layer coatings, the passband of the $m=\pm1$ orders encompasses only a few
-solar \EUV\ emission lines.
-The resulting sparseness of the 3D data cube helps make inversion of \MOSES\ data better-posed.
-This working concept enabled by \MOSES\ has been proven over the course of two previous rocket flights.
-Through inversion of \MOSES\ overlappograms, \citet{Fox10} obtained unprecedented measurements of Doppler shifts
-and line widths of \TR\ explosive events as a function of time and space while \citet{Rust2019} recovered splitting and
-distinct moments of compact \TR\ bright point line profiles.
-More recently, \citet{Courrier18} used local correlation tracking to recover Doppler shift maps from \MOSES\
-observations, and \citet{Parker2022moses} disentangled the contributions of individual spectral lines to
-the \MOSES\ images.
+A third strategy divides the detector rather than the exposure.
+An integral field spectrograph slices the field of view and reformats those slices so that each is dispersed
+onto its own region of the detector, so the entire cube arrives in one exposure, at the cost of trading field
+of view against wavelength range.
+The microlensed hyperspectral imager of \citet{vanNoort2022} demonstrates the technique at visible wavelengths,
+and the recently flown \SNIFS~\citep{Herde2024} demonstrates it in the \FUV.
+Extending it to the \EUV\ remains out of reach of available optics.
+
+The last strategy is to allow the flattening to be ambiguous and to undo it afterward.
+A spectrograph with no entrance slit disperses the whole field at once, so every emission line forms an image
+of the Sun and those images superimpose on the detector.
+The resulting frame, an \textit{overlappogram}, encodes $x$ and $\lambda$ along a single axis, and the two
+cannot be separated within one exposure.
+Overlappograms are as old as spaceborne solar spectroscopy, having been recorded by the \Acposs{NRL} S082A
+spectroheliograph \citep{Tousey73,Tousey77}, which yielded both a census of \EUV\ transitions
+\citep{Feldman85} and, much later, flare line ratios \citep{Keenan06};
+the technique is in use today at soft X-ray wavelengths by \MaGIXS~\citep{Savage2023}.
+What has changed since S082A is that the ambiguity has become tractable.
+Reconstructing the cube from superimposed images is a tomographic problem \citep{Kak88}, in which each
+diffraction order views the cube from a different angle and the number of independent views limits how much
+of the line profile can be recovered \citep{Descour97}.
+\Acp{CTIS} \citep{okamoto1991,Bulygin91,Descour95} carry this to its extreme, projecting as many as 25 orders
+onto a single detector, with computational cost rising accordingly \citep{Hagen08,Hagen2013}.
+Fewer views can suffice when the scene is sparse: \citet{DeForest04} synthesized a magnetogram from a single
+exposure using only two dispersed orders.
+Inversion methods for overlapping spectral images have advanced considerably since
+\citep{Winebarger2019,Davila2019,Kamaci2026}.
+
+\MOSES~\citep{Fox10,Fox11} brought this strategy to the solar \EUV.
+A single concave grating forms three images at once, the undispersed $m=0$ order and the $m=\pm1$ orders, on
+three detectors, while a multilayer coating narrows the passband to a few emission lines so that the cube to
+be recovered is sparse enough to invert.
+Two flights showed that the concept works.
+\citet{Fox10} measured the Doppler shift and width of explosive event line profiles in the \TR;
+\citet{Rust2019} resolved bimodal profiles in quiet Sun events;
+\citet{Courrier18} recovered Doppler maps using local correlation tracking;
+and \citet{Parker2022moses} separated the contributions of individual spectral lines.
+The same flights exposed where the design binds.
+Only three views are available, one of which is undispersed and therefore contributes no spectral
+information, which caps the number of degrees of freedom that an inversion can recover;
+and because the dispersed orders lie in a plane, they fill the cylindrical volume of a sounding rocket
+payload poorly.
 
 \jake{might just need to go through the whole paper then write this paragraph}
-Building on the working concept demonstrated by \MOSES, here we describe a new instrument, the \ESIS, that improves
-on past efforts to perform simultaneous imaging and spectroscopy in \EUV.
-\ESIS\ flew for the first time on 2019 September 30, and first results from that flight are reported
-by \citet{Parker2022}.
-In Section~\ref{sec:TheESISConcept} we detail how our experience with the \MOSES\ instrument has shaped the design of
-\ESIS.
-Section~\ref{sec:ScienceObjectives} describes the narrow scientific objectives and the requirements placed on the new
-instrument.
-Section~\ref{sec:TheESISInstrument} describes the technical approach to meet our scientific objectives, followed by a
-brief description of the mission profile in Section~\ref{sec:MissionProfile}.""")
+The \ESIS\ was designed to relax both constraints.
+An array of gratings arranged about the optical axis re-images the prime focus of a single primary mirror,
+each dispersing at a different angle, so that every detector records a dispersed view and the views are
+distributed around the payload rather than confined to a plane.
+\ESIS\ flew for the first time on 2019 September 30, and first results from that flight are reported by
+\citet{Parker2022}.
+An earlier form of the design was described by \citet{Courrier2020};
+the instrument that flew differs from it, most consequentially in the removal of the primary mask, which
+admits vignetting into the system.
+This paper describes the instrument as it was built and flown.
+In Section~\ref{sec:TheESISConcept} we explain how experience with \MOSES\ shaped the design of \ESIS.
+Section~\ref{sec:ScienceObjectives} states the scientific objectives and the requirements they impose.
+Section~\ref{sec:TheESISInstrument} describes the instrument itself, and
+Section~\ref{sec:MissionProfile} the mission profile.""")
     return result
