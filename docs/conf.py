@@ -57,5 +57,5 @@ intersphinx_mapping = {
     "aastex": ("https://aastex.readthedocs.io/en/latest/", None),
     "named_arrays": ("https://named-arrays.readthedocs.io/en/latest/", None),
     "optika": ("https://optika.readthedocs.io/en/latest/", None),
-    "esis": ("https://euv-snapshot-imaging-spectrograph.readthedocs.io/en/latest/", None),
+    "esis": ("https://esis-mission.github.io/esis/", None),
 }
