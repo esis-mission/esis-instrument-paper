@@ -41,3 +41,6 @@ esis_instrument_paper/*.pdf
 # submission archives built by `aastex.Document.generate_archive()`
 *.zip
 *.tar.gz
+
+# reference material consulted while writing, which is not ours to distribute
+HTC_Thesis_V7.2.pdf
