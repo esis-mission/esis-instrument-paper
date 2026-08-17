@@ -33,6 +33,7 @@ def document() -> aastex.Document:
     doc.packages.append(aastex.Package("hyperref"))
     doc.packages.append(aastex.Package("siunitx"))
 
+    doc.preamble += esis_instrument_paper.preamble()
     doc.preamble += esis_instrument_paper.acronyms()
 
     doc.variables += esis_instrument_paper.variables()
@@ -40,6 +41,8 @@ def document() -> aastex.Document:
     doc.append(aastex.Title("The EUV Snapshot Imaging Spectrograph"))
 
     doc += esis_instrument_paper.authors()
+
+    doc.append(esis_instrument_paper.sections.introduction())
 
     doc.append(aastex.Bibliography("sources"))
 
