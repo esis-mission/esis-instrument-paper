@@ -17,12 +17,10 @@ def authors() -> list[aastex.Author]:
         "Bozeman, MT 59717, USA"
     )
     msfc = aastex.Affiliation(
-        "NASA Marshall Space Flight Center, "
-        "Huntsville, AL 35812, USA"
+        "NASA Marshall Space Flight Center, " "Huntsville, AL 35812, USA"
     )
     gsfc = aastex.Affiliation(
-        "NASA Goddard Space Flight Center, "
-        "Greenbelt, MD 20771, USA"
+        "NASA Goddard Space Flight Center, " "Greenbelt, MD 20771, USA"
     )
     lbnl = aastex.Affiliation(
         "Lawrence Berkeley National Laboratory, "

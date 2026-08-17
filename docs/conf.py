@@ -25,7 +25,7 @@ autosummary_ignore_module_all = False
 autodoc_typehints = "description"
 
 graphviz_output_format = "png"
-inheritance_graph_attrs = dict(rankdir="TB")
+inheritance_graph_attrs = {"rankdir": "TB"}
 
 templates_path = ["_templates"]
 

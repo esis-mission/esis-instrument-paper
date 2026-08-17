@@ -1,5 +1,5 @@
-import pylatex
 import aastex
+import pylatex
 
 __all__ = [
     "acronyms",

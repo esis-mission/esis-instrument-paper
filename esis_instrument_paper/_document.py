@@ -1,6 +1,8 @@
 import pathlib
-import matplotlib.pyplot as plt
+
 import aastex
+import matplotlib.pyplot as plt
+
 import esis_instrument_paper
 
 __all__ = [

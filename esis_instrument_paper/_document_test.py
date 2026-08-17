@@ -1,5 +1,7 @@
 import pathlib
+
 import pylatex
+
 import esis_instrument_paper
 
 
