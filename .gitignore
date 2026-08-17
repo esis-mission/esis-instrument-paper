@@ -31,6 +31,13 @@ docs/_autosummary/
 *.out
 *.synctex.gz
 
-# the generated article (built from the package, never committed)
+# The generated article and its figures, which aastex writes next to the
+# .tex file. Both are reproducible by running `esis_instrument_paper.pdf()`,
+# so neither is committed. Static figures that are not generated belong in a
+# subdirectory (e.g. `figures/static/`) so that they are not ignored here.
 esis_instrument_paper/esis-instrument.tex
-esis_instrument_paper/esis-instrument.pdf
+esis_instrument_paper/*.pdf
+
+# submission archives built by `aastex.Document.generate_archive()`
+*.zip
+*.tar.gz
