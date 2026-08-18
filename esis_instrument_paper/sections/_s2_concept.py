@@ -6,86 +6,108 @@ __all__ = [
 
 
 def concept() -> aastex.Section:
-    result = aastex.Section("The ESIS Concept")
-    result.append(r"""
-\ESIS\ and \MOSES\ answer the same question in the same way.
-Both disperse the whole field of view without a slit, both record several images of it simultaneously, and both
-depend on an inversion to recover a line profile at every point of that field.
-Where they differ is in how the projections are arranged, and that difference is the accumulated result of two
-\MOSES\ flights.
-This section sets out what those flights revealed about the limits of the \MOSES\ design, and how each limit shaped
-\ESIS.""")
+    result = aastex.Section(aastex.NoEscape(r"The \ESIS\ Concept"))
+    result.append(
+        r"""
+A primary goal of the \ESIS\ instrument is to improve upon the imaging spectroscopy demonstrated by \MOSES.  
+Therefore, the design of the new instrument draws heavily from experiences and lessons learned through two flights of the \MOSES\ instrument.
+\ESIS\ and \MOSES\ are both \CTIS\ instruments.
+As such, both produce \sout{dispersed images} \roy{overlappograms} of a narrow portion of the solar spectrum, with the goal of enabling the reconstruction of a spectral line profile at every point in the field of view.
+The similarities end there, however, as the optical layout of \ESIS\ differs significantly from that of \MOSES.
+In this section, we detail some difficulties and limitations encountered with \MOSES, then describe how the new design of \ESIS\ addresses these issues."""
+    )
 
-    subsection_limitations = aastex.Subsection("Limitations of the MOSES Design")
+    subsection_limitations = aastex.Subsection(
+        aastex.NoEscape(r"Limitations of the \MOSES\ Design")
+    )
+    subsection_limitations.append(
+        r"""
+The \MOSES\ design features a single concave diffraction grating forming images on three \CCD\ 
+detectors~\citep{Fox10} (Figure~\ref{fig:mosesSchematic}). 
+The optical path is folded in half by a single flat secondary mirror (omitted in Figure~\ref{fig:mosesSchematic}).
+Provided that the three cameras are positioned correctly, this arrangement allows the entire telescope to be brought 
+into focus using only the central (undispersed) order and a visible light source.
+Unfortunately this design uses volume inefficiently for two reasons.
+First, the lack of magnification by the secondary mirror limits the folded length of the entire telescope to be no less 
+than half of the \SI{5}{\meter} focal length of the grating~\citep{Fox10,Fox11}.
+Second, the resolving power of the instrument is limited by the ratio of camera separation to pixel size.
+To achieve the maximum dispersion of \mosesDispersionDoppler~\citep{Fox10}, the outboard orders are imaged as 
+far apart as possible in the $\sim\text{\skinDiameter}$ diameter envelope of the rocket payload.
+This planar arrangement leaves much unused space in the cylindrical volume of the payload."""
+    )
+
+    # TODO: the MOSES schematic figure goes here, once it has been
+    # rebuilt on the current `esis` and `optika` model.
+
     subsection_limitations.append(r"""
-A single concave grating serves as the imaging element of \MOSES, forming three images on three
-\CCDs~\citep{Fox10}, and a flat secondary folds the optical path in half.
-One consequence of that arrangement is convenient: with the cameras correctly placed, the undispersed order
-can be focused in visible light, so the whole telescope is aligned without a source at the operating wavelength.
-The rest of the consequences are constraints.
+Furthermore, the monolithic secondary, though it confers the focus advantage noted above, does not 
+allow efficient placement of the $m=\pm1$ \CCDs.  
+For all practical purposes, the payload can only accommodate three diffraction orders ($m=-1, 0, +1$).
+Therefore, \textit{\MOSES\ can only collect, at most, three pieces of information at each point in the field of view.}
+From this, it is not reasonable to expect the reconstruction of more than three degrees of freedom for each spectral line, 
+except in the case very compact, isolated features such as those described by \citet{Fox10} and \citet{Rust17}.
+Consequently, it is a reasonable approximation to say that \MOSES\ is sensitive primarily to spectral line intensities, 
+shifts, and widths \citep{KankThom01}.
+With any tomographic apparatus, the degree of detail that can be resolved in the object depends critically on the 
+number of viewing angles~\citep{Kak88,Descour97,Hagen08}.
+So it is with the spectrum we observe with \MOSES: more dispersed images are required to confer sensitivity to finer 
+spectral details such as higher moments of the spectral line shape.
 
-Because the fold mirror provides no magnification, the instrument cannot be made shorter than half the
-\SI{5}{\meter} focal length of the grating~\citep{Fox10,Fox11}.
-Dispersion is likewise geometric: it is set by how far apart the cameras sit, so reaching the maximum
-\SI{29}{\kilo\meter\per\second} per pixel~\citep{Fox10} means pushing the outboard cameras to the edge of a payload
-only \SI{0.56}{\meter} across.
-Both constraints act in a single plane, which leaves the cylindrical volume of the payload largely unused
-along the orthogonal directions.
+A related issue stems from the use of a single dispersion plane.
+Since the solar corona and transition region are structured by magnetic fields, the scene tends to be dominated by 
+\sout{field aligned} \roy{field-aligned} structures such as loops~\citep{Rosner78,Bonnet80}.
+When the \MOSES\ dispersion direction happens to be aligned nearly perpendicular to the magnetic field, filamentary 
+structures on the transition region serve almost as spectrograph slits unto themselves.
+The estimation of Doppler shifts then becomes a simple act of triangulation, and broadenings are also readily 
+diagnosed~\citep{Fox10,Courrier18}.
+A double-peaked profile can also be observed with sufficiently isolated features~\citep{Rust17}.
+Unfortunately, solar magnetic fields in the transition region are quite complex and do not have a global preferred 
+direction.
+In cases where the field is nearly parallel to the instrument dispersion, spectral shifts and broadenings are not 
+readily apparent.
 
-That same plane limits how many images can be recorded at all.
-Three diffraction orders, $m = -1$, $0$, and $+1$, are as many as the payload will hold, so \MOSES\ measures three
-numbers at each point of the field.
-Three numbers will not constrain a line profile beyond three degrees of freedom, which in practice means
-intensity, Doppler shift, and width~\citep{KankThom01}, and only compact, well isolated features have yielded
-more~\citep{Fox10,Rust2019}.
-This is the familiar behavior of any tomographic measurement, where the detail recoverable in the object follows
-from the number of viewing angles available~\citep{Kak88,Descour97,Hagen08}: finer spectral structure, whether an
-additional line in the passband or a higher moment of the profile, requires more projections than \MOSES\ can
-provide.
+The single diffraction grating also leads to a compromise in the optical performance of the instrument.
+Since the \MOSES\ grating forms images in three orders simultaneously, there aren't enough degrees of freedom in the 
+optical system to control aberrations in all three spectral orders.  
+During the first mission, \MOSES\ was flown with a small amount of defocus~\citep{Rust17}, which exacerbated the 
+inter-order \PSF\ variation and caused the individual \PSFs\ to span several 
+pixels~\citep{Rust17,Atwood18}. 
+The outboard \PSFs\ were elongated, with their major exes at different angles.
+This resulted in spurious spectral features that require additional consideration~\citep{Atwood18} and further increase 
+the complexity of the inversion process~\citep{Rust17,Courrier18}. 
 
-Having only one plane of dispersion also makes the instrument sensitive to the orientation of the scene.
-The transition region and corona are threaded by magnetic field, and the emission is drawn out into loops and
-filaments along it~\citep{Rosner78,Bonnet80}.
-A filament lying nearly perpendicular to the dispersion acts as its own spectrograph slit, and recovering a Doppler
-shift reduces to triangulation between the orders~\citep{Fox10,Courrier18}, with sufficiently isolated features
-yielding even the splitting of a double-peaked profile~\citep{Rust2019}.
-A filament lying nearly parallel to the dispersion yields none of this, and since the field has no globally
-preferred direction, which case applies is a matter of where the instrument happens to be pointed.
+As \MOSES\ lacks a field stop, it is possible for the grating to image off-band radiation on the detector from solar 
+features that lie outside the intended \FOV. 
+Although the intensity of this off-band radiation is relatively low, it is not negligible.
+\citet{Parker2022} compared synthetic \MOSES\ images to the real data and found that approximately 
+ten percent of the intensity in the zeroth order image originated from more than ten dim lines in the \MOSES\ passband, 
+most of them are too faint to be visible in the dispersed images.  
+This study revealed that an undispersed ($m=0$) channel, although attractive due to its lack of spatial-spectral 
+ambiguity, is of limited utility due to spectral contamination.
+Moreover the \FOV\ should be clearly defined, and the same, for each image so that the spectral and spatial content of 
+the image is clearly defined.
 
-A single grating must also form all three images at once, which leaves too few degrees of freedom in the optical
-prescription to control aberrations in every order.
-\MOSES\ flew its first mission slightly defocused~\citep{Rust2019}, which widened the point spread functions to
-several pixels and made them differ between orders, the outboard ones elongated along different
-axes~\citep{Rust2019,Atwood18}.
-Structure introduced by the instrument in this way is difficult to separate from structure in the spectrum, and it
-complicates the inversion~\citep{Atwood18,Courrier18}.
+Finally, the exposure cadence of \MOSES\ is hindered by a $\sim$\SI{6}{\second} readout time for the \CCDs~\citep{
+Fox11}. 
+The observing interval for a solar sounding rocket flight is typically about five minutes. 
+Consequently, every second of observing time is precious, both to achieve adequate exposure time and to catch the 
+full development of dynamical phenomena. 
+The \MOSES\ observing duty cycle is $\sim$\SI{50}{\percent} since it is limited by the readout time of its \CCDs. 
+Thus, valuable observing time is lost. The readout data gap compelled us to develop a sequence with exposures ranging 
+from $0.25$-\SI{24}{\second}, a careful trade-off between deep and fast exposures. 
 
-Without a field stop, the field of view is defined only by the geometry of the optics, and differs from order to
-order and with wavelength.
-Light from outside the intended field reaches the detectors, and it is not negligible: comparing synthetic images
-against the flight data, \citet{Parker2022moses} attributed roughly a tenth of the undispersed image to more than
-ten faint lines in the passband, most of them invisible in the dispersed orders.
-An undispersed channel is attractive precisely because it is free of spatial-spectral ambiguity, but that result
-shows the ambiguity is replaced by a spectral one.
-
-Finally, the detectors must be read out before they can be exposed again, and the roughly \SI{6}{\second} this
-takes~\citep{Fox11} is expensive when a sounding rocket observes for about five minutes in total.
-Half of the observing time is spent reading rather than collecting, and the exposures that remain must be traded
-against one another, which is why \MOSES\ flew a sequence ranging from a quarter of a second to
-\SI{24}{\second}.
-
-Taken together, our experience with \MOSES\ identifies eight limitations of the design:
+In summary, our experience leads us to conclude that the \MOSES\ design has the following primary limitations:
 \begin{enumerate}
-    \item inefficient use of the payload volume \label{item-length}
-    \item dispersion constrained by the payload diameter \label{item-disp}
-    \item too few dispersed images \label{item-orders}
-    \item a single plane of dispersion \label{item-plane}
-    \item insufficient control of aberrations \label{item-psf}
-    \item a field of view which is neither sharply defined nor the same in every order \label{item-fov}
-    \item spectral contamination from outside the intended field \label{item-contamination}
-    \item an observing duty cycle of only half the flight \label{item-cadence}
+    \item inefficient use of volume \label{item-length} %(x and y direction)
+    \item dispersion constrained by payload dimensions \label{item-disp_con}
+    \item too few dispersed images (orders) \label{item-orders}
+    \item single dispersion plane \label{item-dispersion}
+    \item lack of aberration control \label{item-PSF}
+    \item poorly-defined and wavelength dependent \FOV\ \label{item-FOV}
+    \item spectral contamination
+    \item low duty cycle \label{item-CAD}
 \end{enumerate}
-Each of these shaped the design of \ESIS.""")
+In designing \ESIS, we have sought to improve upon each of these points.""")
     result.append(subsection_limitations)
 
     return result
