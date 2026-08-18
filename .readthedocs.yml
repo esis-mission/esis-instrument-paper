@@ -9,11 +9,6 @@ build:
     - texlive-publishers
     - texlive-science
     - cm-super
-  jobs:
-    post_build:
-      - python -c "import esis_instrument_paper; esis_instrument_paper.pdf()"
-      - mkdir $READTHEDOCS_OUTPUT/pdf/
-      - mv esis_instrument_paper/esis-instrument.pdf $READTHEDOCS_OUTPUT/pdf/
 
 sphinx:
   configuration: docs/conf.py

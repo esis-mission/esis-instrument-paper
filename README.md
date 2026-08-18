@@ -14,7 +14,7 @@ programmatically generates the complete LaTeX document (text, figures, tables,
 and numeric values) from the [`esis`](https://github.com/esis-mission/esis)
 instrument model. Calling `esis_instrument_paper.pdf()` produces the final PDF.
 
-Here is a link to the [pdf version](https://esis-instrument-paper.readthedocs.io/_/downloads/en/latest/pdf/)
+Here is a link to the [pdf version](https://esis-mission.github.io/esis-instrument-paper/esis-instrument.pdf)
 of the article.
 
 ## Building the article
