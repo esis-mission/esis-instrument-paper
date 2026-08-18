@@ -38,11 +38,11 @@ coarser than the flows that characterize \TR\ dynamics.
 A spatial dimension can be multiplexed instead.
 An entrance slit admits a single column of the scene, so the detector records $\lambda$ against $y$ without
 ambiguity, and $x$ is recovered by stepping the slit across the target.
-\IRIS~\citep{IRIS14} and \SPICE\ aboard Solar Orbiter \citep{Spice2020} work this way, and the spectra they
+\IRISCapital~\citep{IRIS14} and \SPICE\ aboard Solar Orbiter \citep{Spice2020} work this way, and the spectra they
 return are the most faithful of any technique discussed here.
 What is sacrificed is simultaneity: neighboring columns of the reconstructed cube are separated in time by the
 raster, and structure that evolves faster than the raster completes is smeared along $x$.
-\MUSE\ \citep{DePontieu2020,DePontieu2022,Cheung2022} narrows this gap considerably by ruling 37 slits across
+\MUSECapital\ \citep{DePontieu2020,DePontieu2022,Cheung2022} narrows this gap considerably by ruling 37 slits across
 the field and separating their overlapping spectra afterward, which shortens the raster of an active region
 to as little as \SI{12}{\second}.
 
@@ -51,7 +51,7 @@ An integral field spectrograph slices the field of view and reformats those slic
 onto its own region of the detector, so the entire cube arrives in one exposure, at the cost of trading field
 of view against wavelength range.
 The microlensed hyperspectral imager of \citet{vanNoort2022} demonstrates the technique at visible wavelengths,
-and the recently flown \SNIFS~\citep{Herde2024} demonstrates it in the \FUV.
+and \SNIFS~\citep{Herde2024}, flown in 2025, demonstrates it in the \FUV.
 Extending it to the \EUV\ remains out of reach of available optics.
 
 The last strategy is to allow the flattening to be ambiguous and to undo it afterward.
@@ -74,7 +74,7 @@ exposure using only two dispersed orders.
 Inversion methods for overlapping spectral images have advanced considerably since
 \citep{Winebarger2019,Davila2019,Kamaci2026}.
 
-\MOSES~\citep{Fox10,Fox11} brought this strategy to the solar \EUV.
+\MOSESCapital~\citep{Fox10,Fox11} brought this strategy to the solar \EUV.
 A single concave grating forms three images at once, the undispersed $m=0$ order and the $m=\pm1$ orders, on
 three detectors, while a multilayer coating narrows the passband to a few emission lines so that the cube to
 be recovered is sparse enough to invert.
@@ -90,11 +90,11 @@ and because the dispersed orders lie in a plane, they fill the cylindrical volum
 payload poorly.
 
 \jake{might just need to go through the whole paper then write this paragraph}
-The \ESIS\ was designed to relax both constraints.
+\ESISCapital\ was designed to relax both constraints.
 An array of gratings arranged about the optical axis re-images the prime focus of a single primary mirror,
 each dispersing at a different angle, so that every detector records a dispersed view and the views are
 distributed around the payload rather than confined to a plane.
-\ESIS\ flew for the first time on 2019 September 30, and first results from that flight are reported by
+\ESISCapital\ flew for the first time on 2019 September 30, and first results from that flight are reported by
 \citet{Parker2022}.
 An earlier form of the design was described by \citet{Courrier2020};
 the instrument that flew differs from it, most consequentially in the removal of the primary mask, which
