@@ -22,9 +22,10 @@ without losing information.
 
 One obvious way to accomplish this is to multiplex one of the three remaining dimensions in time.
 Narrowband, tunable filters,
-such as the GREGOR Fabry--P{\'e}rot Interferometer \citep{Puschmann12},
+such as the GREGOR Fabry--P{\'e}rot Interferometer \citep{Puschmann12}
+or CRISP at the Swedish Solar Telescope \citep{Scharmer2008},
 multiplex the wavelength dimension in time,
-and can change the selected wavelength in \SI{100}{\milli\second} or less \citep{vanNoort2022},
+and can change the selected wavelength in \SI{50}{\milli\second} or less \citep{Scharmer2008},
 but the technology does not exist to use this technique for wavelengths shorter than
 $\sim$\SI{150}{\nano\meter}~\citep{2000WuelserFP}.
 The nearest \EUV\ equivalent is a multilayer-coated imager such as \TRACE~\citep{Handy99} or
