@@ -19,7 +19,7 @@ jobs:
     name: ${{ matrix.os }}, Python ${{ matrix.python-version }} test
     steps:
       - name: Install LaTeX
-        run: sudo apt-get install texlive-publishers texlive-science cm-super libcairo2-dev
+        run: sudo apt-get install texlive-publishers texlive-science cm-super latexmk libcairo2-dev
       - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
