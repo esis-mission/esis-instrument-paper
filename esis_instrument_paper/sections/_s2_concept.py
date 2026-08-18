@@ -15,13 +15,9 @@ Where they differ is in how the projections are arranged, and that difference is
 \MOSES\ flights.
 This section sets out what those flights revealed about the limits of the \MOSES\ design, and how each limit shaped
 \ESIS.""")
-    result.append(limitations())
-    return result
 
-
-def limitations() -> aastex.Subsection:
-    result = aastex.Subsection("Limitations of the MOSES Design")
-    result.append(r"""
+    subsection_limitations = aastex.Subsection("Limitations of the MOSES Design")
+    subsection_limitations.append(r"""
 A single concave grating serves as the imaging element of \MOSES, forming three images on three
 \CCDs~\citep{Fox10}, and a flat secondary folds the optical path in half.
 One consequence of that arrangement is convenient: with the cameras correctly placed, the undispersed order
@@ -90,4 +86,6 @@ Taken together, our experience with \MOSES\ identifies eight limitations of the 
     \item an observing duty cycle of only half the flight \label{item-cadence}
 \end{enumerate}
 Each of these shaped the design of \ESIS.""")
+    result.append(subsection_limitations)
+
     return result
