@@ -56,10 +56,12 @@ def authors() -> list[aastex.Author]:
         aastex.Author(
             name="Amy R. Winebarger",
             affiliation=msfc,
+            orcid="0000-0002-5608-531X",
         ),
         aastex.Author(
             name="Ken Kobayashi",
             affiliation=msfc,
+            orcid="0000-0003-1057-7113",
         ),
         aastex.Author(
             name="Brent Beabout",
@@ -84,6 +86,7 @@ def authors() -> list[aastex.Author]:
         aastex.Author(
             name="Eric Gullikson",
             affiliation=lbnl,
+            orcid="0000-0003-0337-7674",
         ),
         aastex.Author(
             name="Micah Johnson",
@@ -92,6 +95,7 @@ def authors() -> list[aastex.Author]:
         aastex.Author(
             name="Laurel Rachmeler",
             affiliation=msfc,
+            orcid="0000-0002-3770-009X",
         ),
         aastex.Author(
             name="Larry Springer",
@@ -100,5 +104,6 @@ def authors() -> list[aastex.Author]:
         aastex.Author(
             name="David L. Windt",
             affiliation=rxo,
+            orcid="0000-0001-9084-2516",
         ),
     ]
