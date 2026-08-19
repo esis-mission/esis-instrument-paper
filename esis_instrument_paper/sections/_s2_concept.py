@@ -176,7 +176,7 @@ Lastly, in contrast to \MOSES, \ESIS\ employs frame transfer \CCDs\ to make opti
 time.
 The \ESIS\ design is shutterless, so that each detector is always integrating.
 The result is a \SI{100}{\percent} duty cycle.
-The lack of downtime for readout also allows \ESIS\ to operate at a fixed, rapid cadence of $\sim$\SI{3}{\second}.
+The lack of downtime for readout also allows \ESIS\ to operate at a fixed, rapid cadence of \SI{10}{\second}.
 Longer integration times can be achieved for faint features by exposure stacking 
 (\S\,\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-CAD}).
 
