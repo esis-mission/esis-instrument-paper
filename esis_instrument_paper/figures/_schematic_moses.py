@@ -71,25 +71,61 @@ def schematic_moses() -> aastex.Figure:
     ax.set_xlim(0, 1)
     ax.set_ylim(-height / 2, height / 2)
 
-    # the grating, rendered as a ruled ellipse to suggest the grooves
-    grating = matplotlib.patches.Ellipse(
-        xy=(x_grating - 0.026, 0),
-        width=0.078,
-        height=0.216,
-        facecolor=_color_grating,
-        edgecolor="none",
-        zorder=1,
+    # The grating is drawn as a disc with some thickness rather than a flat
+    # ellipse: a back face, the cylindrical wall between them, and the ruled
+    # front face. Only the wall and the sliver of the back face are ever seen,
+    # and they are what give the grating its edge.
+    width_grating = 0.0525
+    height_grating = 0.215
+    x_front_grating = 0.054
+    depth_grating = 0.0276
+
+    x_back_grating = x_front_grating - depth_grating
+
+    ax.add_patch(
+        matplotlib.patches.Ellipse(
+            xy=(x_back_grating, 0),
+            width=width_grating,
+            height=height_grating,
+            facecolor=_color_grating,
+            edgecolor="none",
+            zorder=1,
+        )
     )
-    ax.add_patch(grating)
-    for y in np.linspace(-0.108, 0.108, num=61):
+    ax.add_patch(
+        matplotlib.patches.Rectangle(
+            xy=(x_back_grating, -height_grating / 2),
+            width=depth_grating,
+            height=height_grating,
+            facecolor=_color_grating,
+            edgecolor="none",
+            zorder=1,
+        )
+    )
+
+    # the rim of the front face, which is the only thing separating it from the
+    # body behind, since the two are the same colour
+    face = matplotlib.patches.Ellipse(
+        xy=(x_front_grating, 0),
+        width=width_grating,
+        height=height_grating,
+        facecolor=_color_grating,
+        edgecolor="white",
+        linewidth=0.4,
+        zorder=1.1,
+    )
+    ax.add_patch(face)
+
+    for y in np.linspace(-height_grating / 2, height_grating / 2, num=31):
         groove = ax.plot(
-            [x_grating - 0.07, x_grating + 0.03],
+            [x_front_grating - width_grating, x_front_grating + width_grating],
             [y, y],
             color="white",
             linewidth=0.3,
-            zorder=2,
+            dashes=(2.5, 1.2),
+            zorder=1.2,
         )
-        groove[0].set_clip_path(grating)
+        groove[0].set_clip_path(face)
 
     # the light entering the instrument, which is undispersed until it reaches
     # the grating
