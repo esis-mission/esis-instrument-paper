@@ -49,11 +49,11 @@ def schematic_moses() -> aastex.Figure:
     # the two edge rays of every beam leave from. The incoming beam runs at this
     # height, so it has to thread the gap between the undispersed detector and
     # the dispersed ones, and it is set midway between them.
-    aperture = 0.099
+    aperture = 0.095
 
     # how far the dispersed detectors sit off the axis, and how far the two
     # wavelengths land apart on them
-    separation = 0.214
+    separation = 0.21
     dispersion = 0.042
 
     # the two wavelengths straddle the centre of each dispersed detector, the
@@ -62,13 +62,13 @@ def schematic_moses() -> aastex.Figure:
     position_short = separation - dispersion / 2
 
     height_detector = 0.135
-    width_detector = 0.05
+    width_detector = 0.062
 
     # The outboard detectors are canted to face the grating, which is drawn by
     # lifting the far edge of the tile. The rise has to be a good fraction of
     # the width or the tile stops reading as a plate seen at an angle and
     # starts reading as a box drawn in oblique projection.
-    cant = 0.031
+    cant = 0.039
 
     height = 0.6033
     fig = plt.figure(
@@ -170,11 +170,13 @@ def schematic_moses() -> aastex.Figure:
         )
 
     # Each order is a beam converging from the two edges of the grating onto
-    # one point of one detector. The beams stop at the near edge of the tile
-    # rather than running all the way to the point they converge on, since ten
-    # lines arriving into the letters makes a thicket of exactly the place the
-    # reader is meant to be looking.
-    x_stop = x_detector - width_detector / 2
+    # one point of one detector. The beams stop just short of the letters
+    # rather than running into them, since ten lines arriving into the letters
+    # makes a thicket of exactly the place the reader is meant to be looking.
+    # They stop a little way onto the tile rather than at its near edge: a line
+    # ending exactly on the edge of something opaque reads as passing behind
+    # it, and the point here is that the light lands on the detector.
+    x_stop = x_detector - width_detector / 2 + 0.006
     reach = (x_stop - x_grating) / (x_detector - x_grating)
 
     orders = [
