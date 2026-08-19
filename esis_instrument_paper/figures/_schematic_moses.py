@@ -45,7 +45,12 @@ def schematic_moses() -> aastex.Figure:
     # how far the dispersed detectors sit off the axis, and how far the two
     # wavelengths land apart on them
     separation = 0.229
-    dispersion = 0.025
+    dispersion = 0.042
+
+    # the two wavelengths straddle the centre of each dispersed detector, the
+    # longer one always landing further from the axis
+    position_long = separation + dispersion / 2
+    position_short = separation - dispersion / 2
 
     height_detector = 0.135
     width_detector = 0.058
@@ -116,10 +121,10 @@ def schematic_moses() -> aastex.Figure:
     # one point of one detector
     orders = [
         (0, _color_undispersed),
-        (separation, _color_long),
-        (separation - dispersion, _color_short),
-        (-separation, _color_long),
-        (-separation + dispersion, _color_short),
+        (position_long, _color_long),
+        (position_short, _color_short),
+        (-position_long, _color_long),
+        (-position_short, _color_short),
     ]
     for y, color in orders:
         for sign in (1, -1):
@@ -151,12 +156,12 @@ def schematic_moses() -> aastex.Figure:
 
     # the two features, superimposed at m=0 and pulled apart either side of it
     letters = [
-        (separation, "A", _color_long),
-        (separation - dispersion, "B", _color_short),
+        (position_long, "A", _color_long),
+        (position_short, "B", _color_short),
         (0.006, "A", _color_both),
         (-0.006, "B", _color_both),
-        (-separation, "A", _color_long),
-        (-separation + dispersion, "B", _color_short),
+        (-position_long, "A", _color_long),
+        (-position_short, "B", _color_short),
     ]
     for y, letter, color in letters:
         # written as maths so that the letters come out bold whether or not the
