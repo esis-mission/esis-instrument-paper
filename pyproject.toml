@@ -16,7 +16,8 @@ classifiers = [
 dependencies = [
     "pylatex",
     "aastex>=0.4.0",
-    "euv-snapshot-imaging-spectrograph",
+    "num2words",
+    "euv-snapshot-imaging-spectrograph>=1.0.0",
 ]
 dynamic = ["version"]
 

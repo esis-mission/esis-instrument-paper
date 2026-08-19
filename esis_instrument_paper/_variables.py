@@ -1,5 +1,7 @@
 import aastex
 import astropy.units as u
+import esis
+import num2words
 
 __all__ = [
     "variables",
@@ -13,11 +15,18 @@ def variables() -> list[aastex.Variable]:
     Reference these macros in section strings instead of hardcoding numbers so
     that the text stays in sync with the instrument model.
 
-    Several of these are still literals. The version of ``esis`` on PyPI
-    predates the modules they should come from, so they cannot be taken from
-    the model until it is released.
+    Two of these are still literals, since the model does not carry the
+    quantity they describe.
     """
+    design = esis.flights.f1.optics.design()
+
+    # `design` is the flight instrument, whose four channels were populated
+    # from the six positions of `design_full`.
+    num_channels = design.camera.channel.shape[design.axis_channel]
+
     return [
+        # TODO: this describes MOSES rather than ESIS, so it is not something
+        # the ESIS model can supply.
         aastex.Variable(
             name="mosesDispersionDoppler",
             value=29 * u.km / u.s / u.pix,
@@ -28,14 +37,12 @@ def variables() -> list[aastex.Variable]:
             name="skinDiameter",
             value=round((22 * u.imperial.inch).to_value(u.m), 1) * u.m,
         ),
-        # TODO: the old draft spelled the number of channels with `num2words`.
         aastex.Variable(
             name="numChannelsWords",
-            value=aastex.NoEscape("four"),
+            value=aastex.NoEscape(num2words.num2words(num_channels)),
         ),
-        # TODO: take this from `esis.flights.f1.spectrum.O_V.wavelength`.
         aastex.Variable(
             name="OVwavelength",
-            value=629.73 * u.AA,
+            value=esis.flights.f1.spectrum.O_V.wavelength,
         ),
     ]
