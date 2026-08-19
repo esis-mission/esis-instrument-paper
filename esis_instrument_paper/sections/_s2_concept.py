@@ -10,7 +10,7 @@ def concept() -> aastex.Section:
     result.append(
         r"""
 A primary goal of the \ESIS\ instrument is to improve upon the imaging spectroscopy demonstrated by \MOSES.  
-Therefore, the design of the new instrument draws heavily from experiences and lessons learned through two flights of the \MOSES\ instrument.
+Therefore, the design of the new instrument draws heavily from experiences and lessons learned through two flights of \MOSES.
 \ESIS\ and \MOSES\ are both \CTIS\ instruments.
 As such, both produce overlappograms of a narrow portion of the solar spectrum, with the goal of enabling the reconstruction of a spectral line profile at every point in the field of view.
 The similarities end there, however, as the optical layout of \ESIS\ differs significantly from that of \MOSES.
@@ -84,8 +84,8 @@ ten percent of the intensity in the zeroth order image originated from more than
 most of them too faint to be visible in the dispersed images.  
 This study revealed that an undispersed ($m=0$) channel, although attractive due to its lack of spatial-spectral 
 ambiguity, is of limited utility due to spectral contamination.
-Moreover, the \FOV\ should be clearly defined, and the same, for each image so that the spectral and spatial content of 
-the image is clearly defined.
+Moreover, the \FOV\ should be clearly defined, and the same, for each image, so that the spectral and spatial content of 
+each image is unambiguous.
 
 Finally, the exposure cadence of \MOSES\ is hindered by a $\sim$\SI{6}{\second} readout time for the \CCDs~\citep{Fox11}. 
 The observing interval for a solar sounding rocket flight is typically about five minutes. 
@@ -142,8 +142,8 @@ data (item~\ref{item-orders}).
  
 The \ESIS\ gratings are arranged in a segmented array, clocked in \SI{45}{\degree} increments, so that there are 
 \numChannelsWords\ distinct dispersion planes. 
-This will greatly aid in reconstructing spectral line profiles since the dispersion space of \ESIS\ occupies a 
-3D volume rather than a 2D plane as with \MOSES. For \ESIS, there will always be a dispersion plane within 
+This greatly aids in reconstructing spectral line profiles since the dispersion space of \ESIS\ occupies a 
+3D volume rather than a 2D plane as with \MOSES. For \ESIS, there is always a dispersion plane within 
 \SI{22.5}{\degree} of the normal to any loop-like feature in the solar atmosphere. 
 As discussed in Section~\ref{subsec:LimitationsoftheMOSESDesign}, a nearly perpendicular dispersion plane 
 allows a filamentary structure to serve like a spectrographic slit, resulting in a clear presentation of the 
@@ -158,14 +158,14 @@ This design controls aberration well enough to allow pixel-limited imaging, avoi
 inherent to the \MOSES\ design (\S\,\ref{subsec:LimitationsoftheMOSESDesign} item \ref{item-PSF}). 
 In its flight configuration with gratings optimized around a \OVwavelength\ wavelength, the instrument cannot be aligned and 
 focused in visible light like \MOSES. 
-Visible gratings and a special alignment transfer procedure (\S\,\ref{subsec:AlignmentandFocus}) are used for the 
-alignment and focus of \ESIS. 
+Visible gratings and a special alignment transfer procedure (\S\,\ref{subsec:AlignmentandFocus}) are used to 
+align and focus \ESIS. 
 
 The \ESIS\ design also includes an octagonal field stop placed at prime focus.
 This confers two advantages.
 First, the field stop fully defines the instrument \FOV, so that \ESIS\ is not susceptible to the spectral confusion 
 observed in \MOSES\ data (\S\,\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-FOV}).
-Second, each spectral line image observed by \ESIS\ will be bordered by the outline of the field stop 
+Second, each spectral line image observed by \ESIS\ is bordered by the outline of the field stop 
 (\eg\,\S\,\ref{subsec:Optics}).
 This aids the inversion process since outside of this sharp edge the intensity is zero for any look angle through an 
 \ESIS\ data cube.
