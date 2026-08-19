@@ -33,7 +33,6 @@ def schematic_moses() -> aastex.Figure:
     """
     # every length is a fraction of the width of the figure, with the origin on
     # the optical axis
-    x_grating = 0.08
     x_detector = 0.855
     x_entrance = 1
 
@@ -91,6 +90,11 @@ def schematic_moses() -> aastex.Figure:
     depth_grating = 0.035
 
     x_back_grating = x_front_grating - depth_grating
+
+    # The beams touch the grating at the middle of its face rather than out at
+    # the rim. Both are on the mirror, but a vertex at the rim reads as the
+    # light glancing off the edge of the optic instead of reflecting from it.
+    x_grating = x_front_grating
 
     ax.add_patch(
         matplotlib.patches.Ellipse(
