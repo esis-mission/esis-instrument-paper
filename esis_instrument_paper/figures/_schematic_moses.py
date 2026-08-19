@@ -48,7 +48,7 @@ def schematic_moses() -> aastex.Figure:
     dispersion = 0.025
 
     height_detector = 0.135
-    width_detector = 0.040
+    width_detector = 0.058
 
     # the outboard detectors are canted to face the grating, which is drawn by
     # lifting the far edge of the tile
@@ -166,7 +166,7 @@ def schematic_moses() -> aastex.Figure:
             y=y,
             s=rf"$\mathbf{{{letter}}}$",
             color=color,
-            fontsize=15.5,
+            fontsize=13,
             ha="center",
             va="center",
             zorder=3,
