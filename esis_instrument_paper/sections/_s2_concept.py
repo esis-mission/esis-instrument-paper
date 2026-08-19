@@ -1,5 +1,7 @@
 import aastex
 
+import esis_instrument_paper
+
 __all__ = [
     "concept",
 ]
@@ -36,8 +38,7 @@ far apart as possible in the $\sim\text{\skinDiameter}$ diameter envelope of the
 This planar arrangement leaves much unused space in the cylindrical volume of the payload."""
     )
 
-    # TODO: the MOSES schematic figure goes here, once it has been
-    # rebuilt on the current `esis` and `optika` model.
+    subsection_limitations.append(esis_instrument_paper.figures.schematic_moses())
 
     subsection_limitations.append(r"""
 Furthermore, the monolithic secondary, though it confers the focus advantage noted above, does not 
