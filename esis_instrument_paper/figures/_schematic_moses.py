@@ -33,7 +33,7 @@ def schematic_moses() -> aastex.Figure:
     """
     # every length is a fraction of the width of the figure, with the origin on
     # the optical axis
-    x_grating = 0.065
+    x_grating = 0.08
     x_detector = 0.855
     x_entrance = 1
 
@@ -46,9 +46,11 @@ def schematic_moses() -> aastex.Figure:
     zorder_light = 3
     zorder_letter = 4
 
-    # half the height of the illuminated part of the grating, which is where
-    # the two edge rays of every beam leave from
-    aperture = 0.08
+    # Half the height of the illuminated part of the grating, which is where
+    # the two edge rays of every beam leave from. The incoming beam runs at this
+    # height, so it has to thread the gap between the undispersed detector and
+    # the dispersed ones, and it is set midway between them.
+    aperture = 0.109
 
     # how far the dispersed detectors sit off the axis, and how far the two
     # wavelengths land apart on them
@@ -83,10 +85,10 @@ def schematic_moses() -> aastex.Figure:
     # ellipse: a back face, the cylindrical wall between them, and the ruled
     # front face. Only the wall and the sliver of the back face are ever seen,
     # and they are what give the grating its edge.
-    width_grating = 0.0525
-    height_grating = 0.215
-    x_front_grating = 0.054
-    depth_grating = 0.0276
+    width_grating = 0.066
+    height_grating = 0.27
+    x_front_grating = 0.068
+    depth_grating = 0.035
 
     x_back_grating = x_front_grating - depth_grating
 
@@ -124,7 +126,7 @@ def schematic_moses() -> aastex.Figure:
     )
     ax.add_patch(face)
 
-    for y in np.linspace(-height_grating / 2, height_grating / 2, num=31):
+    for y in np.linspace(-height_grating / 2, height_grating / 2, num=39):
         groove = ax.plot(
             [x_front_grating - width_grating, x_front_grating + width_grating],
             [y, y],
