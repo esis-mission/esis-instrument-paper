@@ -6,6 +6,8 @@ __all__ = [
 
 
 def introduction() -> aastex.Section:
+    # TODO (Jake): might just need to go through the whole paper then write
+    # the final paragraph of this section.
     result = aastex.Section("Introduction")
     result.append(r"""
 The light emitted by the solar \TR\ and corona varies significantly as a function
@@ -89,7 +91,6 @@ information, which caps the number of degrees of freedom that an inversion can r
 and because the dispersed orders lie in a plane, they fill the cylindrical volume of a sounding rocket
 payload poorly.
 
-\jake{might just need to go through the whole paper then write this paragraph}
 \ESISCapital\ was designed to relax both constraints.
 An array of gratings arranged about the optical axis re-images the prime focus of a single primary mirror,
 each dispersing at a different angle, so that every detector records a dispersed view and the views are
