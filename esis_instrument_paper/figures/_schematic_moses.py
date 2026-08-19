@@ -169,8 +169,14 @@ def schematic_moses() -> aastex.Figure:
             zorder=zorder_light,
         )
 
-    # each order is a beam converging from the two edges of the grating onto
-    # one point of one detector
+    # Each order is a beam converging from the two edges of the grating onto
+    # one point of one detector. The beams stop at the near edge of the tile
+    # rather than running all the way to the point they converge on, since ten
+    # lines arriving into the letters makes a thicket of exactly the place the
+    # reader is meant to be looking.
+    x_stop = x_detector - width_detector / 2
+    reach = (x_stop - x_grating) / (x_detector - x_grating)
+
     orders = [
         (0, _color_undispersed),
         (position_long, _color_long),
@@ -180,9 +186,10 @@ def schematic_moses() -> aastex.Figure:
     ]
     for y, color in orders:
         for sign in (1, -1):
+            y_grating = sign * aperture
             ax.plot(
-                [x_grating, x_detector],
-                [sign * aperture, y],
+                [x_grating, x_stop],
+                [y_grating, y_grating + reach * (y - y_grating)],
                 color=color,
                 linewidth=1.3,
                 zorder=zorder_light,

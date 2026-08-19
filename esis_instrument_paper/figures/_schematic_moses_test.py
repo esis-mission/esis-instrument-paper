@@ -102,6 +102,34 @@ def test_letters_sit_on_their_detectors(axes: matplotlib.axes.Axes):
         assert inside.all(), f"{text.get_text()} escapes its detector"
 
 
+def test_beams_stop_short_of_the_letters(axes: matplotlib.axes.Axes):
+    """
+    No beam may run into a letter.
+
+    Ten lines converging into the letters clutters the one part of the diagram
+    the reader is meant to be looking at, so they stop at the near edge of the
+    detector instead.
+    """
+    renderer = axes.figure.canvas.get_renderer()
+    inverse = axes.transData.inverted()
+
+    boxes = []
+    for text in axes.texts:
+        if not text.get_text():
+            continue
+        box = text.get_window_extent(renderer=renderer)
+        (x0, y0), (x1, y1) = inverse.transform([(box.x0, box.y0), (box.x1, box.y1)])
+        boxes.append((x0, x1, y0, y1))
+    assert boxes
+
+    for line in _beams(axes):
+        for x, y in zip(line.get_xdata(), line.get_ydata()):
+            for x0, x1, y0, y1 in boxes:
+                assert not (
+                    x0 <= x <= x1 and y0 <= y <= y1
+                ), f"a beam ends inside a letter at {x:.3f}, {y:.3f}"
+
+
 def test_beam_leaves_the_grating(axes: matplotlib.axes.Axes):
     """
     The beams have to start on the face of the grating rather than off it.
