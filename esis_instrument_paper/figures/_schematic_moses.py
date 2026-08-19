@@ -35,8 +35,16 @@ def schematic_moses() -> aastex.Figure:
     # the optical axis
     x_grating = 0.065
     x_detector = 0.855
-    x_face = 0.838
     x_entrance = 1
+
+    # The light is drawn over the grating and the detectors it lands on, so
+    # that a beam reads as reflecting off the one and converging onto the
+    # other, rather than disappearing behind either. Only the letters sit on
+    # top of it.
+    zorder_grating = 1
+    zorder_detector = 2
+    zorder_light = 3
+    zorder_letter = 4
 
     # half the height of the illuminated part of the grating, which is where
     # the two edge rays of every beam leave from
@@ -89,7 +97,7 @@ def schematic_moses() -> aastex.Figure:
             height=height_grating,
             facecolor=_color_grating,
             edgecolor="none",
-            zorder=1,
+            zorder=zorder_grating,
         )
     )
     ax.add_patch(
@@ -99,7 +107,7 @@ def schematic_moses() -> aastex.Figure:
             height=height_grating,
             facecolor=_color_grating,
             edgecolor="none",
-            zorder=1,
+            zorder=zorder_grating,
         )
     )
 
@@ -112,7 +120,7 @@ def schematic_moses() -> aastex.Figure:
         facecolor=_color_grating,
         edgecolor="white",
         linewidth=0.4,
-        zorder=1.1,
+        zorder=zorder_grating + 0.1,
     )
     ax.add_patch(face)
 
@@ -123,7 +131,7 @@ def schematic_moses() -> aastex.Figure:
             color="white",
             linewidth=0.3,
             dashes=(2.5, 1.2),
-            zorder=1.2,
+            zorder=zorder_grating + 0.2,
         )
         groove[0].set_clip_path(face)
 
@@ -135,7 +143,7 @@ def schematic_moses() -> aastex.Figure:
             [sign * aperture, sign * aperture],
             color=_color_undispersed,
             linewidth=1.3,
-            zorder=0,
+            zorder=zorder_light,
         )
         # the head sits in from the edge, where there is room for it
         ax.annotate(
@@ -150,7 +158,7 @@ def schematic_moses() -> aastex.Figure:
                 "shrinkA": 0,
                 "shrinkB": 0,
             },
-            zorder=0,
+            zorder=zorder_light,
         )
 
     # each order is a beam converging from the two edges of the grating onto
@@ -165,11 +173,11 @@ def schematic_moses() -> aastex.Figure:
     for y, color in orders:
         for sign in (1, -1):
             ax.plot(
-                [x_grating, x_face],
+                [x_grating, x_detector],
                 [sign * aperture, y],
                 color=color,
                 linewidth=1.3,
-                zorder=0,
+                zorder=zorder_light,
             )
 
     # the detectors, each a tile with vertical edges, the far one raised on the
@@ -186,7 +194,7 @@ def schematic_moses() -> aastex.Figure:
                     (x_detector - width_detector / 2, near - height_detector / 2),
                 ],
                 facecolor="black",
-                zorder=2,
+                zorder=zorder_detector,
             )
         )
 
@@ -210,7 +218,7 @@ def schematic_moses() -> aastex.Figure:
             fontsize=13,
             ha="center",
             va="center",
-            zorder=3,
+            zorder=zorder_letter,
         )
 
     result = aastex.Figure("fig:mosesSchematic", position="!ht")
