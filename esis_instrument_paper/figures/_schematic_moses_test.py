@@ -77,6 +77,31 @@ def test_beam_clears_the_undispersed_detector(axes: matplotlib.axes.Axes):
         assert lower + margin < y < upper - margin
 
 
+def test_letters_sit_on_their_detectors(axes: matplotlib.axes.Axes):
+    """
+    Each letter has to fall inside the tile it is written on.
+
+    The test is against the tile itself rather than the box around it, since
+    the dispersed tiles are sheared and the corners of that box are well
+    outside them.
+    """
+    tiles = [p for p in axes.patches if isinstance(p, matplotlib.patches.Polygon)]
+    renderer = axes.figure.canvas.get_renderer()
+    inverse = axes.transData.inverted()
+
+    for text in axes.texts:
+        if not text.get_text():
+            continue
+        box = text.get_window_extent(renderer=renderer)
+        corners = inverse.transform(
+            [(box.x0, box.y0), (box.x1, box.y0), (box.x1, box.y1), (box.x0, box.y1)]
+        )
+        centre = corners.mean(axis=0)
+        tile = min(tiles, key=lambda p: abs(p.get_xy()[:, 1].mean() - centre[1]))
+        inside = tile.get_path().contains_points(corners)
+        assert inside.all(), f"{text.get_text()} escapes its detector"
+
+
 def test_beam_leaves_the_grating(axes: matplotlib.axes.Axes):
     """
     The beams have to start on the face of the grating rather than off it.

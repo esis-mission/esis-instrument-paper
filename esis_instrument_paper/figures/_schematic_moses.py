@@ -49,11 +49,11 @@ def schematic_moses() -> aastex.Figure:
     # the two edge rays of every beam leave from. The incoming beam runs at this
     # height, so it has to thread the gap between the undispersed detector and
     # the dispersed ones, and it is set midway between them.
-    aperture = 0.109
+    aperture = 0.099
 
     # how far the dispersed detectors sit off the axis, and how far the two
     # wavelengths land apart on them
-    separation = 0.229
+    separation = 0.214
     dispersion = 0.042
 
     # the two wavelengths straddle the centre of each dispersed detector, the
@@ -62,11 +62,13 @@ def schematic_moses() -> aastex.Figure:
     position_short = separation - dispersion / 2
 
     height_detector = 0.135
-    width_detector = 0.058
+    width_detector = 0.05
 
-    # the outboard detectors are canted to face the grating, which is drawn by
-    # lifting the far edge of the tile
-    cant = 0.02
+    # The outboard detectors are canted to face the grating, which is drawn by
+    # lifting the far edge of the tile. The rise has to be a good fraction of
+    # the width or the tile stops reading as a plate seen at an angle and
+    # starts reading as a box drawn in oblique projection.
+    cant = 0.031
 
     height = 0.6033
     fig = plt.figure(
@@ -221,7 +223,7 @@ def schematic_moses() -> aastex.Figure:
             y=y,
             s=rf"$\mathbf{{{letter}}}$",
             color=color,
-            fontsize=13,
+            fontsize=11,
             ha="center",
             va="center",
             zorder=zorder_letter,
