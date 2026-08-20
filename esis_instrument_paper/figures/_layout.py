@@ -125,13 +125,13 @@ def layout() -> aastex.FigureStar:
     populated = _channels_populated(full, flown)
     transformation = na.transformations.Cartesian3dRotationX(_angle_view)
 
-    kwargs_surface = dict(
-        ax=None,
-        transformation=transformation,
-        components=("z", "x"),
-        color="black",
-        linewidth=0.5,
-    )
+    kwargs_surface = {
+        "ax": None,
+        "transformation": transformation,
+        "components": ("z", "x"),
+        "color": "black",
+        "linewidth": 0.5,
+    }
 
     with quantity_support():
         fig, ax = plt.subplots(
@@ -151,8 +151,8 @@ def layout() -> aastex.FigureStar:
         # though neither is drawn.
         flown.isel(channel=1).system.plot(
             plot_rays=True,
-            kwargs_rays=dict(color=_color_rays, linewidth=0.5),
-            **(kwargs_surface | dict(linewidth=0, alpha=0)),
+            kwargs_rays={"color": _color_rays, "linewidth": 0.5},
+            **(kwargs_surface | {"linewidth": 0, "alpha": 0}),
         )
 
         # the positions which were available but never populated. Only the
@@ -162,7 +162,7 @@ def layout() -> aastex.FigureStar:
             channel = full.isel(channel=int(index))
             for component in (channel.grating, channel.camera):
                 component.surface.plot(
-                    **(kwargs_surface | dict(linestyle=_linestyle_unpopulated))
+                    **(kwargs_surface | {"linestyle": _linestyle_unpopulated})
                 )
 
         _annotate(ax, flown, transformation)
@@ -209,7 +209,7 @@ def _annotate(
                 y=0 * u.mm,
                 z=primary.translation.z + 20 * u.mm,
             ),
-            dict(ha="right", va="bottom"),
+            {"ha": "right", "va": "bottom"},
         ),
         (
             "detectors",
@@ -218,7 +218,7 @@ def _annotate(
                 y=0 * u.mm,
                 z=sensor.translation.z + 20 * u.mm,
             ),
-            dict(ha="center", va="center"),
+            {"ha": "center", "va": "center"},
         ),
         (
             "field stop",
@@ -227,7 +227,7 @@ def _annotate(
                 y=0 * u.mm,
                 z=field_stop.translation.z,
             ),
-            dict(ha="center", va="top"),
+            {"ha": "center", "va": "top"},
         ),
         (
             "diffraction gratings",
@@ -236,7 +236,7 @@ def _annotate(
                 y=0 * u.mm,
                 z=grating.translation.z - 50 * u.mm,
             ),
-            dict(ha="left", va="top"),
+            {"ha": "left", "va": "top"},
         ),
     ]
 
