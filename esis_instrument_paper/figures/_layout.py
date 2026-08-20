@@ -78,6 +78,25 @@ def _channels_populated(
     return np.isin(np.round(azimuth_full, 3), np.round(azimuth_flown, 3))
 
 
+def _components_drawn(instrument: esis.optics.Instrument) -> tuple:
+    """
+    The parts of the instrument the layout shows.
+
+    The central obscuration and the filters are left out, as they were in the
+    old draft: neither says anything about the layout, and both crowd the
+    channels where the drawing is already busiest. They are omitted from the
+    drawing only, not from the model, so the light is still traced through
+    them.
+    """
+    return (
+        instrument.front_aperture,
+        instrument.primary_mirror,
+        instrument.field_stop,
+        instrument.grating,
+        instrument.camera,
+    )
+
+
 def _millimeters(value: u.Quantity | na.AbstractScalar) -> float:
     """The value in millimeters, as a plain number for :mod:`matplotlib`."""
     return float(getattr(value, "ndarray", value).to_value(u.mm))
@@ -123,8 +142,13 @@ def layout() -> aastex.FigureStar:
         ax.set_aspect("equal")
         kwargs_surface["ax"] = ax
 
-        # the channels which flew, and the light through one of them
-        flown.system.plot(plot_rays=False, **kwargs_surface)
+        # the parts of the instrument which flew
+        for component in _components_drawn(flown):
+            component.surface.plot(**kwargs_surface)
+
+        # the light through one of the channels. The whole system is used, so
+        # the rays still pass through the filter and the obscuration even
+        # though neither is drawn.
         flown.isel(channel=1).system.plot(
             plot_rays=True,
             kwargs_rays=dict(color=_color_rays, linewidth=0.5),
@@ -136,7 +160,7 @@ def layout() -> aastex.FigureStar:
         # field stop are shared and have already been drawn solid.
         for index in np.nonzero(~populated)[0]:
             channel = full.isel(channel=int(index))
-            for component in (channel.grating, channel.filter, channel.camera):
+            for component in (channel.grating, channel.camera):
                 component.surface.plot(
                     **(kwargs_surface | dict(linestyle=_linestyle_unpopulated))
                 )
