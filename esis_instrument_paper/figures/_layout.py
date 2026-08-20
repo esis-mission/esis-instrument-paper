@@ -26,6 +26,17 @@ the vertical.
 _color_rays = "tab:blue"
 """The colour of the light traced through the instrument."""
 
+_clearance_entrance = 50 * u.mm
+"""
+How far beyond the gratings the light is drawn entering the instrument.
+
+The object is at infinity, so the rays begin at the front aperture, which sits
+far enough back that the gratings would otherwise be stranded well inside the
+frame. The front aperture carries no aperture of its own, so moving it changes
+only where the incoming rays start being drawn. The old draft did the same with
+``source.piston = 1425 mm`` against a grating at ``1374.7 mm``.
+"""
+
 _linestyle_unpopulated = ":"
 """
 The line style marking a channel which was not populated for the flight.
@@ -123,6 +134,13 @@ def layout() -> aastex.FigureStar:
     flown = esis.flights.f1.optics.design(grid=grid, num_distribution=0)
 
     populated = _channels_populated(full, flown)
+
+    # brought in before anything asks the instrument for its optical system,
+    # which is where the position is read
+    flown.front_aperture.translation.z = (
+        flown.grating.translation.z - _clearance_entrance
+    )
+
     transformation = na.transformations.Cartesian3dRotationX(_angle_view)
 
     kwargs_surface = {
