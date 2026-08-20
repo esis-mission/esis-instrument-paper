@@ -41,6 +41,11 @@ def variables() -> list[aastex.Variable]:
             name="numChannelsWords",
             value=aastex.NoEscape(num2words.num2words(num_channels)),
         ),
+        # the same word capitalised, for a sentence which opens with it
+        aastex.Variable(
+            name="NumChannelsWords",
+            value=aastex.NoEscape(num2words.num2words(num_channels).capitalize()),
+        ),
         aastex.Variable(
             name="OVwavelength",
             value=esis.flights.f1.spectrum.O_V.wavelength,

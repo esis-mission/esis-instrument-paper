@@ -112,8 +112,7 @@ In designing \ESIS, we have sought to improve upon each of these points.""")
 
     subsection_features = aastex.Subsection(aastex.NoEscape(r"\ESIS\ Features"))
 
-    # TODO: the ESIS layout figure goes here, once it has been rebuilt on
-    # the current `esis` and `optika` model.
+    subsection_features.append(esis_instrument_paper.figures.layout())
 
     subsection_features.append(r"""
 The layout of \ESIS\ (Figure~\ref{fig:layout}) is a modified form of Gregorian telescope.
