@@ -1,6 +1,12 @@
 import aastex
 import esis
+import matplotlib
 import numpy as np
+import pytest
+
+matplotlib.use("agg")
+
+import matplotlib.pyplot as plt
 
 import esis_instrument_paper
 from esis_instrument_paper.figures import _layout
@@ -35,3 +41,10 @@ def test_channels_populated():
     assert result.size == 6
     # the unpopulated positions are the two ends of the arc
     assert np.array_equal(result, [False, True, True, True, True, False])
+
+
+@pytest.fixture(autouse=True)
+def _close_figures():
+    """Building the figure leaves it open, and it is a large one."""
+    yield
+    plt.close("all")
