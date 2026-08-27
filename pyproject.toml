@@ -14,10 +14,12 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 dependencies = [
-    "pylatex",
-    "aastex>=0.4.0",
-    "num2words",
-    "euv-snapshot-imaging-spectrograph>=1.0.0",
+    "pylatex~=1.4",
+    "aastex~=0.5",
+    "num2words~=0.5",
+    "named-arrays~=2.7",
+    "optika~=2.3",
+    "euv-snapshot-imaging-spectrograph~=1.0",
 ]
 dynamic = ["version"]
 
