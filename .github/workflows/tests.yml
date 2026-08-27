@@ -21,7 +21,10 @@ jobs:
       - name: Install LaTeX
         # `apt-get` waits forever if another process on the runner holds the
         # dpkg lock, so bound that wait and answer its prompts non-interactively.
+        # The index the runner ships with goes stale, and installing against a
+        # stale one asks the mirror for versions it has since replaced.
         run: >-
+          sudo apt-get update -o DPkg::Lock::Timeout=300 &&
           sudo apt-get install -y -o DPkg::Lock::Timeout=300
           texlive-publishers texlive-science cm-super latexmk libcairo2-dev
           dvipng
