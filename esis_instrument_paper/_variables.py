@@ -1,6 +1,7 @@
 import aastex
 import astropy.units as u
 import esis
+import named_arrays as na
 import num2words
 
 __all__ = [
@@ -42,6 +43,20 @@ def variables() -> list[aastex.Variable]:
     # the performance the mission required of the instrument, as opposed to
     # the performance the instrument achieved
     requirements = esis.flights.f1.optics.requirements()
+
+    # One channel of the flight instrument. The field of view and the
+    # dispersion belong to a channel rather than to the set of them, and the
+    # nominal model is used rather than a Monte Carlo population, so that
+    # neither carries an axis of its own.
+    channel = esis.flights.f1.optics.design_single(num_distribution=0)
+
+    # The traced outline of the field, which for an octagonal field stop is
+    # wider corner to corner than edge to edge by a factor of
+    # 1 / cos(22.5 degrees). This group means edge to edge when it says field
+    # of view, which is twice the least distance from the centre of the field
+    # to its outline.
+    boundary = channel.system.field_boundary
+    fov = 2 * boundary.length.min(tuple(na.shape(boundary)))
 
     return [
         # TODO: this describes MOSES rather than ESIS, so it is not something
@@ -121,15 +136,25 @@ def variables() -> list[aastex.Variable]:
             name="HeIion",
             value=aastex.NoEscape(r"He\,\textsc{i}"),
         ),
+        aastex.Variable(
+            name="fov",
+            value=fov.ndarray.to(u.arcmin).round(1),
+        ),
+        aastex.Variable(
+            # The dispersion varies by about a percent across the passband,
+            # and its Doppler equivalent by ten times that, so it is quoted
+            # at the line the instrument was designed around rather than
+            # averaged over the passband.
+            name="dispersionDoppler",
+            value=channel.dispersion_doppler(
+                wavelength=esis.flights.f1.spectrum.O_V.wavelength,
+            ).ndarray.round(1),
+        ),
         # Quantities the model cannot supply yet. Each is a capability of the
         # instrument rather than a requirement of the mission, and each waits
-        # on analysis which has not been ported: the field of view and the
-        # dispersion on a release of `optika` and `esis` carrying them, the
-        # spatial resolution on the error budget, the observing time on the
-        # mission timeline, and the two signal-to-noise figures on the
-        # count rates.
-        _pending("fov"),
-        _pending("dispersionDoppler"),
+        # on analysis which has not been ported: the spatial resolution on the
+        # error budget, the observing time on the mission timeline, and the
+        # two signal-to-noise figures on the count rates.
         _pending("observingTime"),
         _pending("spatialResolutionTotal"),
         _pending("StackedCoronalHoleSNR"),
