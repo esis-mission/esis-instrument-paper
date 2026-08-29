@@ -163,12 +163,19 @@ def variables() -> list[aastex.Variable]:
             name="observingTime",
             value=length_observation.round(1),
         ),
+        aastex.Variable(
+            # How many exposures to stack is chosen rather than derived: it
+            # buys signal at the cost of the cadence the torsional waves need,
+            # and the old draft settled on twelve. It is written here because
+            # the count rates are computed from it, not the other way about.
+            name="NumExpInStack",
+            value=12,
+        ),
         # Quantities the model cannot supply yet. Each is a capability of the
         # instrument rather than a requirement of the mission, and each waits
         # on analysis which has not been ported: the spatial resolution on the
-        # error budget, and the two signal-to-noise figures on the count
+        # error budget, and the stacked signal-to-noise ratio on the count
         # rates.
         _pending("spatialResolutionTotal"),
         _pending("StackedCoronalHoleSNR"),
-        _pending("NumExpInStack"),
     ]
