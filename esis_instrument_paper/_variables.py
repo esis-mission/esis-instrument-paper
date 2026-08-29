@@ -58,6 +58,15 @@ def variables() -> list[aastex.Variable]:
     boundary = channel.system.field_boundary
     fov = 2 * boundary.length.min(tuple(na.shape(boundary)))
 
+    # The observing time is taken from the flight timeline, as the span over
+    # which the rate gyros held the payload pointed. The 30 exposures of the
+    # Level 1 data sit inside it, beginning 12 seconds after it opens and
+    # ending as it closes.
+    timeline = esis.flights.f1.nsroc.timeline()
+    length_observation = (
+        timeline.timedelta_sparcs_rlg_disable - timeline.timedelta_sparcs_rlg_enable
+    )
+
     return [
         # TODO: this describes MOSES rather than ESIS, so it is not something
         # the ESIS model can supply.
@@ -150,12 +159,15 @@ def variables() -> list[aastex.Variable]:
                 wavelength=esis.flights.f1.spectrum.O_V.wavelength,
             ).ndarray.round(1),
         ),
+        aastex.Variable(
+            name="observingTime",
+            value=length_observation.round(1),
+        ),
         # Quantities the model cannot supply yet. Each is a capability of the
         # instrument rather than a requirement of the mission, and each waits
         # on analysis which has not been ported: the spatial resolution on the
-        # error budget, the observing time on the mission timeline, and the
-        # two signal-to-noise figures on the count rates.
-        _pending("observingTime"),
+        # error budget, and the two signal-to-noise figures on the count
+        # rates.
         _pending("spatialResolutionTotal"),
         _pending("StackedCoronalHoleSNR"),
         _pending("NumExpInStack"),
