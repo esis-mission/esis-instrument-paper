@@ -1,7 +1,6 @@
 import aastex
 import astropy.units as u
 import esis
-import named_arrays as na
 import num2words
 
 __all__ = [
@@ -56,7 +55,7 @@ def variables() -> list[aastex.Variable]:
     # of view, which is twice the least distance from the centre of the field
     # to its outline.
     boundary = channel.system.field_boundary
-    fov = 2 * boundary.length.min(tuple(na.shape(boundary)))
+    fov = 2 * boundary.length.min(channel.system.axis_stops)
 
     # The observing time is taken from the flight timeline, as the span over
     # which the rate gyros held the payload pointed. The 30 exposures of the
@@ -158,6 +157,10 @@ def variables() -> list[aastex.Variable]:
             value=channel.dispersion_doppler(
                 wavelength=esis.flights.f1.spectrum.O_V.wavelength,
             ).ndarray.round(1),
+            # astropy orders the bases of a composite unit itself, which puts
+            # the pixels before the seconds; this is the order it is read in,
+            # and the order the requirement beside it is written in
+            unit=(u.km, u.s**-1, u.pix**-1),
         ),
         aastex.Variable(
             name="observingTime",
