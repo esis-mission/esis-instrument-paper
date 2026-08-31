@@ -14,6 +14,7 @@ __all__ = [
     "emission_measure",
     "lines",
     "pressure",
+    "version",
 ]
 
 abundance = "sun_coronal_2012_schmelz_ext"
@@ -96,12 +97,30 @@ def emission_measure() -> na.AbstractScalar:
     return na.ScalarArray(result, axes=(_axis,))
 
 
+def version() -> str:
+    """The version of the CHIANTI database these numbers were computed from."""
+    import fiasco
+    from fiasco.util import read_chianti_version
+
+    return str(read_chianti_version(fiasco.defaults["ascii_dbase_root"]))
+
+
 @esis.memory.cache
 def _lines(
     wavelength_min: u.Quantity,
     wavelength_max: u.Quantity,
+    chianti_version: str,
 ) -> na.FunctionArray:
-    """Compute the lines, and remember them, since it takes several minutes."""
+    """
+    Compute the lines, and remember them, since it takes several minutes.
+
+    ``chianti_version`` is not read here. It is an argument so that it is part of
+    what the cache is keyed on, since the answer depends on it and nothing
+    else in the key does: :mod:`joblib` hashes the arguments and the source
+    of this function, neither of which knows which database is installed.
+    Without it, installing a new database would go on returning the numbers
+    computed from the old one, under a caption naming the new.
+    """
     t = temperature()
     return utu.spectrum.lines(
         temperature=t,
@@ -136,4 +155,4 @@ def lines(
     wavelength_max
         The longest wavelength to compute.
     """
-    return _lines(wavelength_min, wavelength_max)
+    return _lines(wavelength_min, wavelength_max, version())

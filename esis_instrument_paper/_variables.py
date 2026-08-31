@@ -1,10 +1,8 @@
 import aastex
 import astropy.units as u
 import esis
-import fiasco
 import num2words
 import pylatex
-from fiasco.util import read_chianti_version
 
 import esis_instrument_paper
 
@@ -222,9 +220,7 @@ def variables() -> list[aastex.Variable]:
             # and the two would otherwise drift apart silently. The lines in
             # the passband move by a few percent between versions.
             name="chiantiVersion",
-            value=aastex.NoEscape(
-                str(read_chianti_version(fiasco.defaults["ascii_dbase_root"]))
-            ),
+            value=aastex.NoEscape(esis_instrument_paper._spectrum.version()),
         ),
         # Quantities the model cannot supply yet. Each is a capability of the
         # instrument rather than a requirement of the mission, and each waits
