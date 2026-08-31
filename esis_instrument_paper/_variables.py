@@ -1,7 +1,12 @@
 import aastex
 import astropy.units as u
 import esis
+import fiasco
 import num2words
+import pylatex
+from fiasco.util import read_chianti_version
+
+import esis_instrument_paper
 
 __all__ = [
     "variables",
@@ -173,6 +178,53 @@ def variables() -> list[aastex.Variable]:
             # the count rates are computed from it, not the other way about.
             name="NumExpInStack",
             value=12,
+        ),
+        aastex.Variable(
+            # the number of emission lines drawn in the bunch figure
+            name="numEmissionLines",
+            value=aastex.NoEscape(
+                num2words.num2words(esis_instrument_paper.figures.num_emission_lines)
+            ),
+        ),
+        aastex.Variable(
+            # the pressure the quiet sun spectrum is computed at
+            name="chiantiPressure",
+            value=esis_instrument_paper._spectrum.pressure,
+        ),
+        aastex.Variable(
+            # The files the spectrum was computed from, named rather than
+            # described, so that the article says which of the several
+            # abundance tables and several differential emission measures
+            # CHIANTI carries were the ones read.
+            name="chiantiAbundances",
+            # `Command` escapes its argument, which these names need: an
+            # underscore outside of mathematics is a subscript and does not
+            # compile, and every one of these file names has several.
+            value=aastex.NoEscape(
+                pylatex.Command(
+                    "texttt",
+                    esis_instrument_paper._spectrum.abundance,
+                ).dumps()
+            ),
+        ),
+        aastex.Variable(
+            name="chiantiDEM",
+            value=aastex.NoEscape(
+                pylatex.Command(
+                    "texttt",
+                    esis_instrument_paper._spectrum.dem,
+                ).dumps()
+            ),
+        ),
+        aastex.Variable(
+            # Read from the database rather than written down, since which
+            # version is installed is what the numbers were computed from,
+            # and the two would otherwise drift apart silently. The lines in
+            # the passband move by a few percent between versions.
+            name="chiantiVersion",
+            value=aastex.NoEscape(
+                str(read_chianti_version(fiasco.defaults["ascii_dbase_root"]))
+            ),
         ),
         # Quantities the model cannot supply yet. Each is a capability of the
         # instrument rather than a requirement of the mission, and each waits
