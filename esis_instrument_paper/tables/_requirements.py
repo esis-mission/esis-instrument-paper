@@ -41,7 +41,7 @@ def requirements() -> pylatex.Table:
             [
                 r"Spectral sampling",
                 r"\spectralResolutionRequirement",
-                r"Broadening from \MHD\ waves",
+                r"\hyperref[t1_1]{Broadening from \MHD\ waves}",
                 r"\dispersionDoppler, Table~\ref{table:prescription}",
             ]
         )
@@ -49,7 +49,7 @@ def requirements() -> pylatex.Table:
             [
                 r"Spatial resolution",
                 r"\angularResolutionRequirement (\spatialResolutionRequirement)",
-                r"\EEs",
+                r"\hyperref[t1_2]{\EEs}",
                 r"\spatialResolutionTotal, Table~\ref{table:errorBudget}",
             ]
         )
@@ -77,7 +77,7 @@ def requirements() -> pylatex.Table:
             [
                 r"Observing time",
                 r"\observingTimeRequirement",
-                r"\EEs",
+                r"\hyperref[t1_01]{\EEs}",
                 r"\observingTime, Section~\ref{sec:MissionProfile}",
             ]
         )
