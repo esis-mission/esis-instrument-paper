@@ -1,5 +1,6 @@
 """The spectrum of the quiet Sun, as this article computes it."""
 
+import importlib.metadata
 import pathlib
 
 import astropy.units as u
@@ -10,10 +11,13 @@ import utu
 
 __all__ = [
     "abundance",
+    "area_effective",
     "dem",
     "emission_measure",
     "lines",
+    "num_grid",
     "pressure",
+    "seed",
     "version",
 ]
 
@@ -45,6 +49,28 @@ dem = "quiet_sun.dem"
 
 pressure = 1e15 * u.K / u.cm**3
 """The pressure of the quiet Sun, which sets the density at each temperature."""
+
+seed = 42
+"""
+The seed of the sampling which estimates the effective area.
+
+The field and the pupil are sampled at a point drawn inside each of their
+cells, which keeps the quadrature from aliasing against the edge of an
+aperture, at the cost of a different answer on every call: about two percent
+on this instrument, which is enough to see in a figure. Fixing the seed fixes
+the figure.
+"""
+
+num_grid = 20
+"""
+How finely the field and the pupil are sampled, as cells along each axis.
+
+Twelve is the default and leaves the curve visibly rough. Twenty takes the
+roughness down by a factor of three, which is what a quarter of a million
+rays per wavelength buys and follows the square root of their number.
+Twenty-eight takes it a further tenth, and no further: what is left is the
+structure of the measured coatings rather than anything left to average away.
+"""
 
 _axis = "temperature"
 """The name of the axis along the temperatures of the plasma."""
@@ -156,3 +182,66 @@ def lines(
         The longest wavelength to compute.
     """
     return _lines(wavelength_min, wavelength_max, version())
+
+
+@esis.memory.cache
+def _area_effective(
+    wavelength: u.Quantity,
+    num_grid: int,
+    seed: int,
+    optika_version: str,
+) -> na.AbstractScalar:
+    """
+    Trace the rays, and remember where they landed.
+
+    ``optika_version`` is not read here. It is an argument so that it is part
+    of what the cache is keyed on, since the answer depends on which version
+    traced the rays and nothing else in the key does. Between 2.5 and 2.6 the
+    answer moved by about two percent.
+    """
+    optics = esis.flights.f1.optics.design_single(num_distribution=0)
+
+    # The apertures are opened so that the curve is the response of the
+    # coatings and the filter, rather than a map of where the light happens
+    # to land.
+    optics.filter.radius_clear = 1000 * u.mm
+    optics.camera.sensor.num_pixel_x = 4096
+    optics.camera.sensor.num_pixel_y = 2048
+
+    def vertices(name: str) -> na.Cartesian2dVectorLinearSpace:
+        return na.Cartesian2dVectorLinearSpace(
+            start=-1,
+            stop=1,
+            axis=na.Cartesian2dVectorArray(f"{name}_x", f"{name}_y"),
+            num=num_grid,
+        )
+
+    model = optics.system.area_effective(
+        wavelength=wavelength,
+        field=vertices("field"),
+        pupil=vertices("pupil"),
+        seed=seed,
+    )
+
+    return model(wavelength).to(u.cm**2)
+
+
+def area_effective(wavelength: u.Quantity) -> na.AbstractScalar:
+    """
+    The effective area of one channel, at each of ``wavelength``.
+
+    Computed once and remembered, as the lines are: a quarter of a million
+    rays per wavelength take half a minute, which is not something to pay on
+    every rebuild of the article.
+
+    Parameters
+    ----------
+    wavelength
+        The wavelengths to compute the effective area at.
+    """
+    return _area_effective(
+        wavelength=wavelength,
+        num_grid=num_grid,
+        seed=seed,
+        optika_version=importlib.metadata.version("optika"),
+    )

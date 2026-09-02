@@ -45,11 +45,7 @@ def bunch() -> aastex.FigureStar:
         num=_num_wavelength,
     )
 
-    optics.filter.radius_clear = 1000 * u.mm
-    optics.camera.sensor.num_pixel_x = 4096
-    optics.camera.sensor.num_pixel_y = 2048
-
-    area = optics.system.area_effective(wavelength=wavelength)(wavelength).to(u.cm**2)
+    area = esis_instrument_paper._spectrum.area_effective(wavelength)
 
     lines = esis_instrument_paper.lines(
         wavelength_min=wavelength_min,
