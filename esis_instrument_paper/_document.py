@@ -32,6 +32,7 @@ def document() -> aastex.Document:
     doc.packages.append(aastex.Package("amsmath"))
     doc.packages.append(aastex.Package("hyperref"))
     doc.packages.append(aastex.Package("siunitx"))
+    doc.packages.append(aastex.Package("paralist"))
 
     doc.preamble += esis_instrument_paper.preamble()
     doc.preamble += esis_instrument_paper.acronyms()
@@ -44,6 +45,7 @@ def document() -> aastex.Document:
 
     doc.append(esis_instrument_paper.sections.introduction())
     doc.append(esis_instrument_paper.sections.concept())
+    doc.append(esis_instrument_paper.sections.science_objectives())
 
     doc.append(aastex.Bibliography("sources"))
 

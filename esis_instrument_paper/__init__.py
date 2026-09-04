@@ -7,6 +7,7 @@ from ._acronyms import acronyms
 from ._authors import authors
 from ._document import document, pdf
 from ._preamble import preamble
+from ._spectrum import lines
 from ._variables import variables
 
 __all__ = [
@@ -14,6 +15,7 @@ __all__ = [
     "authors",
     "document",
     "figures",
+    "lines",
     "pdf",
     "preamble",
     "sections",
