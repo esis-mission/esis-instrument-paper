@@ -46,6 +46,7 @@ def document() -> aastex.Document:
     doc.append(esis_instrument_paper.sections.introduction())
     doc.append(esis_instrument_paper.sections.concept())
     doc.append(esis_instrument_paper.sections.science_objectives())
+    doc.append(esis_instrument_paper.sections.instrument())
 
     doc.append(aastex.Bibliography("sources"))
 
