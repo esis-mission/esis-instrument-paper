@@ -1,5 +1,7 @@
 import aastex
 
+import esis_instrument_paper
+
 __all__ = [
     "instrument",
 ]
@@ -73,5 +75,19 @@ Custom DC/DC converters are used for secondary voltages required by other electr
 The use of custom designed converters allowed additional ripple filtering for low noise."""
     )
     result.append(subsection_avionics)
+
+    subsection_vignetting = aastex.Subsection("Vignetting")
+    subsection_vignetting.append(r"""
+The original design of \ESIS\ had no vignetting thanks to a stop placed at the primary mirror that was designed to
+perfectly fill the grating with the same amount of light for each point in the \FOV.
+This is the \ESIS\ design that was used for the optimization procedure of the grating parameters described in
+Section~\ref{subsec:OptimizationandTolerancing}, for example.
+All other results described in the paper use the fully-open system.
+Before flight, we decided to remove the primary aperture stop to increase the sensitivity of the instrument at the
+expense of introducing vignetting to the \ESIS\ \FOV.
+This was acceptable since the vignetting was found to be a simple linear field as shown in Figure~\ref{fig:vignetting},
+and could be removed in the post-processing phase.""")
+    subsection_vignetting.append(esis_instrument_paper.figures.vignetting())
+    result.append(subsection_vignetting)
 
     return result
