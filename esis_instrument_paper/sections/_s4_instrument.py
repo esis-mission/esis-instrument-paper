@@ -51,7 +51,8 @@ The kinematic mounting system isolates the optical table from bending or twistin
     subsection_avionics = aastex.Subsection("Avionics")
     subsection_avionics.append(
         r"""
-The \ESIS\ \DACS\ is based on the designs used for both \CLASP~\citep{Kano12,Kobayashi12} and \HiC~\citep{Kobayashi2014}.
+The \ESIS\ \DACS\ is based on the designs used for both \CLASP~\citep{Kano12,Kobayashi12,Narukage2016} and
+\HiC~\citep{Kobayashi2014,Rachmeler2019}.
 The electronics are a combination of \MOTS\ hardware and custom designed components.
 The \DACS\ is a 6-slot, 3U, open VPX PCIe architecture conduction cooled system using an AiTech C873 single board
 computer.
