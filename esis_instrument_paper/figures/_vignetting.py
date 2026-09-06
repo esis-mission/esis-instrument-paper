@@ -12,15 +12,17 @@ __all__ = [
 _num_field = 21
 """The number of field positions sampled along each axis."""
 
-_num_pupil = 41
+_num_pupil = 81
 """
 The number of pupil positions sampled along each axis.
 
 The illumination at a field position is the fraction of the pupil which is
-unvignetted, so this number sets how finely that fraction can be resolved.
-It is larger than the number of field positions because the residual of the
-fit is dominated by that granularity until the pupil is sampled this finely:
-sampling it half as finely raises the mean residual by about forty percent.
+unvignetted, so this number sets how finely that fraction can be resolved,
+and until the pupil is sampled finely enough the residual of the fit is
+mostly that granularity rather than anything about the optics. Sampling half
+as finely puts about a tenth of the mean residual back; at this many it has
+settled, agreeing to about a percent with a stratified sample of the same
+size, which is an estimator with quite different errors.
 """
 
 _degree = 1
@@ -28,7 +30,7 @@ _degree = 1
 The degree of the polynomial fit to the illumination.
 
 The text describes the vignetting as a simple linear field, and this figure
-is the evidence for that: the residual of the linear fit stays under three
+is the evidence for that: the residual of the linear fit stays under two
 percent of the illumination everywhere it was fit. A quadratic fit halves
 that residual, so the field is not exactly linear, but the model plotted
 here is the one the text claims.
