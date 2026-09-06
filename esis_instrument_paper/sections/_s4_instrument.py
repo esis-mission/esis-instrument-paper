@@ -33,4 +33,19 @@ Images from Camera 1 were downlinked and displayed in real time on the \SPARCS\ 
 $\sim$\SI{16}{\second} to verify pointing was maintained during flight.""")
     result.append(subsection_pointing)
 
+    subsection_mechanical = aastex.Subsection("Mechanical")
+    subsection_mechanical.append(
+        r"""
+\ESIS\ and \MOSES\ are mounted on opposite sides of a composite optical table structure originally developed for the
+\SPDE~\citep{Bruner95lock}.
+The layered carbon fiber structure features a convenient, precisely coplanar array of threaded inserts with precision
+counterbores.
+The carbon fiber layup is designed to minimize the longitudinal coefficient of thermal expansion.
+The optical table is housed in two \skinDiameter\ diameter skin sections, with a total length of \skinLength.
+A ball joint and spindle assembly on one end and flexible metal aperture plate on the other hold the optical table in
+position inside the skin sections.
+The kinematic mounting system isolates the optical table from bending or twisting strain of the skins."""
+    )
+    result.append(subsection_mechanical)
+
     return result

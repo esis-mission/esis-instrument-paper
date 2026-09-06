@@ -76,11 +76,19 @@ def variables() -> list[aastex.Variable]:
             name="mosesDispersionDoppler",
             value=29 * u.km / u.s / u.pix,
         ),
-        # TODO: the current model does not carry a skin diameter; this is the
-        # 22 inch value from the old model.
+        # TODO: the current model carries neither of these; they are the 22
+        # inch and 3 metre values from the old model and the old draft.
         aastex.Variable(
+            # Two decimals, where the old draft gave one. The old draft then
+            # wrote the same quantity out again, to two decimals, where it
+            # described the skin sections, and so said 0.6 m in one place and
+            # 0.56 m in another. One of them is enough.
             name="skinDiameter",
-            value=round((22 * u.imperial.inch).to_value(u.m), 1) * u.m,
+            value=round((22 * u.imperial.inch).to_value(u.m), 2) * u.m,
+        ),
+        aastex.Variable(
+            name="skinLength",
+            value=3 * u.m,
         ),
         aastex.Variable(
             name="numChannelsWords",
