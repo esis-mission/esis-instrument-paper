@@ -19,20 +19,32 @@ The illumination at a field position is the fraction of the pupil which is
 unvignetted, so this number sets how finely that fraction can be resolved,
 and until the pupil is sampled finely enough the residual of the fit is
 mostly that granularity rather than anything about the optics. Sampling half
-as finely puts about a quarter of the mean residual back; at this many it has
-settled, agreeing to about a percent with the centers of those same cells,
-which is a sample with quite different errors, and moving by well under a
-percent from one seed to the next.
+as finely puts about a tenth of the mean residual back, and at this many the
+fit moves by well under a percent from one seed to the next.
 """
 
 _seed = 42
 """
 The seed of the random draw which places a sample inside each pupil cell.
 
+Drawing the sample from inside the cell rather than taking its center is what
+keeps the quadrature from aliasing against the edge of an aperture which falls
+between two samples. It lowers the mean residual of the fit by nearly a third
+and the largest by three fifths.
+
 The draw has to be seeded for the figure to be the same every time the
 article is built. The field is not drawn this way: the samples of the field
 are the coordinates the map is drawn against, and scattering them inside
 their cells leaves a grid whose rows and columns no longer line up.
+"""
+
+_unit_field = u.arcsec
+"""
+The unit the field position is drawn in.
+
+The model describes the field in degrees, where the \\FOV\\ is a tenth of one
+and every tick on the axis is spent on leading zeros. The same field in
+arcseconds is numbered in hundreds.
 """
 
 _axis_wavelength = "wavelength"
@@ -55,9 +67,9 @@ _degree = 1
 The degree of the polynomial fit to the illumination.
 
 The text describes the vignetting as a simple linear field, and this figure
-is the evidence for that: the residual of the linear fit stays under two
-percent of the illumination everywhere it was fit. A quadratic fit more than
-halves that residual, so the field is not exactly linear, but the model
+is the evidence for that: the residual of the linear fit stays within about
+one percent of the illumination everywhere it was fit. A quadratic fit cuts
+that residual to a quarter, so the field is not exactly linear, but the model
 plotted here is the one the text claims.
 """
 
@@ -159,8 +171,8 @@ def vignetting() -> aastex.FigureStar:
     # is drawn only where the fit was constrained, which is what the model
     # itself does: outside the field stop no ray survives, so there is nothing
     # there for the residual to be the residual of.
-    model.plot(ax=ax[{_axis_row: 1}])
-    model.plot_residual(ax=ax[{_axis_row: 0}])
+    model.plot(ax=ax[{_axis_row: 1}], unit=_unit_field)
+    model.plot_residual(ax=ax[{_axis_row: 0}], unit=_unit_field)
 
     # both axes of every panel are field angles, so a degree has to be the same
     # length along each of them for the shape of the \FOV to be the shape drawn
