@@ -19,8 +19,8 @@ The illumination at a field position is the fraction of the pupil which is
 unvignetted, so this number sets how finely that fraction can be resolved,
 and until the pupil is sampled finely enough the residual of the fit is
 mostly that granularity rather than anything about the optics. Sampling half
-as finely puts about a tenth of the mean residual back, and at this many the
-fit moves by well under a percent from one seed to the next.
+as finely puts about a quarter of the mean residual back, and at this many the
+fit moves by a fifth of a percent from one seed to the next.
 """
 
 _seed = 42
@@ -30,7 +30,16 @@ The seed of the random draw which places a sample inside each pupil cell.
 Drawing the sample from inside the cell rather than taking its center is what
 keeps the quadrature from aliasing against the edge of an aperture which falls
 between two samples. It lowers the mean residual of the fit by nearly a third
-and the largest by three fifths.
+and the largest by nearly a half.
+
+The draw is made again at every field position rather than once for the map as
+a whole. One draw shared across the field is a fixed rule applied everywhere,
+so its error is a property of where the aperture edge falls across that single
+lattice, and since this instrument disperses along the x axis that is very
+nearly a function of field x alone. Every field position in a column then
+receives the same error, and the residual comes out in vertical bands which
+read as something the optics are doing rather than as the sampling. Drawn per
+field position, the same quantity of error is scattered instead of banded.
 
 The draw has to be seeded for the figure to be the same every time the
 article is built. The field is not drawn this way: the samples of the field
@@ -68,9 +77,9 @@ The degree of the polynomial fit to the illumination.
 
 The text describes the vignetting as a simple linear field, and this figure
 is the evidence for that: the residual of the linear fit stays within about
-one percent of the illumination everywhere it was fit. A quadratic fit cuts
-that residual to a quarter, so the field is not exactly linear, but the model
-plotted here is the one the text claims.
+one and a half percent of the illumination everywhere it was fit. A quadratic
+fit cuts that residual to a third, so the field is not exactly linear, but the
+model plotted here is the one the text claims.
 """
 
 
@@ -98,6 +107,7 @@ def _grid(
     name: str,
     num: int,
     seed: None | int = None,
+    shape: None | dict[str, int] = None,
 ) -> na.Cartesian2dVectorArray:
     """
     One sample from each cell of a square grid of `num` by `num` normalized cells.
@@ -117,6 +127,9 @@ def _grid(
     seed
         If given, each sample is drawn at random from inside its own cell
         instead of taken from the center of it, and this seeds that draw.
+    shape
+        Axes to give the grid before the samples are drawn, so that the draw
+        is made once for every position along them rather than once in all.
     """
     axis = (f"{name}_x", f"{name}_y")
 
@@ -126,6 +139,9 @@ def _grid(
         axis=na.Cartesian2dVectorArray(*axis),
         num=num + 1,
     )
+
+    if shape is not None:
+        vertices = vertices.broadcast_to({**na.shape(vertices), **shape})
 
     return vertices.cell_centers(
         axis=axis,
@@ -141,7 +157,12 @@ def _model() -> optika.radiometry.PolynomialVignettingModel:
     return optics.system.vignetting(
         wavelength=_wavelength(),
         field=_grid("field", _num_field),
-        pupil=_grid("pupil", _num_pupil, seed=_seed),
+        pupil=_grid(
+            "pupil",
+            _num_pupil,
+            seed=_seed,
+            shape={"field_x": _num_field, "field_y": _num_field},
+        ),
         degree=_degree,
     )
 
