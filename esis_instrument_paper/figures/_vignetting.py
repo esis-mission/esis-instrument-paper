@@ -15,36 +15,38 @@ _num_pupil = 81
 """
 The number of pupil positions sampled along each axis.
 
-The illumination at a field position is the fraction of the pupil which is
-unvignetted, so this number sets how finely that fraction can be resolved,
-and until the pupil is sampled finely enough the residual of the fit is
-mostly that granularity rather than anything about the optics. Sampling half
-as finely puts about a quarter of the mean residual back, and at this many the
-fit moves by a fifth of a percent from one seed to the next.
+The illumination at a field position is the unvignetted area of its pupil,
+so this number sets how finely that area can be resolved, and until the
+pupil is sampled finely enough the residual of the fit is mostly that
+granularity rather than anything about the optics. Sampling half as finely
+raises the mean residual by about a fifth, and at this many the fitted
+illumination moves by no more than two hundredths of a percent from one seed
+to the next.
 """
 
 _seed = 42
 """
 The seed of the random draw which places a sample inside each pupil cell.
 
-Drawing the sample from inside the cell rather than taking its center is what
-keeps the quadrature from aliasing against the edge of an aperture which falls
-between two samples. It lowers the mean residual of the fit by nearly a third
-and the largest by nearly a half.
-
-The draw is made again at every field position rather than once for the map as
-a whole. One draw shared across the field is a fixed rule applied everywhere,
-so its error is a property of where the aperture edge falls across that single
-lattice, and since this instrument disperses along the x axis that is very
-nearly a function of field x alone. Every field position in a column then
-receives the same error, and the residual comes out in vertical bands which
-read as something the optics are doing rather than as the sampling. Drawn per
-field position, the same quantity of error is scattered instead of banded.
+The model draws the sample from inside the cell rather than taking its center,
+which keeps the quadrature from aliasing against the edge of an aperture which
+falls between two samples, and draws it again at every field position, so that
+the error is scattered across the map rather than printed on it in bands.
 
 The draw has to be seeded for the figure to be the same every time the
-article is built. The field is not drawn this way: the samples of the field
-are the coordinates the map is drawn against, and scattering them inside
-their cells leaves a grid whose rows and columns no longer line up.
+article is built.
+"""
+
+_random_field = False
+"""
+Whether each field position is drawn at random inside its cell as well.
+
+It is not. Whether a cell on the edge of the field stop admits any light
+depends on where inside it the field position falls, so a field drawn at
+random draws the edge of the stop as a ragged line, and a position which
+falls right on the edge sees only part of the beam, leaving a lit cell far
+dimmer than its neighbors for the fit to chase. Taken at the centers, the
+edge of the stop is drawn as the cells it covers.
 """
 
 _unit_field = u.arcsec
@@ -78,8 +80,9 @@ The degree of the polynomial fit to the illumination.
 The text describes the vignetting as a simple linear field, and this figure
 is the evidence for that: the residual of the linear fit stays within about
 one and a half percent of the illumination everywhere it was fit. A quadratic
-fit cuts that residual to a third, so the field is not exactly linear, but the
-model plotted here is the one the text claims.
+fit cuts the mean residual to a third and the largest to a little over half,
+so the field is not exactly linear, but the model plotted here is the one the
+text claims.
 """
 
 
@@ -103,20 +106,12 @@ def _wavelength() -> na.ScalarArray:
     )
 
 
-def _grid(
-    name: str,
-    num: int,
-    seed: None | int = None,
-    shape: None | dict[str, int] = None,
-) -> na.Cartesian2dVectorArray:
+def _vertices(name: str, num: int) -> na.Cartesian2dVectorLinearSpace:
     """
-    One sample from each cell of a square grid of `num` by `num` normalized cells.
+    The vertices of a square grid of `num` by `num` normalized cells.
 
     A normalized coordinate of $\\pm 1$ is the edge of the field stop, or of
-    the pupil, so a grid which includes those values lays a whole ring of
-    samples along the rim of the aperture, where every one of them is clipped
-    and none of them says anything. These samples are inside the cells that
-    ring bounds.
+    the pupil, so these vertices bound the aperture and their cells tile it.
 
     Parameters
     ----------
@@ -124,29 +119,12 @@ def _grid(
         The name of the grid, which its two axes are named after.
     num
         The number of cells along each axis.
-    seed
-        If given, each sample is drawn at random from inside its own cell
-        instead of taken from the center of it, and this seeds that draw.
-    shape
-        Axes to give the grid before the samples are drawn, so that the draw
-        is made once for every position along them rather than once in all.
     """
-    axis = (f"{name}_x", f"{name}_y")
-
-    vertices = na.Cartesian2dVectorLinearSpace(
+    return na.Cartesian2dVectorLinearSpace(
         start=-1,
         stop=+1,
-        axis=na.Cartesian2dVectorArray(*axis),
+        axis=na.Cartesian2dVectorArray(f"{name}_x", f"{name}_y"),
         num=num + 1,
-    )
-
-    if shape is not None:
-        vertices = vertices.broadcast_to({**na.shape(vertices), **shape})
-
-    return vertices.cell_centers(
-        axis=axis,
-        random=seed is not None,
-        seed=seed,
     )
 
 
@@ -156,14 +134,11 @@ def _model() -> optika.radiometry.PolynomialVignettingModel:
 
     return optics.system.vignetting(
         wavelength=_wavelength(),
-        field=_grid("field", _num_field),
-        pupil=_grid(
-            "pupil",
-            _num_pupil,
-            seed=_seed,
-            shape={"field_x": _num_field, "field_y": _num_field},
-        ),
+        field=_vertices("field", _num_field),
+        pupil=_vertices("pupil", _num_pupil),
         degree=_degree,
+        seed=_seed,
+        random_field=_random_field,
     )
 
 
