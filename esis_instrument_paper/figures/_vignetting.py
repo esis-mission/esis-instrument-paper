@@ -28,10 +28,11 @@ _seed = 42
 """
 The seed of the random draw which places a sample inside each pupil cell.
 
-The model draws the sample from inside the cell rather than taking its center,
-which keeps the quadrature from aliasing against the edge of an aperture which
-falls between two samples, and draws it again at every field position, so that
-the error is scattered across the map rather than printed on it in bands.
+The model draws each sample from inside its cell rather than taking the
+center, which keeps the quadrature from aliasing against the edge of an
+aperture which falls between two samples, and draws the pupil again at every
+field position, so that the error is scattered across the map rather than
+printed on it in bands.
 
 The draw has to be seeded for the figure to be the same every time the
 article is built.
@@ -39,14 +40,14 @@ article is built.
 
 _random_field = False
 """
-Whether each field position is drawn at random inside its cell as well.
+Whether the field is drawn at random inside its cells as well.
 
-It is not. Whether a cell on the edge of the field stop admits any light
-depends on where inside it the field position falls, so a field drawn at
-random draws the edge of the stop as a ragged line, and a position which
-falls right on the edge sees only part of the beam, leaving a lit cell far
-dimmer than its neighbors for the fit to chase. Taken at the centers, the
-edge of the stop is drawn as the cells it covers.
+It is not, since this figure is meant to show the model. At the centers of
+its cells the field is a regular grid, and every edge of the \\FOV\\ is drawn
+as the cells it covers, that of the detector at the shortest wavelength
+included. Drawn at random, which the model does by default, the field
+averages over the edge of the \\FOV\\ without bias, but the edge of the
+detector comes out ragged.
 """
 
 _unit_field = u.arcsec
@@ -163,10 +164,10 @@ def vignetting() -> aastex.FigureStar:
         constrained_layout=True,
     )
 
-    # the rows are numbered from the bottom of the figure upwards. The residual
-    # is drawn only where the fit was constrained, which is what the model
-    # itself does: outside the field stop no ray survives, so there is nothing
-    # there for the residual to be the residual of.
+    # the rows are numbered from the bottom of the figure upwards. The model is
+    # fit with the field stop open, so it reaches past the edge of the \FOV,
+    # and it leaves blank the cells beyond that edge, and those whose light
+    # misses the detector, so both rows show the \FOV as the cells it covers.
     model.plot(ax=ax[{_axis_row: 1}], unit=_unit_field)
     model.plot_residual(ax=ax[{_axis_row: 0}], unit=_unit_field)
 
