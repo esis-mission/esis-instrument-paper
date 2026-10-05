@@ -19,7 +19,7 @@ The illumination at a field position is the unvignetted area of its pupil,
 so this number sets how finely that area can be resolved, and the residual
 of the fit is mostly that granularity rather than anything about the optics:
 sampling half as finely doubles the mean residual. At this many the fitted
-illumination moves by no more than two hundredths of a percent from one seed
+illumination moves by at most about two hundredths of a percent from one seed
 to the next.
 """
 
@@ -163,9 +163,9 @@ def vignetting() -> aastex.FigureStar:
     )
 
     # the rows are numbered from the bottom of the figure upwards. The model is
-    # fit with the field stop open, so it reaches past the edge of the \FOV,
-    # and it leaves blank the cells beyond that edge, and those whose light
-    # misses the detector, so both rows show the \FOV as the cells it covers.
+    # fit only over the cells inside the \FOV whose light lands on the
+    # detector, and draws only those, so both rows show the \FOV as the cells
+    # it covers.
     model.plot(ax=ax[{_axis_row: 1}], unit=_unit_field)
     model.plot_residual(ax=ax[{_axis_row: 0}], unit=_unit_field)
 
