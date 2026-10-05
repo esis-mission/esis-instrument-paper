@@ -23,7 +23,7 @@ illumination moves by no more than two hundredths of a percent from one seed
 to the next.
 """
 
-_seed = 42
+_seed_pupil = 42
 """
 The seed of the random draw which places a sample inside each pupil cell.
 
@@ -37,16 +37,16 @@ The draw has to be seeded for the figure to be the same every time the
 article is built.
 """
 
-_random_field = False
+_seed_field = None
 """
-Whether the field is drawn at random inside its cells as well.
+The seed of the random draw which places a sample inside each field cell.
 
-It is not, since this figure is meant to show the model. At the centers of
-its cells the field is a regular grid, and every edge of the \\FOV\\ is drawn
-as the cells it covers, that of the detector at the shortest wavelength
-included. Drawn at random, which the model does by default, the field
-averages over the edge of the \\FOV\\ without bias, but the edge of the
-detector comes out ragged.
+There is none, so the field is taken at the centers of its cells, since this
+figure is meant to show the model. At the centers the field is a regular
+grid, and every edge of the \\FOV\\ is drawn as the cells it covers, that of
+the detector at the shortest wavelength included. Drawn at random, which the
+model does by default, the field averages over the edge of the \\FOV\\
+without bias, but the edge of the detector comes out ragged.
 """
 
 _unit_field = u.arcsec
@@ -136,8 +136,8 @@ def _model() -> optika.radiometry.PolynomialVignettingModel:
         field=_vertices("field", _num_field),
         pupil=_vertices("pupil", _num_pupil),
         degree=_degree,
-        seed=_seed,
-        random_field=_random_field,
+        seed_field=_seed_field,
+        seed_pupil=_seed_pupil,
     )
 
 
