@@ -16,10 +16,9 @@ _num_pupil = 81
 The number of pupil positions sampled along each axis.
 
 The illumination at a field position is the unvignetted area of its pupil,
-so this number sets how finely that area can be resolved, and until the
-pupil is sampled finely enough the residual of the fit is mostly that
-granularity rather than anything about the optics. Sampling half as finely
-raises the mean residual by about a fifth, and at this many the fitted
+so this number sets how finely that area can be resolved, and the residual
+of the fit is mostly that granularity rather than anything about the optics:
+sampling half as finely doubles the mean residual. At this many the fitted
 illumination moves by no more than two hundredths of a percent from one seed
 to the next.
 """
@@ -79,11 +78,10 @@ _degree = 1
 The degree of the polynomial fit to the illumination.
 
 The text describes the vignetting as a simple linear field, and this figure
-is the evidence for that: the residual of the linear fit stays within about
-one and a half percent of the illumination everywhere it was fit. A quadratic
-fit cuts the mean residual to a third and the largest to a little over half,
-so the field is not exactly linear, but the model plotted here is the one the
-text claims.
+is the evidence for that: the residual of the linear fit stays under one
+percent of the illumination everywhere it was fit. A quadratic fit cuts the
+mean residual by a fifth and leaves the largest almost where it was, so what
+remains is the sampling of the pupil rather than any curvature in the field.
 """
 
 
