@@ -216,11 +216,14 @@ def _area_effective(
             num=num_grid,
         )
 
+    # optika 246 seeds the field and the pupil apart; the same integer for
+    # both draws exactly what the single seed drew
     model = optics.system.area_effective(
         wavelength=wavelength,
         field=vertices("field"),
         pupil=vertices("pupil"),
-        seed=seed,
+        seed_field=seed,
+        seed_pupil=seed,
     )
 
     return model(wavelength).to(u.cm**2)

@@ -17,9 +17,12 @@ dependencies = [
     "pylatex~=1.4",
     "aastex~=0.6",
     "num2words~=0.5",
-    "named-arrays~=2.8",
-    "optika~=2.6",
-    "euv-snapshot-imaging-spectrograph~=1.1",
+    "named-arrays~=2.11",
+    # TODO: the distortion fit needs optika 235, 242 and 246 and esis 91, none
+    # released yet; these pins name the branches and go back to versions
+    # once they are.
+    "optika @ git+https://github.com/sun-data/optika@c5c48f0035cf2e36f5e9a8ef89efa4dd1c5d14ce",
+    "euv-snapshot-imaging-spectrograph @ git+https://github.com/esis-mission/esis@feature/linear-distortion-fit",
     "utu~=0.1",
     "fiasco~=0.8.2",
 ]

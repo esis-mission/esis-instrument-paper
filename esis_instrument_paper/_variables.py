@@ -237,4 +237,145 @@ def variables() -> list[aastex.Variable]:
         # rates.
         _pending("spatialResolutionTotal"),
         _pending("StackedCoronalHoleSNR"),
+    ] + _distortion()
+
+
+def _distortion() -> list[aastex.Variable]:
+    """
+    The numbers the measured distortion is described by, from the fit's tables.
+
+    Every one is read from the tables the fit committed in the ``esis``
+    package: the pointing table for the ranges of the time-dependent terms,
+    the acceptance and co-registration tables for how well the channels are
+    registered, before and after the empirical offset of each channel's
+    pointing.  The coalignment is quoted over the exposures bright enough
+    for their window edges to be measured, which excludes the dark ones
+    that close the flight.
+    """
+    import numpy as np
+
+    pointing = esis.flights.f1.optics.distortion_fit_table("pointing")
+    acceptance = esis.flights.f1.optics.distortion_fit_table("acceptance")
+    coregistration = esis.flights.f1.optics.distortion_fit_table("coregistration")
+    drift = esis.flights.f1.optics.distortion_fit_table("window_drift")
+
+    anchor = int(acceptance.meta["anchor"])
+    frame_reference = int(coregistration.meta["frame_reference"])
+    last = max(int(t) for t in drift["frame"])
+    num_measured = last + 1
+    num_frames = len(pointing)
+    lines = {"HeI": "He_I", "OV": "O_V"}
+    velocity = {
+        "HeI": acceptance.meta["coalignment"]["He I"]["km_per_s_per_pixel"],
+        "OV": acceptance.meta["coalignment"]["O V"]["km_per_s_per_pixel"],
+    }
+
+    # before: the length of the median tile shift of each channel against
+    # the anchor, both lines together, as the co-registration first found it
+    frames = np.asarray(coregistration["frame"])
+    others = [c for c in range(coregistration["shift_x"].shape[1]) if c != anchor]
+    before = np.hypot(
+        coregistration["shift_x"].to_value(u.pix),
+        coregistration["shift_y"].to_value(u.pix),
+    )[frames <= last][:, others]
+
+    # after: the same from the acceptance, line by line, with the component
+    # along the dispersion as a velocity
+    rows = acceptance[
+        (np.asarray(acceptance["frame"]) <= last)
+        & (np.asarray(acceptance["channel"]) != anchor)
     ]
+    after = {k: rows[f"shift_{v}"].to_value(u.pix) for k, v in lines.items()}
+    along = {k: rows[f"along_{v}"].to_value(u.pix) for k, v in lines.items()}
+    rms = lambda a: float(np.sqrt(np.nanmean(np.square(a))))  # noqa: E731
+
+    result = [
+        aastex.Variable(name="distortionNumFrames", value=num_frames),
+        aastex.Variable(name="distortionNumFramesMeasured", value=num_measured),
+        aastex.Variable(name="distortionReferenceFrame", value=frame_reference),
+        aastex.Variable(
+            name="coalignmentThreshold",
+            value=0.1 * u.pix,
+        ),
+        aastex.Variable(
+            name="coalignmentBefore",
+            value=round(rms(before), 2) * u.pix,
+        ),
+        aastex.Variable(
+            name="coalignmentBeforeMax",
+            value=round(float(np.nanmax(before)), 2) * u.pix,
+        ),
+        aastex.Variable(
+            name="pointingYawRange",
+            value=round(float(np.ptp(pointing["yaw"].to_value(u.arcsec))), 1)
+            * u.arcsec,
+        ),
+        aastex.Variable(
+            name="pointingPitchRange",
+            value=round(float(np.ptp(pointing["pitch"].to_value(u.arcsec))), 1)
+            * u.arcsec,
+        ),
+        aastex.Variable(
+            name="windowDriftMax",
+            value=round(
+                float(
+                    np.nanmax(
+                        np.hypot(
+                            pointing["drift_x"].to_value(u.pix),
+                            pointing["drift_y"].to_value(u.pix),
+                        )
+                    )
+                ),
+                1,
+            )
+            * u.pix,
+        ),
+        aastex.Variable(
+            name="defocusRange",
+            value=round(float(np.ptp(pointing["z_primary"].to_value(u.um)))) * u.um,
+        ),
+        aastex.Variable(
+            name="channelOffsetMax",
+            value=round(
+                float(
+                    np.abs(
+                        np.concatenate(
+                            [
+                                pointing["pitch_channel"].to_value(u.arcsec).ravel(),
+                                pointing["yaw_channel"].to_value(u.arcsec).ravel(),
+                            ]
+                        )
+                    ).max()
+                ),
+                1,
+            )
+            * u.arcsec,
+        ),
+    ]
+    for k in lines:
+        result += [
+            aastex.Variable(
+                name=f"coalignmentAfter{k}",
+                value=round(rms(after[k]), 2) * u.pix,
+            ),
+            aastex.Variable(
+                name=f"coalignmentAfterMax{k}",
+                value=round(float(np.nanmax(after[k])), 2) * u.pix,
+            ),
+            aastex.Variable(
+                name=f"coalignmentVelocity{k}",
+                value=round(rms(along[k]) * velocity[k], 1) * u.km / u.s,
+            ),
+            aastex.Variable(
+                name=f"coalignmentVelocityMax{k}",
+                value=round(float(np.nanmax(np.abs(along[k]))) * velocity[k], 1)
+                * u.km
+                / u.s,
+            ),
+            aastex.Variable(
+                name=f"dispersionVelocity{k}",
+                value=round(velocity[k], 1) * u.km / u.s,
+                unit=(u.km, u.s**-1),
+            ),
+        ]
+    return result
