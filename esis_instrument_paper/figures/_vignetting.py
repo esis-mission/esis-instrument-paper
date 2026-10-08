@@ -191,7 +191,10 @@ def vignetting() -> aastex.FigureStar:
 position in the \FOV, at each of the three target lines in the passband.
 The illumination is the fraction of the pupil which is unvignetted, normalized
 so that its average over the \FOV\ is unity.
-(Bottom) The residual between that illumination and a linear model of it,
-plotted only where the model was fit."""))
+(Bottom) The residual between that illumination and a linear model of it.
+Both rows are plotted only where the model was fit: the cells inside the \FOV\
+whose light lands on the detector.
+In the leftmost column, at \HeIion, the \FOV\ is cut off on the left by the
+edge of the detector."""))
 
     return result
