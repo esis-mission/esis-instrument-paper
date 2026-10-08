@@ -149,6 +149,9 @@ no detectable signature of the filter mesh is found in data and inversion residu
 
 To prevent oxidation, and to minimize the risk of tears, pinholes, and breakage from handling, the filters were
 stored in a nitrogen purged environment until after payload vibration testing.""")
+    subsection_coatings.append(
+        esis_instrument_paper.figures.grating_multilayer_schematic()
+    )
     result.append(subsection_coatings)
 
     return result
