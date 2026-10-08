@@ -4,6 +4,7 @@ The figures of this article, each a factory function returning an
 """
 
 from ._bunch import bunch, num_emission_lines
+from ._component_efficiency_vs_wavelength import component_efficiency_vs_wavelength
 from ._grating_efficiency_vs_angle import grating_efficiency_vs_angle
 from ._grating_multilayer_schematic import grating_multilayer_schematic
 from ._layout import layout
@@ -12,6 +13,7 @@ from ._vignetting import vignetting
 
 __all__ = [
     "bunch",
+    "component_efficiency_vs_wavelength",
     "grating_efficiency_vs_angle",
     "grating_multilayer_schematic",
     "layout",

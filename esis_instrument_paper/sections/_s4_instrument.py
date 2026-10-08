@@ -116,7 +116,7 @@ The lower panel of Figure~\ref{fig:componentEfficiencyVsWavelength} shows the pe
 wavelengths to attenuate the \HeI\ emission line, reducing the likelihood of detector saturation.
 A similar issue arises with the bright \HeII\ line.
 Through careful design of the grating multilayer, the reflectivity at this wavelength is $\sim$\gratingHeIIRejectionRatio\ of that
-at \OV\ (lower panel of Figure~\ref{fig:componentEfficiencyVsWavelength}).
+at \OV\ (upper panel of Figure~\ref{fig:componentEfficiencyVsWavelength}).
 In combination with the primary mirror coating (described below) the rejection ratio at \HeIIwavelength\ is
 $\sim$\totalHeIIRejection.  Thus, \HeII\ emission is completely attenuated at the \CCD.
 
@@ -154,6 +154,9 @@ stored in a nitrogen purged environment until after payload vibration testing.""
     )
     subsection_coatings.append(
         esis_instrument_paper.figures.grating_multilayer_schematic()
+    )
+    subsection_coatings.append(
+        esis_instrument_paper.figures.component_efficiency_vs_wavelength()
     )
     result.append(subsection_coatings)
 
