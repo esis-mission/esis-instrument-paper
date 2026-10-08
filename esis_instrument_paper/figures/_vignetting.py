@@ -19,8 +19,8 @@ The illumination at a field position is the unvignetted area of its pupil,
 so this number sets how finely that area can be resolved, and the residual
 of the fit is mostly that granularity rather than anything about the optics:
 sampling half as finely doubles the mean residual. At this many the fitted
-illumination moves by at most about two hundredths of a percent from one seed
-to the next.
+illumination typically moves by two hundredths of a percent from one seed to
+the next, and by at most about five hundredths among eleven of them.
 """
 
 _seed_pupil = 42
