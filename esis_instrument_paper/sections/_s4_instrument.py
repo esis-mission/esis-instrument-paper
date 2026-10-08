@@ -158,6 +158,9 @@ stored in a nitrogen purged environment until after payload vibration testing.""
     subsection_coatings.append(
         esis_instrument_paper.figures.component_efficiency_vs_wavelength()
     )
+    subsection_coatings.append(
+        esis_instrument_paper.figures.grating_efficiency_vs_position()
+    )
     result.append(subsection_coatings)
 
     return result
