@@ -92,7 +92,7 @@ and could be removed in the post-processing phase.""")
     subsection_coatings = aastex.Subsection("Coatings and Filters")
     subsection_coatings.append(r"""
 The diffraction gratings are coated with a multilayer optimized for a center wavelength of \OV,
-developed by a collaboration between Reflective X-Ray Optics LLC and \LBNL.
+developed by a collaboration between Reflective X-ray Optics LLC and \LBNL.
 In Figure~\ref{fig:gratingEfficiencyVsAngle}, characterization of a single, randomly selected multilayer coated grating at \LBNL\ shows
 that the grating reflectivity is constant over the instrument \FOV\ in the $m=1$ order while the $m=0$ order is almost
 completely suppressed.
@@ -102,13 +102,13 @@ The \Al\ layers are deposited adjacent to each \Mg\ layer to mitigate corrosion.
 
 The maximum reflectance for the coating alone in the nominal instrument passband is $\sim$\gratingWitnessEfficiency\ in
 the upper panel of Figure~\ref{fig:componentEfficiencyVsWavelength}, measured from witness samples coated at the same time as the diffraction gratings.
-Combined with the predicted groove efficiency from \S\,\ref{subsec:Optics} and, given the relatively shallow groove profile
+Combined with the predicted groove efficiency from Section~\ref{subsec:Optics} and, given the relatively shallow groove profile
 and near normal incidence angle, the total reflectivity in first order is $\sim$\gratingEfficiency\ at \OV.
 This is confirmed by the first order efficiency measured from a single \ESIS\ grating in the lower panel of
 Figure~\ref{fig:componentEfficiencyVsWavelength}.
 
 Unlike \EUV\ imagers (\eg, \TRACE~\citep{Handy99}, \AIA~\citep{Lemen12}, and the \HiC~\citep{Kobayashi2014})
-the \ESIS\ passband is defined by a combination of the field stop and grating (\S\,\ref{subsec:Optics},
+the \ESIS\ passband is defined by a combination of the field stop and grating (Section~\ref{subsec:Optics},
 Figure~\ref{fig:projections}) rather than multilayer coatings.
 The coating selectivity is therefore not critical in this respect, allowing the multilayer to be manipulated to
 suppress out-of-band bright, nearby emission lines.
@@ -132,15 +132,15 @@ The spare primary mirror (SN002) retains the corroded \AlShort/\SiCShort/\MgShor
 The \Si\ \CCDs\ are sensitive to visible light as well as \EUV.
 Visible solar radiation is much stronger than \EUV, and visible stray light can survive multiple scatterings while
 retaining enough intensity to contaminate the \EUV\ images.
-Lux\'el \citep{Powell90} \Al\ filters \filterThickness\ thick were
+Lux\'el~\citep{Powell90} \Al\ filters \filterThickness\ thick were
 used to shield each \CCD\ from visible light.
 The \Al\ film is supported by a \filterMeshPitch\ line per inch (lpi) \Ni\ mesh, with \filterMeshRatio\ transmission.
-The theoretical filter transmission curve, modeled from CXRO data \citep{Henke93}, is displayed in
+The theoretical filter transmission curve, modeled from CXRO data~\citep{Henke93}, is displayed in
 Figure~\ref{fig:componentEfficiencyVsWavelength}.
 We conservatively estimate filter oxidation at the time of launch as a \filterOxideThickness\ thick layer of Al$_2$O$_3$.
 
 An \Al\ filter is positioned in front of the focal plane of each \CCD\ by a filter tube, creating a light-tight box with a
-labyrinthine evacuation vent (e.g., Figure~\ref{F-cameras}).
+labyrinthine evacuation vent (\eg, Figure~\ref{F-cameras}).
 The placement of the filter relative to the \CCD\ is optimized so that the filter mesh shadow is not visible.
 By modeling the filter mesh shadow, we find that a position far from the \CCD\ (\filterToDetectorDistance) and mesh grid
 clocking of \filterClocking\ to the detector array reduces the shadow amplitude well below photon statistics.
