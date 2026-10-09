@@ -71,9 +71,11 @@ line, its component along the channel's dispersion in pixels and in \si{\kilo\me
 the tiles about it, and the decomposition of the tiles into the linear distortion modes with a test of whether
 what remains is noise (Figure~\ref{fig:coalignmentTiles}).
 \end{enumerate}
-A second run from a different random seed reproduces the correlations to 0.01 and the coalignment to
-\SI{0.02}{pixels}; the parameters differ along the null directions of the problem, with the mapping unchanged
-to about a pixel at the edge of the field.
+The same chain run on a host without a GPU reproduces the committed tables, the correlations to seven figures
+and the coalignment to \SI{0.01}{pixels}. A second run from a different random seed, on the chain before the
+focus of each sector was added, reproduced the correlations to 0.01 and the coalignment to \SI{0.02}{pixels};
+the parameters differ along the null directions of the problem, with the mapping unchanged to about a pixel at
+the edge of the field.
 
 \paragraph{The focus of each sector}
 With the pointing, the drift and one defocus of the whole primary applied, each channel's image still
