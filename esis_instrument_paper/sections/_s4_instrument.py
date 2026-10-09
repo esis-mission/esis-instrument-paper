@@ -89,4 +89,58 @@ and could be removed in the post-processing phase.""")
     subsection_vignetting.append(esis_instrument_paper.figures.vignetting())
     result.append(subsection_vignetting)
 
+    subsection_distortion = aastex.Subsection("Measured Distortion")
+    subsection_distortion.append(
+        r"""
+Every channel of \ESIS\ forms a dispersed image of the same field, and recovering line intensities,
+Doppler shifts and widths from the four images requires knowing where each point of the sky lands on each
+detector to a fraction of a pixel, in every exposure.
+The as-built model of the optics, assembled from the measured figures of the components and their
+nominal placement, correlates with the flight images at only 0.35 to 0.42; the placement of the optics as
+flown differs from nominal by enough to move the images by several pixels.
+We therefore fit the model to the flight itself, and the fit is described in Appendix~\ref{sec:TheDistortionFit}.
+In brief, each channel's grating angles, ruling spacing, pointing and sensor placement were fit against the
+exposure at the middle of the flight, using the \AIA\ 304 and 193~\AA\ images of the same field as
+a proxy for the scene; the windows the field stop cuts into each image were placed on their measured edges, which
+separates the pointing from the gratings; the four channels were registered against one another on the sky at
+\HeIion\ and \OVion; and the pointing, the drift of the windows and the focus of the primary mirror were followed
+exposure by exposure.
+Table~\ref{table:distortionFit} gives the correlation of each channel's model with its exposure after each
+stage, and on exposures across the flight that the fit never saw.
+
+Figure~\ref{fig:distortionFlight} shows what moved during the flight.
+The pointing drifted by \pointingYawRange\ in yaw and \pointingPitchRange\ in pitch, and the windows drifted by
+up to \windowDriftMax, which the model reproduces as a translation of the field stop of a few microns.
+With those applied, the channels' skies still slid against one another by \coalignmentBefore\ rms, and by
+\coalignmentBeforeMax\ at the first exposure: a translation of each channel's whole image inside its window, the
+same at both lines and smooth in time, which nothing after the field stop can produce.
+Each channel views the Sun through its own sector of the primary mirror, and a change of focus moves its image
+along its own dispersion while the field stop's edges stay put; the motion is reproduced, to the precision of the
+measurement, by a focus that differs from sector to sector and drifts through the flight
+(Appendix~\ref{sec:TheDistortionFit}).
+The focus of the primary as a whole drifted by \defocusRange, and the sectors departed from that mean by up to
+\sectorFocusSpread, with the sector of channel 1 moving most; a paraboloid has one focus for every zone, so if
+this is real it is the figure of the mirror changing unevenly with temperature, by about \SI{100}{\nano\meter}
+of sag between sectors.
+The edges the measurement rests on are soft on several sides and the two lines disagree on their motion by up to
+half the effect, so the data do not exclude that part of the sector pattern is the apparent position of those
+edges drifting; the model carries the simpler reading, one focus per sector, with that caveat.
+With it, over the \distortionNumFramesMeasured\ exposures bright enough to measure, the channels agree to
+\coalignmentAfterHeI\ rms at \HeIion\ and \coalignmentAfterOV\ at \OVion, and at worst \coalignmentAfterMaxHeI\ and
+\coalignmentAfterMaxOV.
+What the sector focus leaves, \registrationLeftBySectors\ rms in the registration measurement itself, is also
+fit as an empirical offset of each channel's pointing, of up to \channelOffsetMax\ (\channelOffsetMaxPixels), which
+halves it to \registrationLeftByOffsets; the model carries these twelve numbers as an option, off by default,
+since no mechanism stands behind them (Appendix~\ref{sec:TheDistortionFit}).
+Only the component of a misregistration along a channel's dispersion is a velocity error, and a pixel along the
+dispersion is \dispersionVelocityHeI\ at \HeIion\ and \dispersionVelocityOV\ at \OVion: projected that way, the
+registration of the channels contributes \coalignmentVelocityHeI\ and \coalignmentVelocityOV\ rms to a measured
+Doppler shift, and \coalignmentVelocityMaxHeI\ at worst, against quiet-Sun velocities of order
+\SI{10}{\kilo\meter\per\second}.
+The three dark exposures that close the flight are not constrained by the fit and are extrapolated."""
+    )
+    subsection_distortion.append(esis_instrument_paper.tables.distortion_fit())
+    subsection_distortion.append(esis_instrument_paper.figures.distortion_flight())
+    result.append(subsection_distortion)
+
     return result

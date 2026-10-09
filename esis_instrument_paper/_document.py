@@ -48,6 +48,9 @@ def document() -> aastex.Document:
     doc.append(esis_instrument_paper.sections.science_objectives())
     doc.append(esis_instrument_paper.sections.instrument())
 
+    doc.append(aastex.Appendix())
+    doc.append(esis_instrument_paper.sections.distortion_fit())
+
     doc.append(aastex.Bibliography("sources"))
 
     return doc
