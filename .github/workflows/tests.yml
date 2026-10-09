@@ -69,17 +69,32 @@ jobs:
               show_progress=False,
           )
           "
+      # The effective area is remembered against the version of `optika` which
+      # traced it, so this key has to name that version too. Without it the
+      # key hits exactly, `actions/cache` declines to save what the run
+      # recomputed, and every run after an `optika` release pays for the trace
+      # again.
+      - name: Ask which optika is installed
+        id: optika
+        run: |
+          python -c "
+          from importlib.metadata import version
+          print(f'version={version(\"optika\")}')
+          " >> $GITHUB_OUTPUT
       - name: Restore the spectrum computed from it
         uses: actions/cache@v4
         with:
           path: ~/.esis/cache/esis_instrument_paper
           key: >-
             spectrum-${{ steps.chianti.outputs.version }}-${{
+            steps.optika.outputs.version }}-${{
             hashFiles('esis_instrument_paper/_spectrum.py') }}
-          # An older spectrum is worth restoring even when this module has
-          # changed, since `joblib` decides for itself whether what it holds
-          # still answers the question, and recomputes when it does not.
+          # An older spectrum is worth restoring even when this module or that
+          # version has changed, since `joblib` decides for itself whether what
+          # it holds still answers the question, and recomputes when it does
+          # not.
           restore-keys: |
+            spectrum-${{ steps.chianti.outputs.version }}-${{ steps.optika.outputs.version }}-
             spectrum-${{ steps.chianti.outputs.version }}-
       - name: Test with pytest
         run: |
