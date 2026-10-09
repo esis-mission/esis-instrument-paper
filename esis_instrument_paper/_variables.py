@@ -1,6 +1,7 @@
 import collections.abc
 
 import aastex
+import astropy.time
 import astropy.units as u
 import esis
 import named_arrays as na
@@ -318,6 +319,12 @@ def _percent(fraction: na.AbstractScalar, decimals: int = 0) -> u.Quantity:
     return (fraction * u.dimensionless_unscaled).to(u.percent).round(decimals)
 
 
+def _date(time: astropy.time.Time) -> aastex.NoEscape:
+    """A day written as the journal writes dates, such as 2018 January 21."""
+    date = time.to_datetime()
+    return aastex.NoEscape(f"{date.year} {date:%B} {date.day}")
+
+
 def _coatings() -> list[aastex.Variable]:
     """
     The variables cited by the subsection on the coatings and the filters.
@@ -392,7 +399,6 @@ def _coatings() -> list[aastex.Variable]:
     (channel_missing,) = _channels(
         as_built, witness.serial_number.ndarray, inverse=True
     )
-    date = gratings.efficiencies.time_measurement.to_datetime()
 
     # The recoated primary: a chromium base for adhesion under the SiC.
     primary_design = primaries.materials.multilayer_design()
@@ -497,7 +503,7 @@ def _coatings() -> list[aastex.Variable]:
         ),
         aastex.Variable(
             name="testGratingDate",
-            value=aastex.NoEscape(f"{date.year} {date:%B} {date.day}"),
+            value=_date(gratings.efficiencies.time_measurement),
         ),
         aastex.Variable(
             name="gratingMeasurementIncidenceAngle",
@@ -515,7 +521,8 @@ def _coatings() -> list[aastex.Variable]:
             name="primaryWitnessMeasurementIncidenceAngle",
             value=angle_primary,
         ),
-        # the date the primary witness was measured is not recorded with its
-        # measurement
-        _pending("primaryMeasurementDate"),
+        aastex.Variable(
+            name="primaryMeasurementDate",
+            value=_date(primaries.materials.time_measurement),
+        ),
     ]
