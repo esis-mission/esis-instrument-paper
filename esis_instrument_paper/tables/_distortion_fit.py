@@ -1,6 +1,6 @@
+import esis
 import numpy as np
 import pylatex
-import esis
 
 __all__ = [
     "distortion_fit",
@@ -24,7 +24,7 @@ def distortion_fit() -> pylatex.Table:
     reference = esis.flights.f1.optics.distortion_fit_table("reference")
     acceptance = esis.flights.f1.optics.distortion_fit_table("acceptance")
     scores = reference.meta["scores"]
-    channels = sorted(set(int(c) for c in acceptance["channel"]))
+    channels = sorted({int(c) for c in acceptance["channel"]})
     scored = np.isfinite(np.asarray(acceptance["correlation"], dtype=float))
     held_out = [
         np.mean(
@@ -34,7 +34,7 @@ def distortion_fit() -> pylatex.Table:
         )
         for c in channels
     ]
-    num_held_out = len(set(int(t) for t in np.asarray(acceptance["frame"])[scored]))
+    num_held_out = len({int(t) for t in np.asarray(acceptance["frame"])[scored]})
 
     result = pylatex.Table(position="!htb")
     result._star_latex_name = True

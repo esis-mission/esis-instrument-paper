@@ -296,7 +296,7 @@ def _distortion() -> list[aastex.Variable]:
     ]
     after = {k: rows[f"shift_{v}"].to_value(u.pix) for k, v in lines.items()}
     along = {k: rows[f"along_{v}"].to_value(u.pix) for k, v in lines.items()}
-    rms = lambda a: float(np.sqrt(np.nanmean(np.square(a))))  # noqa: E731
+    rms = lambda a: float(np.sqrt(np.nanmean(np.square(a))))
 
     # the optional empirical offsets: what the sector focus leaves, as the
     # registration measurement sees it (one median shift per channel and
