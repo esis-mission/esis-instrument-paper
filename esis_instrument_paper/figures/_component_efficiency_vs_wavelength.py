@@ -235,7 +235,7 @@ def component_efficiency_vs_wavelength() -> aastex.Figure:
     result.add_caption(aastex.NoEscape(r"""
 (Top) Measured reflectance for several multilayer coated witness samples
 at an incidence angle of \gratingWitnessMeasurementIncidenceAngle\ on
-\testGratingDate.
+\gratingWitnessMeasurementDate.
 The white regions indicate wavelengths that intercept the detector and the
 gray regions indicate wavelengths that miss the detector.
 Note the suppression of second order relative to the first order and the

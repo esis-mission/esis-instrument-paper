@@ -514,6 +514,10 @@ def _coatings() -> list[aastex.Variable]:
             value=angle_witness,
         ),
         aastex.Variable(
+            name="gratingWitnessMeasurementDate",
+            value=_date(gratings.materials.time_measurement),
+        ),
+        aastex.Variable(
             name="gratingWitnessMissingChannel",
             value=channel_missing,
         ),
