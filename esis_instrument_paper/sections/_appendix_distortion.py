@@ -57,15 +57,14 @@ sensor placement is polished again with it fixed.
 at \HeIion\ and \OVion, inside the window that line illuminates, and cross-correlated tile by tile against channel 1;
 the parameters are moved so that the mappings reproduce the measured shifts.
 Two lines separate a geometric error, the same shift in both, from a dispersion error.
-\item \emph{Defocus.} The channels are measured against channel 1 in every exposure, and the one axial
-displacement of the primary that reproduces their shifts through the model is solved per exposure and smoothed
-by a line through the flight.
+\item \emph{Focus.} The channels are measured against channel 1 in every exposure.
+Each channel views the Sun through its own sector of the primary, so a defocus moves its image along its own
+dispersion while the windows stay put; the focus of every sector is solved from the shifts through the model,
+four unknowns from six measured components, and smoothed by a quadratic through the flight.
+The mean over the sectors is the defocus of the primary as a whole.
 \item \emph{Pointing.} The pitch and yaw of every exposure are polished on the mean merit of the four channels,
 with the roll held and the windows placed by the smoothed drift and the primary defocused by that exposure's
 value.
-\item \emph{Co-registration.} The channels are measured against channel 1 once more with everything above
-applied, and what is left is removed as an offset of each channel's own pointing, a quadratic in time that
-vanishes at the reference exposure and in the mean over the channels.
 \item \emph{Acceptance.} The model is scored on exposures the fit never saw, and in every exposure the
 coalignment metric is measured: the length of the median tile shift of each channel against channel 1 at each
 line, its component along the channel's dispersion in pixels and in \si{\kilo\meter\per\second}, the scatter of
@@ -76,25 +75,37 @@ A second run from a different random seed reproduces the correlations to 0.01 an
 \SI{0.02}{pixels}; the parameters differ along the null directions of the problem, with the mapping unchanged
 to about a pixel at the edge of the field.
 
-\paragraph{The motion that is not explained}
-With the pointing, the drift and the defocus applied, each channel's image still translates against the others'
-by up to \coalignmentBeforeMax\ between the ends of the flight, rigid, the same at both lines and smooth in time.
-Two measurements on the Level-1 exposures alone bound what it can be.
+\paragraph{The focus of each sector}
+With the pointing, the drift and one defocus of the whole primary applied, each channel's image still
+translated against the others' by up to \coalignmentBeforeMax\ between the ends of the flight, rigid, the same
+at both lines and smooth in time.
 Tracking the interior of each window and its edges separately against the reference exposure, on the detector,
-the image does not move with the edges, so it is not a motion of a grating or a camera, which would carry
-both; no defocus, astigmatism, coma or trefoil of the primary reproduces its pattern over the channels; and an
+the image did not move with the edges, so it was not a motion of a grating or a camera, which carry both; nor a
+decenter of the field stop or of the primary, which move every window, or every image, by one vector; and an
 error of plate scale or roll would have to be eight percent or five degrees.
-But the window edges, which the fit takes for a rigid outline, are not one.
+A focus that differs from sector to sector moves each channel's image along its own dispersion by its own
+amount, three parameters per exposure against six measured components, and it fits: it leaves the floor of the
+measurement, where the figure modes tried first, astigmatism, coma and trefoil, which force the sectors into a
+fixed relation, left three times that.
+Each sector's focus is smooth in time to the precision of a single exposure, a few microns.
+Nothing after the field stop can do this, and neither can any rigid motion of the mirror or the stop, so if it is
+real it is the figure of the primary changing unevenly with temperature, about \SI{100}{\nano\meter} of sag
+between sectors over the flight, the same scale as the common drift of the focus.
+But the window edges, which the measurement takes for a rigid outline, are not one.
 The \HeIion\ window has no left edge on any detector, where the image runs off the sensor, and two channels lack an
 edge in the other direction, so several windows are placed along an axis by a single edge.
 The edges differ in sharpness from \SI{0.7}{} to over \SI{4}{pixels}, several sharpen or soften by a pixel
 during the flight, their profiles are skewed, and the two lines, which share one field stop and one grating,
 disagree on the motion of the same side by up to \SI{0.3}{pixels} over half the flight.
-The placement of a window from its edges is therefore uncertain by about the size of the motion, and the data
-do not say whether the image moved inside a fixed window or the apparent edges moved over a fixed image.
-A point spread that is skewed and changes through the flight would do it, since image structure follows the
-centroid of the blur and an edge its median; that is a hypothesis.
-The co-registration removes the motion empirically, and the committed tables label it as such.
+The focus of a sector is measured along the channel's dispersion, and the window's position along the
+dispersion comes from the two edges perpendicular to it, which are the edges that behaved worst; the crossing of
+a skewed step moves when its width changes, by a fraction of the change, and that would appear here as a focus
+of the sector.
+The disagreement between the lines puts that at up to half the effect.
+The data therefore support two readings, the mirror bending or the along-dispersion fiducials drifting, and do
+not decide between them; the model carries the first, the simpler physical account, and the tables record the
+sectors' histories so that a thermal model of the mirror, or the next flight's temperature sensors, can judge
+it.
 
 \paragraph{Lessons}
 The field stop's edge was the calibration source, and its weak point: a field stop imaged whole, with margin on
@@ -109,8 +120,8 @@ tenths of a pixel; an athermal metering structure between them, or a way to meas
 more to the registration of the channels than any improvement of the detectors.
 
 \paragraph{Cost}
-The capture takes one to two hours per channel on one GPU, the later stages two to three hours more, and the
-chain is about six hours of wall time on a cluster; the stages from the co-registration on run on a
-workstation with \SI{128}{\giga\byte} of memory.""")
+The capture takes one to two hours per channel on one GPU, the later stages four hours more, and the chain
+is about six hours of wall time on a cluster; the same chain on the host without a GPU takes about as long,
+and the stages from the focus on fit a workstation with \SI{128}{\giga\byte} of memory.""")
     result.append(esis_instrument_paper.figures.coalignment_tiles())
     return result

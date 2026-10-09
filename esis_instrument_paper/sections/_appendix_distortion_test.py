@@ -25,7 +25,7 @@ def test_instrument_refers_to_the_appendix():
         "coalignmentAfterHeI",
         "coalignmentVelocityOV",
         "defocusRange",
-        "channelOffsetMax",
+        "sectorFocusSpread",
         "distortionNumFramesMeasured",
     ):
         assert f"\\{name}" in section

@@ -96,18 +96,23 @@ Table~\ref{table:distortionFit} gives the correlation of each channel's model wi
 stage, and on exposures across the flight that the fit never saw.
 
 Figure~\ref{fig:distortionFlight} shows what moved during the flight.
-The pointing drifted by \pointingYawRange\ in yaw and \pointingPitchRange\ in pitch; the windows drifted by
-up to \windowDriftMax, which the model reproduces as a translation of the field stop of a few microns; and the
-focus of the primary at the field stop drifted by \defocusRange, measured from the channels against one
-another, since each channel views the defocused image through its own sector of the primary and sees it shifted
-along its own dispersion.
-With those three applied, the channels' skies still slid against one another by \coalignmentBefore\ rms, and by
+The pointing drifted by \pointingYawRange\ in yaw and \pointingPitchRange\ in pitch, and the windows drifted by
+up to \windowDriftMax, which the model reproduces as a translation of the field stop of a few microns.
+With those applied, the channels' skies still slid against one another by \coalignmentBefore\ rms, and by
 \coalignmentBeforeMax\ at the first exposure: a translation of each channel's whole image inside its window, the
-same at both lines and smooth in time, which no term of the optical model produces and whose cause we have not
-identified (Appendix~\ref{sec:TheDistortionFit}).
-It is removed empirically, as an offset of each channel's own pointing of up to \channelOffsetMax, quadratic in
-time and zero at the reference exposure.
-After it, over the \distortionNumFramesMeasured\ exposures bright enough to measure, the channels agree to
+same at both lines and smooth in time, which nothing after the field stop can produce.
+Each channel views the Sun through its own sector of the primary mirror, and a change of focus moves its image
+along its own dispersion while the field stop's edges stay put; the motion is reproduced, to the precision of the
+measurement, by a focus that differs from sector to sector and drifts through the flight
+(Appendix~\ref{sec:TheDistortionFit}).
+The focus of the primary as a whole drifted by \defocusRange, and the sectors departed from that mean by up to
+\sectorFocusSpread, with the sector of channel 1 moving most; a paraboloid has one focus for every zone, so if
+this is real it is the figure of the mirror changing unevenly with temperature, by about \SI{100}{\nano\meter}
+of sag between sectors.
+The edges the measurement rests on are soft on several sides and the two lines disagree on their motion by up to
+half the effect, so the data do not exclude that part of the sector pattern is the apparent position of those
+edges drifting; the model carries the simpler reading, one focus per sector, with that caveat.
+With it, over the \distortionNumFramesMeasured\ exposures bright enough to measure, the channels agree to
 \coalignmentAfterHeI\ rms at \HeIion\ and \coalignmentAfterOV\ at \OVion, and at worst \coalignmentAfterMaxHeI\ and
 \coalignmentAfterMaxOV.
 Only the component of a misregistration along a channel's dispersion is a velocity error, and a pixel along the

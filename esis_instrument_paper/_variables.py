@@ -246,9 +246,9 @@ def _distortion() -> list[aastex.Variable]:
 
     Every one is read from the tables the fit committed in the ``esis``
     package: the pointing table for the ranges of the time-dependent terms,
-    the acceptance and co-registration tables for how well the channels are
-    registered, before and after the empirical offset of each channel's
-    pointing.  The coalignment is quoted over the exposures bright enough
+    the focus and acceptance tables for how well the channels are
+    registered, with one focus for the whole primary and with one per
+    sector.  The coalignment is quoted over the exposures bright enough
     for their window edges to be measured, which excludes the dark ones
     that close the flight.
     """
@@ -256,11 +256,11 @@ def _distortion() -> list[aastex.Variable]:
 
     pointing = esis.flights.f1.optics.distortion_fit_table("pointing")
     acceptance = esis.flights.f1.optics.distortion_fit_table("acceptance")
-    coregistration = esis.flights.f1.optics.distortion_fit_table("coregistration")
+    defocus = esis.flights.f1.optics.distortion_fit_table("defocus")
     drift = esis.flights.f1.optics.distortion_fit_table("window_drift")
 
     anchor = int(acceptance.meta["anchor"])
-    frame_reference = int(coregistration.meta["frame_reference"])
+    frame_reference = int(defocus.meta["frame_reference"])
     last = max(int(t) for t in drift["frame"])
     num_measured = last + 1
     num_frames = len(pointing)
@@ -271,13 +271,20 @@ def _distortion() -> list[aastex.Variable]:
     }
 
     # before: the length of the median tile shift of each channel against
-    # the anchor, both lines together, as the co-registration first found it
-    frames = np.asarray(coregistration["frame"])
-    others = [c for c in range(coregistration["shift_x"].shape[1]) if c != anchor]
+    # the anchor, both lines together, as the focus stage measured it with
+    # the windows placed and no focus applied
+    frames = np.asarray(defocus["frame"])
+    others = [c for c in range(defocus["shift_x"].shape[1]) if c != anchor]
     before = np.hypot(
-        coregistration["shift_x"].to_value(u.pix),
-        coregistration["shift_y"].to_value(u.pix),
+        defocus["shift_x"].to_value(u.pix),
+        defocus["shift_y"].to_value(u.pix),
     )[frames <= last][:, others]
+
+    # the focus of each sector of the primary, applied: its mean over the
+    # sectors is the defocus of the primary, the rest is sector against sector
+    z = pointing["z_primary"].to_value(u.um)
+    z_mean = z.mean(axis=1)
+    z_sector = z - z_mean[:, None]
 
     # after: the same from the acceptance, line by line, with the component
     # along the dispersion as a velocity
@@ -332,24 +339,19 @@ def _distortion() -> list[aastex.Variable]:
         ),
         aastex.Variable(
             name="defocusRange",
-            value=round(float(np.ptp(pointing["z_primary"].to_value(u.um)))) * u.um,
+            value=round(float(np.ptp(z_mean))) * u.um,
         ),
         aastex.Variable(
-            name="channelOffsetMax",
-            value=round(
-                float(
-                    np.abs(
-                        np.concatenate(
-                            [
-                                pointing["pitch_channel"].to_value(u.arcsec).ravel(),
-                                pointing["yaw_channel"].to_value(u.arcsec).ravel(),
-                            ]
-                        )
-                    ).max()
-                ),
-                1,
-            )
-            * u.arcsec,
+            name="sectorFocusRangeMin",
+            value=round(float(np.ptp(z, axis=0).min())) * u.um,
+        ),
+        aastex.Variable(
+            name="sectorFocusRangeMax",
+            value=round(float(np.ptp(z, axis=0).max())) * u.um,
+        ),
+        aastex.Variable(
+            name="sectorFocusSpread",
+            value=round(float(np.abs(z_sector).max())) * u.um,
         ),
     ]
     for k in lines:

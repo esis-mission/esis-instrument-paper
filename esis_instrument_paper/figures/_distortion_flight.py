@@ -16,9 +16,9 @@ def distortion_flight() -> aastex.Figure:
 
     Drawn by :func:`esis.flights.f1.optics.plot_distortion_flight` from the
     committed tables of the fit: the pointing of the payload, the drift of
-    the windows, the defocus of the primary, the offset of each channel's own
-    pointing, and the shift of every channel's sky against channel 1 before
-    and after that offset.
+    the windows, the defocus of the primary, the focus of each sector of the
+    primary about it, and the shift of every channel's sky against channel 1
+    with one focus for the whole primary and with one per sector.
     """
     # usetex drops the minus sign of a negative tick label unless it is
     # written as a hyphen
@@ -47,11 +47,11 @@ def distortion_flight() -> aastex.Figure:
 The distortion fit through the flight.
 From the top: the pointing of the payload fit to each exposure against the \AIA\ scene;
 the drift of each channel's windows measured from the edges of the field stop;
-the defocus of the primary mirror at the field stop, measured from the channels against
-one another in every exposure and smoothed by a line;
-the offset of each channel's own pointing that registers the channels with one another,
-a quadratic in time that vanishes at the reference exposure and in the mean over the
-channels (pitch solid, yaw dashed);
-and the shift of each channel's sky against channel 1, dashed before that offset and solid
-after it, with the \coalignmentThreshold\ acceptance threshold dotted."""))
+the defocus of the primary mirror at the field stop, the mean over its sectors, measured
+from the channels against one another in every exposure and smoothed by a quadratic;
+the focus of each channel's sector of the primary about that mean, measured per exposure
+(dots) and as applied (lines);
+and the shift of each channel's sky against channel 1, dashed with one focus for the whole
+primary and solid with one per sector, with the \coalignmentThreshold\ acceptance threshold
+dotted."""))
     return result
