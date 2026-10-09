@@ -27,6 +27,8 @@ def test_instrument_refers_to_the_appendix():
         "defocusRange",
         "sectorFocusSpread",
         "distortionNumFramesMeasured",
+        "registrationLeftBySectors",
+        "channelOffsetMaxPixels",
     ):
         assert f"\\{name}" in section
         assert name in variables

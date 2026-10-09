@@ -17,7 +17,8 @@ def distortion_fit() -> aastex.Section:
     tables; the full account is the report in the ``esis`` documentation.
     """
     result = aastex.Section("The Distortion Fit")
-    result.append(r"""
+    result.append(
+        r"""
 The distortion of each channel is fit to the flight data as the placement of the optics in the as-built model,
 rather than as a polynomial over the detector, so that the result has physical units, carries the wavelength
 dependence the model knows, and can be checked against what was measured on the ground.
@@ -109,6 +110,18 @@ not decide between them; the model carries the first, the simpler physical accou
 sectors' histories so that a thermal model of the mirror, or the next flight's temperature sensors, can judge
 it.
 
+\paragraph{The optional channel offsets}
+With the focus of each sector applied, the channels' skies still differ from channel 1's by
+\registrationLeftBySectors\ rms over the bright exposures, close to the \SI{0.05}{pixels} a single measurement
+resolves.
+The same measurement, repeated with the sector focus in place, fits what is left as an offset of each channel's
+own pitch and yaw, a quadratic in the exposure index that vanishes at the reference exposure and sums to zero
+over the channels so that the payload's pointing stays where the scene put it: twelve numbers, at most
+\channelOffsetMax\ or \channelOffsetMaxPixels\ on the sensor, which leave \registrationLeftByOffsets\ rms.
+They are committed beside the fit and the flight model applies them only when asked, since they are empirical
+where the sector focus is a mechanism; an inversion can be run with and without them to see what a few
+hundredths of a pixel of registration do to the result.
+
 \paragraph{Lessons}
 The field stop's edge was the calibration source, and its weak point: a field stop imaged whole, with margin on
 every side of every window, with edges verified sharp on the ground and a deliberate fiducial in each side, would
@@ -124,6 +137,7 @@ more to the registration of the channels than any improvement of the detectors.
 \paragraph{Cost}
 The capture takes one to two hours per channel on one GPU, the later stages four hours more, and the chain
 is about six hours of wall time on a cluster; the same chain on the host without a GPU takes about as long,
-and the stages from the focus on fit a workstation with \SI{128}{\giga\byte} of memory.""")
+and the stages from the focus on fit a workstation with \SI{128}{\giga\byte} of memory."""
+    )
     result.append(esis_instrument_paper.figures.coalignment_tiles())
     return result

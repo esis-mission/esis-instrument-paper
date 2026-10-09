@@ -115,6 +115,10 @@ edges drifting; the model carries the simpler reading, one focus per sector, wit
 With it, over the \distortionNumFramesMeasured\ exposures bright enough to measure, the channels agree to
 \coalignmentAfterHeI\ rms at \HeIion\ and \coalignmentAfterOV\ at \OVion, and at worst \coalignmentAfterMaxHeI\ and
 \coalignmentAfterMaxOV.
+What the sector focus leaves, \registrationLeftBySectors\ rms in the registration measurement itself, is also
+fit as an empirical offset of each channel's pointing, of up to \channelOffsetMax\ (\channelOffsetMaxPixels), which
+halves it to \registrationLeftByOffsets; the model carries these twelve numbers as an option, off by default,
+since no mechanism stands behind them (Appendix~\ref{sec:TheDistortionFit}).
 Only the component of a misregistration along a channel's dispersion is a velocity error, and a pixel along the
 dispersion is \dispersionVelocityHeI\ at \HeIion\ and \dispersionVelocityOV\ at \OVion: projected that way, the
 registration of the channels contributes \coalignmentVelocityHeI\ and \coalignmentVelocityOV\ rms to a measured

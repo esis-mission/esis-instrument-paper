@@ -248,7 +248,8 @@ def _distortion() -> list[aastex.Variable]:
     package: the pointing table for the ranges of the time-dependent terms,
     the focus and acceptance tables for how well the channels are
     registered, with one focus for the whole primary and with one per
-    sector.  The coalignment is quoted over the exposures bright enough
+    sector, and the co-registration table for the optional empirical
+    offsets and what they leave.  The coalignment is quoted over the exposures bright enough
     for their window edges to be measured, which excludes the dark ones
     that close the flight.
     """
@@ -258,6 +259,7 @@ def _distortion() -> list[aastex.Variable]:
     acceptance = esis.flights.f1.optics.distortion_fit_table("acceptance")
     defocus = esis.flights.f1.optics.distortion_fit_table("defocus")
     drift = esis.flights.f1.optics.distortion_fit_table("window_drift")
+    coregistration = esis.flights.f1.optics.distortion_fit_table("coregistration")
 
     anchor = int(acceptance.meta["anchor"])
     frame_reference = int(defocus.meta["frame_reference"])
@@ -295,6 +297,26 @@ def _distortion() -> list[aastex.Variable]:
     after = {k: rows[f"shift_{v}"].to_value(u.pix) for k, v in lines.items()}
     along = {k: rows[f"along_{v}"].to_value(u.pix) for k, v in lines.items()}
     rms = lambda a: float(np.sqrt(np.nanmean(np.square(a))))  # noqa: E731
+
+    # the optional empirical offsets: what the sector focus leaves, as the
+    # registration measurement sees it (one median shift per channel and
+    # exposure), what the offsets leave, and how large they are
+    bright = np.asarray(coregistration["frame"]) <= last
+    others_c = [c for c in range(coregistration["shift_x"].shape[1]) if c != anchor]
+    left = np.hypot(
+        coregistration["shift_x"].to_value(u.pix),
+        coregistration["shift_y"].to_value(u.pix),
+    )[bright][:, others_c]
+    left_after = np.hypot(
+        coregistration["residual_x"].to_value(u.pix),
+        coregistration["residual_y"].to_value(u.pix),
+    )[bright][:, others_c]
+    offsets = np.hypot(
+        coregistration["pitch_channel"].to_value(u.arcsec),
+        coregistration["yaw_channel"].to_value(u.arcsec),
+    )
+    # the pattern is the sky shift per arcsecond of a channel's own pointing
+    pixels_per_arcsec = float(np.abs(np.asarray(coregistration.meta["pattern"])).max())
 
     result = [
         aastex.Variable(name="distortionNumFrames", value=num_frames),
@@ -352,6 +374,24 @@ def _distortion() -> list[aastex.Variable]:
         aastex.Variable(
             name="sectorFocusSpread",
             value=round(float(np.abs(z_sector).max())) * u.um,
+        ),
+    ]
+    result += [
+        aastex.Variable(
+            name="registrationLeftBySectors",
+            value=round(rms(left), 2) * u.pix,
+        ),
+        aastex.Variable(
+            name="registrationLeftByOffsets",
+            value=round(rms(left_after), 2) * u.pix,
+        ),
+        aastex.Variable(
+            name="channelOffsetMax",
+            value=round(float(offsets.max()), 2) * u.arcsec,
+        ),
+        aastex.Variable(
+            name="channelOffsetMaxPixels",
+            value=round(float(offsets.max()) * pixels_per_arcsec, 2) * u.pix,
         ),
     ]
     for k in lines:
