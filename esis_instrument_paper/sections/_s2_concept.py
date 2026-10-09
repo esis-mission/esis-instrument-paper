@@ -48,7 +48,7 @@ Therefore, \textit{\MOSES\ can only collect, at most, three pieces of informatio
 From this, it is not reasonable to expect the reconstruction of more than three degrees of freedom for each spectral line, 
 except in the case of very compact, isolated features such as those described by \citet{Fox10} and \citet{Rust2019}.
 Consequently, it is a reasonable approximation to say that \MOSES\ is sensitive primarily to spectral line intensities, 
-shifts, and widths \citep{KankThom01}.
+shifts, and widths~\citep{KankThom01}.
 With any tomographic apparatus, the degree of detail that can be resolved in the object depends critically on the 
 number of viewing angles~\citep{Kak88,Descour97,Hagen08}.
 So it is with the spectrum we observe with \MOSES: more dispersed images are required to confer sensitivity to finer 
@@ -136,7 +136,7 @@ Furthermore, by arranging the detectors around the optical axis, more dispersed 
 eight gratings can be arrayed around the \ESIS\ primary mirror (up to six with the current optical table). 
 This contrasts with the three image orders available in the planar symmetry of \MOSES. 
 Taken together, these three design features make \ESIS\ more compact than \MOSES\ 
-(\S\,\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-length}), improve spectral resolution 
+(Section~\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-length}), improve spectral resolution 
 (item~\ref{item-disp_con}) and allow the collection of more projections to better constrain the interpretation of the 
 data (item~\ref{item-orders}). 
  
@@ -148,25 +148,25 @@ This greatly aids in reconstructing spectral line profiles since the dispersion 
 As discussed in Section~\ref{subsec:LimitationsoftheMOSESDesign}, a nearly perpendicular dispersion plane 
 allows a filamentary structure to serve like a spectrographic slit, resulting in a clear presentation of the 
 spectrum. 
-This feature addresses \S\,\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-dispersion}. 
+This feature addresses Section~\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-dispersion}. 
 
 Rather than forming images at three spectral orders from a single grating, each \ESIS\ imaging channel has a 
 dedicated grating. 
 Aberrations are controlled by optimizing the grating design to form images in first order, 
 over a narrow range of ray deviation angles. 
 This design controls aberration well enough to allow pixel-limited imaging, avoiding the \PSF\ mismatch problems 
-inherent to the \MOSES\ design (\S\,\ref{subsec:LimitationsoftheMOSESDesign} item \ref{item-PSF}). 
+inherent to the \MOSES\ design (Section~\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-PSF}). 
 In its flight configuration with gratings optimized around a \OVwavelength\ wavelength, the instrument cannot be aligned and 
 focused in visible light like \MOSES. 
-Visible gratings and a special alignment transfer procedure (\S\,\ref{subsec:AlignmentandFocus}) are used to 
+Visible gratings and a special alignment transfer procedure (Section~\ref{subsec:AlignmentandFocus}) are used to 
 align and focus \ESIS. 
 
 The \ESIS\ design also includes an octagonal field stop placed at prime focus.
 This confers two advantages.
 First, the field stop fully defines the instrument \FOV, so that \ESIS\ is not susceptible to the spectral confusion 
-observed in \MOSES\ data (\S\,\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-FOV}).
+observed in \MOSES\ data (Section~\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-FOV}).
 Second, each spectral line image observed by \ESIS\ is bordered by the outline of the field stop 
-(\eg\,\S\,\ref{subsec:Optics}).
+(\eg, Section~\ref{subsec:Optics}).
 This aids the inversion process since outside of this sharp edge the intensity is zero for any look angle through an 
 \ESIS\ data cube.
 The size and octagonal shape of the field stop are defined by the requirement that all \CCDs\ must see the entire \FOV\ 
@@ -178,10 +178,10 @@ The \ESIS\ design is shutterless, so that each detector is always integrating.
 The result is a \SI{100}{\percent} duty cycle.
 The lack of downtime for readout also allows \ESIS\ to operate at a fixed, rapid cadence of \SI{10}{\second}.
 Longer integration times can be achieved for faint features by exposure stacking 
-(\S\,\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-CAD}).
+(Section~\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-CAD}).
 
 In summary, the \ESIS\ concept addresses all the limitations of the \MOSES\ design enumerated in 
-\S\,\ref{subsec:LimitationsoftheMOSESDesign}.
+Section~\ref{subsec:LimitationsoftheMOSESDesign}.
 The volume of the \ESIS\ optical layout is smaller than \MOSES\ by almost a factor of two, yet with a smaller \PSF, 
 improved spectral resolution, and faster exposure cadence.
 \ESIS\ offers several features to improve the recovery of spectral information, including more channels, crossed 
