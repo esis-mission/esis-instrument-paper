@@ -106,6 +106,7 @@ The distortion is due to two factors: first, the tilt of the detector as needed 
 &+ \C_{yy} y^2 + \C_{y \lambda} y \lambda + \C_{\lambda \lambda} \lambda^2
 \end{split}
 \end{equation}""")
+    subsection_distortion.append(esis_instrument_paper.tables.distortion())
     subsection_distortion.append(esis_instrument_paper.figures.distortion())
     subsection_distortion.append(esis_instrument_paper.figures.distortion_residual())
     result.append(subsection_distortion)
