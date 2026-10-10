@@ -4,7 +4,7 @@ import esis
 import named_arrays as na
 import optika
 
-from esis_instrument_paper.figures import _grids
+from esis_instrument_paper import _grids
 
 __all__ = [
     "vignetting",

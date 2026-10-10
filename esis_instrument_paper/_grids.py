@@ -1,9 +1,10 @@
 """
-The wavelengths and the cells at which the figures of a single channel sample
-the instrument model.
+The wavelengths and the cells at which the article samples the model of a
+single channel.
 
-The vignetting and the distortion figures share them, so that their maps are
-drawn at the same lines and over the same cells.
+The vignetting figure, the distortion figures and the distortion table share
+them, so that their maps are drawn and their models fit at the same lines and
+over the same cells.
 """
 
 import astropy.units as u

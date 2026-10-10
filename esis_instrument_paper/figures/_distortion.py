@@ -2,9 +2,8 @@
 The distortion of a single channel: the image of the field stop on the
 detector, and how closely a polynomial describes where the field lands.
 
-Both figures read the same model, fit by
-:meth:`optika.systems.SequentialSystem.distortion` over the cells and at the
-lines of the vignetting figure.
+Both figures read the model of :mod:`esis_instrument_paper._distortion_model`,
+as the distortion table does.
 """
 
 import aastex
@@ -13,64 +12,16 @@ import astropy.visualization
 import esis
 import matplotlib.pyplot as plt
 import named_arrays as na
-import optika
 
-from esis_instrument_paper.figures import _grids
+from esis_instrument_paper import _distortion_model, _grids
 
 __all__ = [
     "distortion",
     "distortion_residual",
 ]
 
-_num_field = 21
-"""
-The number of field positions sampled along each axis.
-
-The same as in the vignetting figure, so that the two maps are drawn over the
-same cells.
-"""
-
-_num_pupil = 21
-"""
-The number of pupil positions sampled along each axis.
-
-Where a field cell lands on the detector is the mean over its pupil samples,
-and that mean hardly depends on how finely the pupil is sampled: four times
-as finely moves the largest residual of the quadratic fit by about a
-thousandth of a pixel. So the residual is the distortion itself rather than
-the quadrature, and the pupil need not be sampled as finely as the vignetting
-figure samples it to resolve the area of the pupil.
-"""
-
-_seed_pupil = 42
-"""
-The seed of the random draw which places a sample inside each pupil cell.
-
-The same as in the vignetting figure. The draw has to be seeded for the
-figures to be the same every time the article is built.
-"""
-
-_seed_field = None
-"""
-The seed of the random draw which places a sample inside each field cell.
-
-There is none, as in the vignetting figure, so the field is taken at the
-centers of its cells and the residual is drawn as a regular grid.
-"""
-
 _unit_field = u.arcsec
 """The unit the field position is drawn in, as in the vignetting figure."""
-
-_degree = 2
-"""
-The degree of the distortion model the text writes out.
-
-The text gives the model as a quadratic in position and wavelength, and the
-residual figure is the evidence that a quadratic is enough.
-"""
-
-_degree_linear = 1
-"""The degree of the model the residual figure compares the quadratic with."""
 
 _axis_row = "row"
 """The name of the axis along which the two rows of the residual figure vary."""
@@ -98,36 +49,6 @@ _color_stop = "black"
 """The color of the magnified field stop, as in the old draft."""
 
 
-def _optics() -> esis.optics.Instrument:
-    """A single channel of the flight instrument, as designed."""
-    return esis.flights.f1.optics.design_single(num_distribution=0)
-
-
-def _model(
-    optics: esis.optics.Instrument,
-    degree: int,
-) -> optika.distortion.PolynomialDistortionModel:
-    """
-    Fit a polynomial to where the field of a single channel lands on its
-    detector, as a function of field position and wavelength.
-
-    Parameters
-    ----------
-    optics
-        The channel to fit.
-    degree
-        The degree of the polynomial.
-    """
-    return optics.system.distortion(
-        wavelength=_grids.wavelength(),
-        field=_grids.vertices("field", _num_field),
-        pupil=_grids.vertices("pupil", _num_pupil),
-        degree=degree,
-        seed_field=_seed_field,
-        seed_pupil=_seed_pupil,
-    )
-
-
 def distortion() -> aastex.Figure:
     """
     The image of the field stop on the detector at O V, against the field
@@ -140,12 +61,12 @@ def distortion() -> aastex.Figure:
     entrance arm. Both are centered on the image of the center of the field,
     so that what is left between them is the distortion.
     """
-    optics = _optics()
+    optics = _distortion_model.optics()
     system = optics.system
     sensor = system.sensor
     wavelength = esis.flights.f1.spectrum.O_V.wavelength
 
-    model = _model(optics, degree=_degree)
+    model = _distortion_model.model()
 
     def image(field: na.AbstractCartesian2dVectorArray) -> na.Cartesian2dVectorArray:
         """Where the model puts a field position on the detector at O V."""
@@ -222,8 +143,6 @@ def distortion_residual() -> aastex.FigureStar:
     The residual is the distance on the detector between where the model puts
     a field cell and where the traced rays land, in pixels.
     """
-    optics = _optics()
-
     fig, ax = na.plt.subplots(
         axis_rows=_axis_row,
         nrows=2,
@@ -240,11 +159,11 @@ def distortion_residual() -> aastex.FigureStar:
     # linear model is on top and the quadratic below, as in the caption. Each
     # row has its own colorbar, since the two residuals differ by a factor of
     # a hundred.
-    _model(optics, degree=_degree_linear).plot_residual(
+    _distortion_model.model(_distortion_model.degree_linear).plot_residual(
         ax=ax[{_axis_row: 1}],
         unit=_unit_field,
     )
-    _model(optics, degree=_degree).plot_residual(
+    _distortion_model.model().plot_residual(
         ax=ax[{_axis_row: 0}],
         unit=_unit_field,
     )
