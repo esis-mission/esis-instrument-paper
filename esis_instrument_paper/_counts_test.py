@@ -4,7 +4,33 @@ import named_arrays as na
 import numpy as np
 import pytest
 
-from esis_instrument_paper import _counts
+from esis_instrument_paper import _counts, _grids
+
+
+def test_area_effective() -> None:
+    """
+    Each line gets its own effective area, the one a model sampled in order
+    of wavelength interpolates to, although the lines are not in that order.
+
+    The two models draw their samples in a different order, which moves the
+    area by about a tenth of a percent, while giving each line the area of
+    the other would move it by about two percent.
+    """
+    instrument = _counts.optics()
+    wavelength = na.stack(
+        [line.wavelength for line in _counts.lines], _counts.axis_line
+    )
+    ascending = wavelength[{_counts.axis_line: slice(None, None, -1)}]
+    assert np.all(np.diff(ascending.ndarray) > 0)
+    model = instrument.system.area_effective(
+        wavelength=ascending,
+        field=_grids.vertices("field", _counts._num_field),
+        pupil=_grids.vertices("pupil", _counts._num_pupil),
+        seed_field=_counts._seed,
+        seed_pupil=_counts._seed,
+    )
+    expected = model(wavelength).mean(instrument.axis_channel)
+    assert np.allclose(_counts._area_effective(), expected, rtol=5e-3)
 
 
 def test_snr() -> None:

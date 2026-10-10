@@ -144,17 +144,21 @@ def _area_effective() -> na.AbstractScalar:
     It includes the vignetting of the instrument that flew, which has no
     stop at the primary mirror, since it is averaged over the whole field of
     view rather than taken at its center.
+
+    The area is read at the wavelengths it was sampled at rather than
+    interpolated to them: the lines are not in order of wavelength, and the
+    model interpolates as though they were, which would give each line the
+    area of the other.
     """
     instrument = optics()
-    wavelength = _wavelength()
     model = instrument.system.area_effective(
-        wavelength=wavelength,
+        wavelength=_wavelength(),
         field=_grids.vertices("field", _num_field),
         pupil=_grids.vertices("pupil", _num_pupil),
         seed_field=_seed,
         seed_pupil=_seed,
     )
-    return model(wavelength).mean(instrument.axis_channel)
+    return model.area.mean(instrument.axis_channel)
 
 
 def solid_angle_pixel() -> na.AbstractScalar:
