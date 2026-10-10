@@ -186,4 +186,25 @@ stored in a nitrogen purged environment until after payload vibration testing.""
     )
     result.append(subsection_coatings)
 
+    subsection_sensitivity = aastex.Subsection("Sensitivity and Cadence")
+    subsection_sensitivity.append(r"""
+Count rates for \ESIS\ are estimated using the expected component throughput from
+Section~\ref{subsec:CoatingsandFilters} and the \CCD\ \QE\ listed in Table~\ref{table:prescription}.
+Line intensities are derived from \VR\ and the \SOHO/\CDS~\citep{Harrison95} data, and are given in a variety of
+solar contexts: \QS, \CHs, and \ARs.
+The \SI{100}{\percent} duty cycle of \ESIS\ (Section~\ref{subsec:Cameras}) gives us the flexibility to use the shortest
+exposures that are scientifically useful.
+So long as the shot noise dominates over read noise (which is true even for our coronal hole estimates at
+\detectorExposureLength\ exposure length), we can stack exposures without a significant \SNR\ penalty.
+Table~\ref{table:counts} shows that \ESIS\ is effectively shot noise limited with a \detectorExposureLength\ exposure.
+The signal requirement in Table~\ref{table:scireq} is met by stacking exposures.
+Good quality images ($\sim$\goodImageCounts\ counts) in active regions can be obtained by stacking
+\activeRegionStackLength\ worth of exposures.
+This cadence is sufficient to observe explosive events, but will not resolve torsional Alfv\'en waves described in
+Section~\ref{sec:ScienceObjectives}.
+However, by stacking multiple \detectorExposureLength\ exposures, sufficient \SNR\ \emph{and} temporal resolution of
+torsional Alfv\'en wave oscillations can be obtained.""")
+    subsection_sensitivity.append(esis_instrument_paper.tables.counts())
+    result.append(subsection_sensitivity)
+
     return result
