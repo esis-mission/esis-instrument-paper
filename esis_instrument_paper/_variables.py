@@ -1,7 +1,13 @@
+import collections.abc
+
 import aastex
+import astropy.time
 import astropy.units as u
 import esis
+import named_arrays as na
 import num2words
+import numpy as np
+import optika
 import pylatex
 
 import esis_instrument_paper
@@ -237,4 +243,290 @@ def variables() -> list[aastex.Variable]:
         # rates.
         _pending("spatialResolutionTotal"),
         _pending("StackedCoronalHoleSNR"),
+        *_coatings(),
+    ]
+
+
+def _formula(layer: optika.materials.Layer) -> str:
+    """The chemical formula of a layer, which its acronym is named after."""
+    chemical = layer.chemical
+    if isinstance(chemical, str):
+        return chemical
+    return chemical.formula
+
+
+def _formulas(stack: optika.materials.MultilayerMirror) -> list[str]:
+    """The chemical formula of every layer of a coating, from the top down."""
+    layers = optika.materials.LayerSequence(stack.layers).layers_
+    return [_formula(layer) for layer in layers]
+
+
+def _layer(
+    stack: optika.materials.MultilayerMirror,
+    formula: str,
+) -> optika.materials.Layer:
+    """
+    The one layer of a coating made of the given material.
+
+    The prose names the materials of each coating, so a model with more than
+    one layer of a material it names, or none, is no longer the coating the
+    prose describes. This refuses rather than quote the wrong layer.
+    """
+    layers = optika.materials.LayerSequence(stack.layers).layers_
+    result = [layer for layer in layers if _formula(layer) == formula]
+    if len(result) != 1:
+        raise ValueError(
+            f"expected one layer of {formula}, the model has {len(result)}"
+        )
+    return result[0]
+
+
+def _channels(
+    instrument: esis.optics.Instrument,
+    manufacturing_numbers: collections.abc.Container[str],
+    inverse: bool = False,
+) -> list[int]:
+    """
+    The names of the channels whose gratings are among the given
+    manufacturing numbers, or, if `inverse`, are not.
+    """
+    axis = instrument.axis_channel
+    numbers = instrument.grating.manufacturing_number
+    result = []
+    for index in range(numbers.shape[axis]):
+        i = {axis: index}
+        if (str(numbers[i].ndarray) in manufacturing_numbers) != inverse:
+            result.append(int(instrument.camera.channel[i].ndarray))
+    return result
+
+
+def _reflectance(
+    material: optika.materials.AbstractMaterial,
+    wavelength: u.Quantity | na.AbstractScalar,
+    angle: u.Quantity | na.AbstractScalar,
+) -> na.AbstractScalar:
+    """The efficiency of a mirror material at an angle of incidence."""
+    rays = optika.rays.RayVectorArray(
+        wavelength=wavelength,
+        direction=na.Cartesian3dVectorArray(np.sin(angle), 0, np.cos(angle)),
+    )
+    return material.efficiency(rays, na.Cartesian3dVectorArray(0, 0, -1))
+
+
+def _percent(fraction: na.AbstractScalar, decimals: int = 0) -> u.Quantity:
+    """A fraction written as a percentage, rounded."""
+    fraction = na.as_named_array(fraction).ndarray
+    return (fraction * u.dimensionless_unscaled).to(u.percent).round(decimals)
+
+
+def _date(time: astropy.time.Time) -> aastex.NoEscape:
+    """A day written as the journal writes dates, such as 2018 January 21."""
+    date = time.to_datetime()
+    return aastex.NoEscape(f"{date.year} {date:%B} {date.day}")
+
+
+def _coatings() -> list[aastex.Variable]:
+    """
+    The variables cited by the subsection on the coatings and the filters.
+
+    Where a measurement exists it is used, and a model only stands in for a
+    measurement which does not reach the wavelength asked about.
+    """
+    f1 = esis.flights.f1
+    spectrum = f1.spectrum
+    gratings = f1.optics.gratings
+    primaries = f1.optics.primaries
+
+    # one channel as designed, for the passband and the placement of the
+    # filter, and the flight instrument, for which grating flew where
+    design = f1.optics.design_single(num_distribution=0)
+    as_built = f1.optics.as_built(num_distribution=0)
+
+    # The prose describes the grating coating as pairs of SiC and Mg, with Al
+    # beside each Mg layer, and names those materials itself.
+    formulas = _formulas(gratings.materials.multilayer_design())
+    num_pairs = formulas.count("Mg")
+    is_pairs = formulas.count("SiC") == num_pairs
+    if not is_pairs or not set(formulas) <= {"SiO2", "SiC", "Al", "Mg"}:
+        raise ValueError(f"the grating coating is not SiC/Mg pairs: {formulas}")
+
+    # The witnesses are silicon wafers coated alongside three of the flight
+    # gratings, so they measure the coating without the grooves. They are the
+    # only measurement which reaches down to He II.
+    witness = gratings.materials.multilayer_witness_measured()
+    measured = witness.efficiency_measured
+    angle_witness = measured.inputs.direction
+    inside = (measured.inputs.wavelength >= design.wavelength_min) & (
+        measured.inputs.wavelength <= design.wavelength_max
+    )
+    reflectance_peak = np.where(inside, measured.outputs, 0).max()
+    reflectance_ov = _reflectance(witness, spectrum.O_V.wavelength, angle_witness)
+    ratio_grating = (
+        _reflectance(witness, spectrum.He_II.wavelength, angle_witness) / reflectance_ov
+    ).mean()
+
+    # The first-order efficiency the prose predicts, and then confirms against
+    # a measurement of a flight grating: the measured reflectance of the
+    # coating, times the efficiency of the designed grooves at normal
+    # incidence. The grooves of `as_built` are derived from that measurement,
+    # so they cannot predict it.
+    rays = optika.rays.RayVectorArray(
+        wavelength=spectrum.O_V.wavelength,
+        position=na.Cartesian3dVectorArray() * u.mm,
+        direction=na.Cartesian3dVectorArray(0, 0, 1),
+    )
+    grooves = design.grating.surface.rulings.efficiency(
+        rays, na.Cartesian3dVectorArray(0, 0, -1)
+    )
+    efficiency_predicted = reflectance_ov.mean() * grooves
+
+    # The primary witness was measured only down to 450 A, so at He II the
+    # coating fitted to it, moved onto the substrate of the mirror, stands in.
+    primary = primaries.materials.multilayer_fit()
+    witness_primary = primaries.materials.multilayer_witness_measured()
+    angle_primary = witness_primary.efficiency_measured.inputs.direction
+    ratio_primary = _reflectance(
+        primary, spectrum.He_II.wavelength, angle_primary
+    ) / _reflectance(primary, spectrum.O_V.wavelength, angle_primary)
+    ratio = na.as_named_array(ratio_grating * ratio_primary).ndarray
+    rejection = -10 * np.log10(ratio) * u.dB
+
+    # A flight grating itself, coating and grooves together, in first order.
+    # Its scans across angle and position were all made at one wavelength.
+    efficiency = gratings.efficiencies.efficiency_vs_wavelength()
+    scan = gratings.efficiencies.efficiency_vs_angle_0deg()
+    (channel_tested,) = _channels(as_built, [gratings.efficiencies.serial_number])
+    (channel_missing,) = _channels(
+        as_built, witness.serial_number.ndarray, inverse=True
+    )
+
+    # The recoated primary: a chromium base for adhesion under the SiC.
+    primary_design = primaries.materials.multilayer_design()
+    if not set(_formulas(primary_design)) <= {"SiO2", "SiC", "Cr"}:
+        raise ValueError("the primary coating is not SiC over Cr")
+
+    # The filter is a thin film of Al on a Ni mesh, which the prose names.
+    material = design.filter.material
+    if _formula(material.layer) != "Al" or material.mesh.chemical != "Ni":
+        raise ValueError("the filter is not Al on a Ni mesh")
+
+    # The filter is round, so its roll orients nothing but its mesh, and the
+    # mesh is clocked against the pixels by the difference in roll.
+    clocking = design.filter.roll - design.camera.sensor.roll
+    distance = design.camera.sensor.translation.z - design.filter.translation.z
+
+    return [
+        aastex.Variable(
+            name="HeIwavelength",
+            value=spectrum.He_I.wavelength,
+        ),
+        aastex.Variable(
+            name="HeI",
+            value=aastex.NoEscape(r"\HeIion~\HeIwavelength"),
+        ),
+        aastex.Variable(
+            name="HeIIion",
+            value=aastex.NoEscape(r"He\,\textsc{ii}"),
+        ),
+        aastex.Variable(
+            name="HeIIwavelength",
+            value=spectrum.He_II.wavelength,
+        ),
+        aastex.Variable(
+            name="HeII",
+            value=aastex.NoEscape(r"\HeIIion~\HeIIwavelength"),
+        ),
+        aastex.Variable(
+            name="gratingCoatingNumLayers",
+            value=num_pairs,
+        ),
+        aastex.Variable(
+            name="gratingCoatingNumLayersWords",
+            value=aastex.NoEscape(num2words.num2words(num_pairs)),
+        ),
+        aastex.Variable(
+            name="gratingWitnessEfficiency",
+            value=_percent(reflectance_peak),
+        ),
+        aastex.Variable(
+            name="gratingEfficiency",
+            value=_percent(efficiency_predicted),
+        ),
+        aastex.Variable(
+            name="gratingHeIIRejectionRatio",
+            value=_percent(ratio_grating, decimals=1),
+        ),
+        aastex.Variable(
+            name="totalHeIIRejection",
+            value=rejection.round(),
+        ),
+        aastex.Variable(
+            name="primaryCoatingBaseThickness",
+            value=_layer(primary_design, "Cr").thickness,
+        ),
+        aastex.Variable(
+            name="primaryCoatingThickness",
+            value=_layer(primary_design, "SiC").thickness,
+        ),
+        aastex.Variable(
+            name="filterThickness",
+            value=material.layer.thickness,
+        ),
+        aastex.Variable(
+            name="filterOxideThickness",
+            value=material.layer_oxide.thickness,
+        ),
+        aastex.Variable(
+            # a plain number, since the prose reads it as lines per inch
+            name="filterMeshPitch",
+            value=round(material.mesh.pitch.to_value(1 / u.imperial.inch)),
+        ),
+        aastex.Variable(
+            name="filterMeshRatio",
+            value=_percent(material.mesh.efficiency),
+        ),
+        aastex.Variable(
+            name="filterToDetectorDistance",
+            value=distance.round(),
+        ),
+        aastex.Variable(
+            name="filterClocking",
+            value=clocking.round(),
+        ),
+        aastex.Variable(
+            name="gratingTestWavelength",
+            value=scan.inputs.wavelength,
+        ),
+        aastex.Variable(
+            name="testGratingChannelIndex",
+            value=channel_tested,
+        ),
+        aastex.Variable(
+            name="testGratingDate",
+            value=_date(gratings.efficiencies.time_measurement),
+        ),
+        aastex.Variable(
+            name="gratingMeasurementIncidenceAngle",
+            value=efficiency.inputs.direction,
+        ),
+        aastex.Variable(
+            name="gratingWitnessMeasurementIncidenceAngle",
+            value=angle_witness,
+        ),
+        aastex.Variable(
+            name="gratingWitnessMeasurementDate",
+            value=_date(gratings.materials.time_measurement),
+        ),
+        aastex.Variable(
+            name="gratingWitnessMissingChannel",
+            value=channel_missing,
+        ),
+        aastex.Variable(
+            name="primaryWitnessMeasurementIncidenceAngle",
+            value=angle_primary,
+        ),
+        aastex.Variable(
+            name="primaryMeasurementDate",
+            value=_date(primaries.materials.time_measurement),
+        ),
     ]
