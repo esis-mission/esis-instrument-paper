@@ -180,6 +180,22 @@ def variables() -> list[aastex.Variable]:
             unit=(u.km, u.s**-1, u.pix**-1),
         ),
         aastex.Variable(
+            # The magnification with which a grating images the field stop
+            # onto its detector, apart from the anamorphic magnification of
+            # the grating and the tilt of the detector. Two decimals: the
+            # figure it is quoted beside shows the two outlines a few percent
+            # apart, and the third decimal is a tenth of a percent.
+            name="armRatio",
+            value=round(
+                float(
+                    (channel.distance_grating_output / channel.distance_grating_input)
+                    .ndarray.to(u.dimensionless_unscaled)
+                    .value
+                ),
+                2,
+            ),
+        ),
+        aastex.Variable(
             name="observingTime",
             value=length_observation.round(1),
         ),

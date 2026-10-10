@@ -19,7 +19,9 @@ dependencies = [
     "num2words~=0.5",
     "named-arrays~=2.14,>=2.14.1",
     "optika~=3.1",
-    "euv-snapshot-imaging-spectrograph~=1.5",
+    # TODO: the arms of the grating are esis #102, not released yet; this pin
+    # names the branch and goes back to a version once it is.
+    "euv-snapshot-imaging-spectrograph @ git+https://github.com/esis-mission/esis@feature/grating-distances",
     "utu~=0.1",
     "fiasco~=0.8.2",
 ]
