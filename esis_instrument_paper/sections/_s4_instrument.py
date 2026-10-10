@@ -89,6 +89,29 @@ and could be removed in the post-processing phase.""")
     subsection_vignetting.append(esis_instrument_paper.figures.vignetting())
     result.append(subsection_vignetting)
 
+    subsection_distortion = aastex.Subsection("Distortion")
+    subsection_distortion.append(
+        r"""
+Imaging from the prime focus to the detector introduces distortion.
+Since the \numChannelsWords\ \ESIS\ channels are arranged in four different orientations, the distortion complicates the
+comparison of the channels, and we must correct for it.
+The distortion is due to two factors: first, the tilt of the detector as needed to maintain good focus over the
+\FOV~\citep{Poletto04}; second, the anamorphic magnification of the grating (see \citet{Schweizer1979})."""
+    )
+    subsection_distortion.append(r"""
+\begin{equation}
+\begin{split}
+\left(x', y'\right) &= \C + \C_x x + \C_y y + \C_\lambda \lambda \\
+&+ \C_{xx} x^2 + \C_{xy} x y + \C_{x \lambda} x \lambda \\
+&+ \C_{yy} y^2 + \C_{y \lambda} y \lambda + \C_{\lambda \lambda} \lambda^2
+\end{split}
+\label{eq:distortion}
+\end{equation}""")
+    subsection_distortion.append(esis_instrument_paper.tables.distortion())
+    subsection_distortion.append(esis_instrument_paper.figures.distortion())
+    subsection_distortion.append(esis_instrument_paper.figures.distortion_residual())
+    result.append(subsection_distortion)
+
     subsection_coatings = aastex.Subsection("Coatings and Filters")
     subsection_coatings.append(r"""
 The diffraction gratings are coated with a multilayer optimized for a center wavelength of \OV,
