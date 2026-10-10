@@ -4,6 +4,8 @@ import esis
 import named_arrays as na
 import optika
 
+from esis_instrument_paper.figures import _grids
+
 __all__ = [
     "vignetting",
 ]
@@ -58,9 +60,6 @@ and every tick on the axis is spent on leading zeros. The same field in
 arcseconds is numbered in hundreds.
 """
 
-_axis_wavelength = "wavelength"
-"""The name of the axis along which the wavelength varies."""
-
 _axis_row = "row"
 """The name of the axis along which the two rows of the figure vary."""
 
@@ -85,56 +84,14 @@ remains is the sampling of the pupil rather than any curvature in the field.
 """
 
 
-def _wavelength() -> na.ScalarArray:
-    """
-    The rest wavelengths at which the vignetting is shown.
-
-    They are the lines this flight set out to observe which fall inside the
-    passband, and they span it from end to end.
-    """
-    spectrum = esis.flights.f1.spectrum
-    return na.ScalarArray(
-        ndarray=u.Quantity(
-            [
-                spectrum.He_I.wavelength,
-                spectrum.Mg_X.wavelength,
-                spectrum.O_V.wavelength,
-            ]
-        ),
-        axes=(_axis_wavelength,),
-    )
-
-
-def _vertices(name: str, num: int) -> na.Cartesian2dVectorLinearSpace:
-    """
-    The vertices of a square grid of `num` by `num` normalized cells.
-
-    A normalized coordinate of $\\pm 1$ is the edge of the field stop, or of
-    the pupil, so these vertices bound the aperture and their cells tile it.
-
-    Parameters
-    ----------
-    name
-        The name of the grid, which its two axes are named after.
-    num
-        The number of cells along each axis.
-    """
-    return na.Cartesian2dVectorLinearSpace(
-        start=-1,
-        stop=+1,
-        axis=na.Cartesian2dVectorArray(f"{name}_x", f"{name}_y"),
-        num=num + 1,
-    )
-
-
 def _model() -> optika.radiometry.PolynomialVignettingModel:
     """Fit the illumination of a single channel as a function of the field."""
     optics = esis.flights.f1.optics.design_single(num_distribution=0)
 
     return optics.system.vignetting(
-        wavelength=_wavelength(),
-        field=_vertices("field", _num_field),
-        pupil=_vertices("pupil", _num_pupil),
+        wavelength=_grids.wavelength(),
+        field=_grids.vertices("field", _num_field),
+        pupil=_grids.vertices("pupil", _num_pupil),
         degree=_degree,
         seed_field=_seed_field,
         seed_pupil=_seed_pupil,
@@ -153,8 +110,8 @@ def vignetting() -> aastex.FigureStar:
     fig, ax = na.plt.subplots(
         axis_rows=_axis_row,
         nrows=2,
-        axis_cols=_axis_wavelength,
-        ncols=na.shape(_wavelength())[_axis_wavelength],
+        axis_cols=_grids.axis_wavelength,
+        ncols=na.shape(_grids.wavelength())[_grids.axis_wavelength],
         sharex=True,
         sharey=True,
         squeeze=False,
