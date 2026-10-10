@@ -15,7 +15,7 @@ This concept adds a unique capability to the science that we can obtain from the
 \ESIS\ as designed improves upon the \MOSES\ concept, as discussed in the previous section, and therefore improves our ability
 to accomplish our scientific objectives.
 In this section, we set forth the specific scientific objectives of the \ESIS\ mission.
-It is from these objectives that we derived the quantitative science requirements (\S\,\ref{subsec:ScienceRequirements})
+It is from these objectives that we derived the quantitative science requirements (Section~\ref{subsec:ScienceRequirements})
 that drove the \ESIS\ design.
 
 The \ESIS\ mission was designed to achieve the following two overarching science goals: \begin{inparaenum}[(1)]
@@ -36,7 +36,7 @@ vertical transport of energy over a wide \FOV.""")
 Magnetic reconnection describes the re-arrangement of the magnetic topology wherein magnetic energy
 is converted to kinetic energy resulting in the acceleration of plasma particles.
 Reconnection is implicated in many dynamic, high-energy solar events.
-Solar flares are a well-studied example (\eg\,\citet{Priest02} and the references therein); however, we have little hope
+Solar flares are a well-studied example (\eg, \citet{Priest02} and the references therein); however, we have little hope
 of pointing in the right place at the right time to observe a significant flare event in a rocket flight lasting only
 five minutes.
 Instead, we will search for signatures of magnetic reconnection in \TR\ spectral lines.
@@ -54,7 +54,7 @@ speed, \citet{Dere91} first suggested that \EEs\ may result from the model of fa
 reconnection.
 
 The spectral line profile of \EEs\ may indicate the type of reconnection that is occurring in the \TR\
-(\eg\,\citet{Rust17}).
+(\eg, \citet{Rust17}).
 For example, the Petschek model of reconnection predicts a `bi-directional jet' line profile with highly
 Doppler-shifted wings, but little emission from the line core~\citep{Innes99}.
 \citet{Innes15} developed a reconnection model resulting from a plasmoid instability~\citep{Bhattacharjee09}.
@@ -72,9 +72,9 @@ slit spectrograph data.
 \ESIS\ will observe magnetic reconnection in the context of \EEs, by extending the technique pioneered by \MOSES\ to
 additional \TR\ lines.
 Explosive events are well suited to sounding rocket observations;
-a significant portion of their temporal evolution can be captured in $>$\SI{150}{\second} (\eg\,the analysis by
+a significant portion of their temporal evolution can be captured in $>$\SI{150}{\second} (\eg, the analysis by
 \citet{Rust17}) and they are sufficiently common to provide a statistically meaningful sample in a 5-minute rocket
-flight (\eg,~\citet{Dere89,Dere91}).
+flight (\eg, \citet{Dere89,Dere91}).
 In similarity with \MOSES, we sought a \TR\ line for \ESIS\ that is bright and well enough isolated from neighboring
 emission lines so as to be easily distinguished.""")
     result.append(subsection_reconnection)
@@ -85,8 +85,8 @@ emission lines so as to be easily distinguished.""")
 Tracking the mass and energy flow through the solar atmosphere is a long-standing goal in solar physics.
 Bulk mass flow is evidenced by Doppler shifts or skewness in spectral lines.
 However, the observed non-thermal broadening of \TR\ spectral lines may result from a variety of physical processes,
-including \MHD\ waves~\citep{DePontieu15, DePontieu07}, high-speed evaporative up-flows (\eg\,nanoflares,
-\citet{Patsourakos06}), turbulence, and other sources (\eg\,\citet{Mariska1992}).
+including \MHD\ waves~\citep{DePontieu15, DePontieu07}, high-speed evaporative upflows (\eg, nanoflares,
+\citet{Patsourakos06}), turbulence, and other sources (\eg, \citet{Mariska1992}).
 This is a broad topic which \ESIS\ can address in many ways.
 Here we will focus on a single application;
 \ESIS\ will search for sources of Alfv\'en waves in the solar atmosphere by observing Doppler shifts and line broadening
@@ -94,11 +94,11 @@ as the spectroscopic signature of these waves.
 The spectroscopic signature of Alfv\'en waves is most obvious near the limb of the solar disk, since the motion of the
 ions is transverse with respect to the propagation direction.
 Pointing near the limb may make it more difficult to observe distinct \EEs, described in Section~\ref{subsec:MagneticReconnectionEvents},
-since the average width of \TR\ lines often increases near the limb of the Sun \citep{Ayres2021}, thus decreasing the
+since the average width of \TR\ lines often increases near the limb of the Sun~\citep{Ayres2021}, thus decreasing the
 \SNR\ of single events.
 
 Alfv\'en waves in coronal holes are observed to carry an energy flux of
-\SI{7e5}{erg\per\centi\square\meter\per\second}, enough to energize the fast solar wind \citep{Hahn2012,Hahn2013}.
+\SI{7e5}{erg\per\centi\square\meter\per\second}, enough to energize the fast solar wind~\citep{Hahn2012,Hahn2013}.
 The source and frequency spectrum of these waves is unknown.
 Here, we hypothesize that \MHD\ waves are similarly ubiquitous in quiet Sun and active regions, and play an important
 role in the energization of the quiescent corona.
@@ -150,7 +150,7 @@ localized sources (scenario~\ref{wave-2}) are associated with converging or emer
 spicules, spicule bushes, or other sources beneath the \TR.
 For these comparisons, we need only to localize, rather than resolve, wave sources.
 A spatial resolution of $\sim$\SI{2}{\mega\meter} is sufficient to localize sources associated with magnetic flux
-tubes that are rooted in photospheric inter-granular network lanes (\eg\,\citet{Berger95ApJ})."""
+tubes that are rooted in photospheric intergranular network lanes (\eg, \citet{Berger95ApJ})."""
     )
     result.append(subsection_energy)
 

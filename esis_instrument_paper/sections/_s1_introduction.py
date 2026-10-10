@@ -13,7 +13,7 @@ def introduction() -> aastex.Section:
 The light emitted by the solar \TR\ and corona varies significantly as a function
 of position, wavelength, and time.
 When viewed from Earth, the spectral radiance from the Sun can be written as: $I(x, y, \lambda, t)$,
-where $x$ and $y$ are the helioprojective Cartesian coordinates \citep{Thompson2006},
+where $x$ and $y$ are the helioprojective Cartesian coordinates~\citep{Thompson2006},
 $\lambda$ is wavelength, and $t$ is time.
 The ideal solar imaging spectrograph would capture $I(x, y, \lambda, t)$ with high resolution in $x$, $y$, $\lambda$,
 and $t$ \textit{and} over a wide \FOV, wavelength range, and time period.
@@ -24,23 +24,23 @@ without losing information.
 
 One obvious way to accomplish this is to multiplex one of the three remaining dimensions in time.
 Narrowband, tunable filters,
-such as the GREGOR Fabry--P{\'e}rot Interferometer \citep{Puschmann12}
-or CRISP at the Swedish Solar Telescope \citep{Scharmer2008},
+such as the GREGOR Fabry--P{\'e}rot Interferometer~\citep{Puschmann12}
+or CRISP at the Swedish Solar Telescope~\citep{Scharmer2008},
 multiplex the wavelength dimension in time,
-and can change the selected wavelength in \SI{50}{\milli\second} or less \citep{Scharmer2008},
+and can change the selected wavelength in \SI{50}{\milli\second} or less~\citep{Scharmer2008},
 but the technology does not exist to use this technique for wavelengths shorter than
 $\sim$\SI{150}{\nano\meter}~\citep{2000WuelserFP}.
 The nearest \EUV\ equivalent is a multilayer-coated imager such as \TRACE~\citep{Handy99} or
 \AIA~\citep{Lemen12}, which abandons the wavelength dimension entirely and integrates over a passband
 holding many emission lines.
-Two such passbands can be compared to infer a Doppler shift \citep{Sakao99}, but weaker lines within them
-bound the velocity resolution near $\sim$\SI{1000}{\kilo\meter\per\second} \citep{Kobayashi00},
+Two such passbands can be compared to infer a Doppler shift~\citep{Sakao99}, but weaker lines within them
+bound the velocity resolution near $\sim$\SI{1000}{\kilo\meter\per\second}~\citep{Kobayashi00},
 coarser than the flows that characterize \TR\ dynamics.
 
 A spatial dimension can be multiplexed instead.
 An entrance slit admits a single column of the scene, so the detector records $\lambda$ against $y$ without
 ambiguity, and $x$ is recovered by stepping the slit across the target.
-\IRISCapital~\citep{IRIS14} and \SPICE\ aboard Solar Orbiter \citep{Spice2020} work this way, and the spectra they
+\IRISCapital~\citep{IRIS14} and \SPICE\ aboard Solar Orbiter~\citep{Spice2020} work this way, and the spectra they
 return are the most faithful of any technique discussed here.
 What is sacrificed is simultaneity: neighboring columns of the reconstructed cube are separated in time by the
 raster, and structure that evolves faster than the raster completes is smeared along $x$.
@@ -62,19 +62,19 @@ of the Sun and those images superimpose on the detector.
 The resulting frame, an \textit{overlappogram}, encodes $x$ and $\lambda$ along a single axis, and the two
 cannot be separated within one exposure.
 Overlappograms are as old as spaceborne solar spectroscopy, having been recorded by the \Acposs{NRL} S082A
-spectroheliograph \citep{Tousey73,Tousey77}, which yielded both a census of \EUV\ transitions
-\citep{Feldman85} and, much later, flare line ratios \citep{Keenan06};
+spectroheliograph~\citep{Tousey73,Tousey77}, which yielded both a census of \EUV\ transitions~\citep{Feldman85}
+and, much later, flare line ratios~\citep{Keenan06};
 the technique is in use today at soft X-ray wavelengths by \MaGIXS~\citep{Savage2023}.
 What has changed since S082A is that the ambiguity has become tractable.
-Reconstructing the cube from superimposed images is a tomographic problem \citep{Kak88}, in which each
+Reconstructing the cube from superimposed images is a tomographic problem~\citep{Kak88}, in which each
 diffraction order views the cube from a different angle and the number of independent views limits how much
-of the line profile can be recovered \citep{Descour97}.
-\Acp{CTIS} \citep{okamoto1991,Bulygin91,Descour95} carry this to its extreme, projecting as many as 25 orders
-onto a single detector, with computational cost rising accordingly \citep{Hagen08,Hagen2013}.
+of the line profile can be recovered~\citep{Descour97}.
+\Acp{CTIS}~\citep{okamoto1991,Bulygin91,Descour95} carry this to its extreme, projecting as many as 25 orders
+onto a single detector, with computational cost rising accordingly~\citep{Hagen08,Hagen2013}.
 Fewer views can suffice when the scene is sparse: \citet{DeForest04} synthesized a magnetogram from a single
 exposure using only two dispersed orders.
-Inversion methods for overlapping spectral images have advanced considerably since
-\citep{Winebarger2019,Davila2019,Kamaci2026}.
+Inversion methods for overlapping spectral images have advanced considerably
+since~\citep{Winebarger2019,Davila2019,Kamaci2026}.
 
 \MOSESCapital~\citep{Fox10,Fox11} brought this strategy to the solar \EUV.
 A single concave grating forms three images at once, the undispersed $m=0$ order and the $m=\pm1$ orders, on
