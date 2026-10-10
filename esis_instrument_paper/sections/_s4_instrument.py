@@ -29,7 +29,7 @@ features of the primary mirror and gratings are detailed in Figures~\ref{fig:sch
     subsection_pointing = aastex.Subsection("Pointing System")
     subsection_pointing.append(r"""
 The imaging target was selected prior to launch, the morning of the day of flight.
-During flight, pointing was maintained by the \SPARCS\ \citep{Lockheed69}.
+During flight, pointing was maintained by the \SPARCS~\citep{Lockheed69}.
 Images from Camera 1 were downlinked and displayed in real time on the \SPARCS\ control system console at intervals of
 $\sim$\SI{16}{\second} to verify pointing was maintained during flight.""")
     result.append(subsection_pointing)

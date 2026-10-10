@@ -44,7 +44,7 @@ ambiguity, and $x$ is recovered by stepping the slit across the target.
 return are the most faithful of any technique discussed here.
 What is sacrificed is simultaneity: neighboring columns of the reconstructed cube are separated in time by the
 raster, and structure that evolves faster than the raster completes is smeared along $x$.
-\MUSECapital\ \citep{DePontieu2020,DePontieu2022,Cheung2022} narrows this gap considerably by ruling 37 slits across
+\MUSECapital~\citep{DePontieu2020,DePontieu2022,Cheung2022} narrows this gap considerably by ruling 37 slits across
 the field and separating their overlapping spectra afterward, which shortens the raster of an active region
 to as little as \SI{12}{\second}.
 
