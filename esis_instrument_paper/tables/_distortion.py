@@ -129,11 +129,19 @@ def distortion() -> pylatex.Table:
 
     result = pylatex.Table(position="!htb")
 
-    # The old draft never gave this table a caption, and what it should say is
-    # the authors' to write. A table is numbered only by its caption, and the
-    # caption of the distortion figure cites this table by number, so a marked
-    # placeholder stands in for one.
-    result.add_caption(pylatex.NoEscape(r"\textbf{??}"))
+    # The old draft never gave this table a caption. This one is provisional,
+    # drafted at the authors' request for them to revise, and says what a
+    # reader needs to use the numbers: where the inputs are measured from, and
+    # where the outputs are counted from, which is the lower edge of the
+    # light-sensitive area along each axis, as
+    # :meth:`optika.sensors.AbstractImagingSensor.pixels` counts them.
+    result.add_caption(pylatex.NoEscape(r"""
+Coefficients of the quadratic distortion model, Equation~\ref{eq:distortion}, of a single \ESIS\ channel,
+fit at the three target lines in the passband.
+The field angles $x$ and $y$ are measured from the center of the \FOV, and the wavelength $\lambda$ from
+\distortionWavelength, the mean of the three lines.
+The detector coordinates $x'$ and $y'$ are in pixels from the lower left corner of the light-sensitive area of the
+detector."""))
 
     with (
         result.create(pylatex.Center()) as centering,

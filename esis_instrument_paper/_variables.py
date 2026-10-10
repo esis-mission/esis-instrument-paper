@@ -196,6 +196,17 @@ def variables() -> list[aastex.Variable]:
             ),
         ),
         aastex.Variable(
+            # The wavelength the distortion model measures its wavelengths
+            # from, which is the mean of the lines it was fit at, since the fit
+            # centers its inputs on the mean of its samples. Quoted to the
+            # hundredth of an angstrom, as the titles of the vignetting and the
+            # distortion figures give the lines.
+            name="distortionWavelength",
+            value=esis_instrument_paper._distortion_model.model()
+            .fit.center.wavelength.ndarray.to(u.AA)
+            .round(2),
+        ),
+        aastex.Variable(
             name="observingTime",
             value=length_observation.round(1),
         ),
