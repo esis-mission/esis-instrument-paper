@@ -239,7 +239,7 @@ Properly positioning the gratings was expected to be the most difficult aspect o
 Table~\ref{table:errorBudget} shows that the telescope is very sensitive to defocus.
 The depth of field is an order of magnitude smaller in \EUV\ than in visible light.
 Moreover, the sensitivity to defocus at the gratings is $M^2+1=\gratingDefocusSensitivity$ times greater than at the
-detectors.
+detectors, where $M=\armRatio$ is the ratio of the grating exit arm to the grating entrance arm.
 Another sensitive aspect of the telescope is grating tip/tilt.
 A tolerance of $\sim\pm$\gratingTiltTolerance\ is needed to ensure that the entire image lands on the active area of
 the \CCD.
