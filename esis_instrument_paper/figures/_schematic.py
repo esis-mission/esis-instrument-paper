@@ -312,19 +312,25 @@ def _channel(ax: matplotlib.axes.Axes) -> None:
     ]
     for part, surface, row, ha in tilted:
         direction = _direction(instrument, surface)
-        sign = +1 if ha == "left" else -1
         # The direction carries a rounding error of a few parts in 1e16,
         # enough to write the 3.45 degrees of the filter as 3.4, so the
         # tilt is rounded to a millionth of a degree before it is written.
         tilt = np.round(np.abs(direction - 90 * u.deg).to(u.deg), 6)
         start = top[part] + _gap * (row - top[part])
+        # The label is written just outside the angle, beyond whichever of
+        # its sides is on the side the label is written on, so that it
+        # crosses neither side however wide the angle is.
+        if ha == "left":
+            angle_label = np.minimum(direction, 90 * u.deg) - 5 * u.deg
+        else:
+            angle_label = np.maximum(direction, 90 * u.deg) + 5 * u.deg
         na.plt.dimension_angular(
             center=na.Cartesian2dVectorArray(z[part], x[part]) * _unit,
             radius=((top[part] + row) / 2 - x[part]) * _unit,
             angle_a=90 * u.deg,
             angle_b=direction,
             radius_inner=(start - x[part]) * _unit,
-            angle_label=90 * u.deg - sign * 8 * u.deg,
+            angle_label=angle_label,
             label=na.as_named_array(tilt).to_string_array(
                 f"%.{_decimals}f", pad_unit=""
             ),
