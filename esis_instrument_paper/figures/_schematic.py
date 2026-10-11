@@ -1,3 +1,5 @@
+from typing import Any
+
 import aastex
 import astropy.units as u
 import esis
@@ -40,8 +42,21 @@ is left as a gap before the extension line starts, as
 :func:`named_arrays.plt.dimension` leaves by default.
 """
 
-_kwargs_extension = {"color": "black", "linewidth": 0.5}
+_kwargs_extension = {"color": "black", "linewidth": 0.4}
 """The extension lines of every dimension, thin and black as in the old draft."""
+
+_arrowstyle_dimension = "<|-|>"
+"""The arrows at the ends of every dimension line, filled as in the old draft."""
+
+_kwargs_dimension = {
+    "arrowprops": {"mutation_scale": 5, "linewidth": 0.5, "color": "black"},
+}
+"""
+The dimension lines, thin and with arrowheads half the size matplotlib draws
+by default, as in the old draft, which leaves room for the labels between them
+on the short dimensions. The arrowheads are filled, so they are given a color
+of their own, or matplotlib would fill them with the first color of its cycle.
+"""
 
 _kwargs_arrow = {
     "arrowstyle": "->",
@@ -145,6 +160,25 @@ def _label(length: u.Quantity | na.AbstractScalar) -> str:
     return na.as_named_array(length.to_string_array(f"%.{_decimals}f")).ndarray.item()
 
 
+def _dimension(**kwargs: Any) -> None:
+    """
+    Dimension a distance with :func:`named_arrays.plt.dimension`, in the style
+    of the old draft.
+
+    Parameters
+    ----------
+    kwargs
+        Passed to :func:`named_arrays.plt.dimension`, overriding the style.
+    """
+    defaults = {
+        "decimals": _decimals,
+        "arrowstyle": _arrowstyle_dimension,
+        "kwargs_extension": _kwargs_extension,
+        "kwargs_dimension": _kwargs_dimension,
+    }
+    na.plt.dimension(**(defaults | kwargs))
+
+
 def _channel(ax: matplotlib.axes.Axes) -> None:
     """
     Panel (a): a single channel seen from the side, with the distances between
@@ -203,16 +237,14 @@ def _channel(ax: matplotlib.axes.Axes) -> None:
 
     def axial(a: str, b: str, row: float, label: None | str = None) -> None:
         """Dimension the distance along the axis from part `a` to part `b`."""
-        na.plt.dimension(
+        _dimension(
             a=na.Cartesian2dVectorArray(z[a], top[a]) * _unit,
             b=na.Cartesian2dVectorArray(z[b], top[b]) * _unit,
             offset=(row - top[a]) * _unit,
             label=label,
-            decimals=_decimals,
             gap=_gap,
             along="x",
             ax=ax,
-            kwargs_extension=_kwargs_extension,
         )
 
     axial("obscuration", "field stop", row_upper)
@@ -249,15 +281,13 @@ def _channel(ax: matplotlib.axes.Axes) -> None:
         ("filter", -150, None),
         ("detector", +120, None),
     ]:
-        na.plt.dimension(
+        _dimension(
             a=na.Cartesian2dVectorArray(z[part] + side, 0) * _unit,
             b=na.Cartesian2dVectorArray(z[part], x[part]) * _unit,
             label=label,
-            decimals=_decimals,
             rotate=False,
             along="y",
             ax=ax,
-            kwargs_extension=_kwargs_extension,
         )
     ax.text(
         x=z["grating"] + 100 + 8,
@@ -450,13 +480,11 @@ def _primary(ax: matplotlib.axes.Axes) -> None:
         (halfwidth_obscuration, 85),
     ]:
         height = halfwidth * np.tan(angle).value
-        na.plt.dimension(
+        _dimension(
             a=na.Cartesian2dVectorArray(-halfwidth, height) * _unit,
             b=na.Cartesian2dVectorArray(halfwidth, height) * _unit,
             offset=(row - height) * _unit,
-            decimals=_decimals,
             ax=ax,
-            kwargs_extension=_kwargs_extension,
         )
 
     ax.set_aspect("equal")
@@ -487,13 +515,9 @@ def _grating(ax: matplotlib.axes.Axes) -> None:
     # edge, with the dimension lines stacked above the grating, as in the
     # old draft.
     top = vertex(mechanical, 1).y
-    kw = {
-        "ax": ax,
-        "decimals": _decimals,
-        "kwargs_extension": _kwargs_extension,
-    }
+    kw = {"ax": ax}
     for points, row in [(mechanical, 3.5 * _unit), (clear, 1 * _unit)]:
-        na.plt.dimension(
+        _dimension(
             a=vertex(points, 0),
             b=vertex(points, 1),
             offset=top - vertex(points, 0).y + row,
@@ -502,14 +526,14 @@ def _grating(ax: matplotlib.axes.Axes) -> None:
         )
 
     # The widths of the clear aperture at its outer and inner edges.
-    na.plt.dimension(
+    _dimension(
         a=vertex(clear, 2),
         b=vertex(clear, 1),
         offset=-(vertex(mechanical, 1).x - vertex(clear, 1).x + 5 * _unit),
         rotate=False,
         **kw,
     )
-    na.plt.dimension(
+    _dimension(
         a=vertex(clear, 3),
         b=vertex(clear, 0),
         offset=-4 * _unit,
