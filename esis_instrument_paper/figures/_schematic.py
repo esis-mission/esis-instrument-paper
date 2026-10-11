@@ -33,6 +33,13 @@ _color_footprint = "red"
 _alpha_unpopulated = 0.5
 """How opaque the footprint of a channel which did not fly is drawn."""
 
+_gap = 0.1
+"""
+The fraction of the distance from a part to the dimension line above it which
+is left as a gap before the extension line starts, as
+:func:`named_arrays.plt.dimension` leaves by default.
+"""
+
 _kwargs_extension = {"color": "black", "linewidth": 0.5}
 """The extension lines of every dimension, thin and black as in the old draft."""
 
@@ -202,6 +209,7 @@ def _channel(ax: matplotlib.axes.Axes) -> None:
             offset=(row - top[a]) * _unit,
             label=label,
             decimals=_decimals,
+            gap=_gap,
             along="x",
             ax=ax,
             kwargs_extension=_kwargs_extension,
@@ -261,37 +269,36 @@ def _channel(ax: matplotlib.axes.Axes) -> None:
 
     # How far each part is tilted from the vertical. The vertical side of each
     # angle is the extension line of the distance along the axis above the
-    # part, and the arc sits halfway up it, as in the old draft. The tilts are
-    # a few degrees, too few for an arc to hold arrowheads at this scale, so
-    # the arcs are drawn without them, also as in the old draft.
+    # part, and the arc sits halfway up it, as in the old draft. Both sides
+    # start where that extension line does, a gap above the part, so that
+    # the angle is drawn only up near its arc rather than back to the part.
+    # The tilts are a few degrees, too few for an arc to hold arrowheads at
+    # this scale, so the arcs are drawn without them, also as in the old
+    # draft.
     tilted = [
-        ("grating", grating.surface, halfwidth_grating, row_lower, "left"),
-        ("filter", filter_.surface, _value(filter_.radius_clear), row_lower, "right"),
-        (
-            "detector",
-            camera.surface,
-            _value(camera.sensor.width_active.x / 2),
-            row_upper,
-            "left",
-        ),
+        ("grating", grating.surface, row_lower, "left"),
+        ("filter", filter_.surface, row_lower, "right"),
+        ("detector", camera.surface, row_upper, "left"),
     ]
-    for part, surface, radius_inner, row, ha in tilted:
+    for part, surface, row, ha in tilted:
         direction = _direction(instrument, surface)
         sign = +1 if ha == "left" else -1
         # The direction carries a rounding error of a few parts in 1e16,
         # enough to write the 3.45 degrees of the filter as 3.4, so the
         # tilt is rounded to a millionth of a degree before it is written.
         tilt = np.round(np.abs(direction - 90 * u.deg).to(u.deg), 6)
+        start = top[part] + _gap * (row - top[part])
         na.plt.dimension_angular(
             center=na.Cartesian2dVectorArray(z[part], x[part]) * _unit,
             radius=((top[part] + row) / 2 - x[part]) * _unit,
             angle_a=90 * u.deg,
             angle_b=direction,
-            radius_inner=radius_inner * _unit,
+            radius_inner=(start - x[part]) * _unit,
             angle_label=90 * u.deg - sign * 8 * u.deg,
             label=na.as_named_array(tilt).to_string_array(
                 f"%.{_decimals}f", pad_unit=""
             ),
+            gap=0,
             arrowstyle="-",
             ax=ax,
             kwargs_extension=_kwargs_extension,
