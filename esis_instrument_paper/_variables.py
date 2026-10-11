@@ -211,14 +211,6 @@ def variables() -> list[aastex.Variable]:
             value=length_observation.round(1),
         ),
         aastex.Variable(
-            # How many exposures to stack is chosen rather than derived: it
-            # buys signal at the cost of the cadence the torsional waves need,
-            # and the old draft settled on twelve. It is written here because
-            # the count rates are computed from it, not the other way about.
-            name="NumExpInStack",
-            value=12,
-        ),
-        aastex.Variable(
             # the number of emission lines drawn in the bunch figure
             name="numEmissionLines",
             value=aastex.NoEscape(
@@ -263,14 +255,12 @@ def variables() -> list[aastex.Variable]:
             name="chiantiVersion",
             value=aastex.NoEscape(esis_instrument_paper._spectrum.version()),
         ),
-        # Quantities the model cannot supply yet. Each is a capability of the
-        # instrument rather than a requirement of the mission, and each waits
-        # on analysis which has not been ported: the spatial resolution on the
-        # error budget, and the stacked signal-to-noise ratio on the count
-        # rates.
+        # A quantity the model cannot supply yet. It is a capability of the
+        # instrument rather than a requirement of the mission, and it waits
+        # on analysis which has not been ported: the error budget.
         _pending("spatialResolutionTotal"),
-        _pending("StackedCoronalHoleSNR"),
         *_coatings(),
+        *_sensitivity(),
     ]
 
 
@@ -555,5 +545,61 @@ def _coatings() -> list[aastex.Variable]:
         aastex.Variable(
             name="primaryMeasurementDate",
             value=_date(primaries.materials.time_measurement),
+        ),
+    ]
+
+
+def _sensitivity() -> list[aastex.Variable]:
+    """
+    The variables cited by the subsection on the sensitivity and the cadence,
+    and by the requirements table, from the signal of a single channel.
+    """
+    spectrum = esis.flights.f1.spectrum
+    counts = esis_instrument_paper._counts
+
+    signal = counts.counts().sum(counts.axis_line)
+    noise_read = counts.noise_read()
+
+    # The fewest exposures whose sum meets the signal-to-noise ratio the
+    # mission required in a coronal hole, so that the text can say the
+    # requirement is met by stacking exposures. The old draft settled on
+    # twelve, which the modern model finds too few.
+    num = counts.num_stack_required(signal, noise_read)
+    snr = counts.snr(signal[counts.index(counts.context_coronal_hole)], noise_read, num)
+
+    # how long it takes to collect a good image in an active region
+    num_active_region = counts.num_stack_counts(
+        signal=signal[counts.index(counts.context_active_region)],
+        counts_min=counts.counts_image,
+    )
+    exposure = counts.optics().camera.timedelta_exposure
+
+    return [
+        aastex.Variable(
+            name="MgXdimWavelength",
+            value=spectrum.Mg_X_625.wavelength,
+        ),
+        aastex.Variable(
+            # the weaker line of the Mg X doublet, as the old draft named it
+            name="MgXdim",
+            value=aastex.NoEscape(r"\MgXion~\MgXdimWavelength"),
+        ),
+        aastex.Variable(
+            name="NumExpInStack",
+            value=num,
+        ),
+        aastex.Variable(
+            # a plain number rather than the dimensionless quantity it is in
+            # the model, as the requirement beside it is written
+            name="StackedCoronalHoleSNR",
+            value=round(float(na.as_named_array(snr).ndarray), 1),
+        ),
+        aastex.Variable(
+            name="goodImageCounts",
+            value=counts.counts_image,
+        ),
+        aastex.Variable(
+            name="activeRegionStackLength",
+            value=num_active_region * exposure,
         ),
     ]
