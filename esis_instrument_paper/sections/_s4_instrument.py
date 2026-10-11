@@ -217,14 +217,14 @@ Moreover, a sounding rocket instrument requires robust, adjustment-free mounts t
 Such a design is not amenable to iterative adjustment in vacuum.  The choice of alignment wavelength is arbitrary for
 most components;
 \CCD\ response and multilayer coating reflectivity is sufficient across a wide band of visible wavelengths.
-The exceptions are the thin film filters (which will not be installed until just before launch and have no effect on
+The exceptions are the thin film filters (which were not installed until just before launch and have no effect on
 telescope alignment and focus) and the diffraction gratings.
-Visible light gratings have been manufactured specifically for alignment and focus.
+Visible light gratings were manufactured specifically for alignment and focus.
 These gratings are identical to the \EUV\ flight version, but with a ruling pattern scaled to a
 \SI{632.8}{\nano\meter} wavelength.""")
     subsection_alignment.append(esis_instrument_paper.figures.grating_mount())
     subsection_alignment.append(r"""
-After alignment and focus has been obtained with the \HeNe\ source, the instrument will be prepared for flight by
+After alignment and focus had been obtained with the \HeNe\ source, the instrument was prepared for flight by
 replacing the visible gratings by the \EUV\ flight versions.
 Each grating (\EUV\ and alignment) is individually mounted to a backing plate using a bipod system similar to that of
 the primary mirror.
@@ -235,14 +235,14 @@ The tuffet is attached to the secondary mirror mount structure (Figure~\ref{fig:
 This enables the entire grating array to be replaced simply by removing/installing the tuffet, such as when switching
 between alignment and \EUV\ gratings.
 
-Properly positioning the gratings will be the most difficult aspect of final telescope assembly.
+Properly positioning the gratings was expected to be the most difficult aspect of final telescope assembly.
 Table~\ref{table:errorBudget} shows that the telescope is very sensitive to defocus.
 The depth of field is an order of magnitude smaller in \EUV\ than in visible light.
 Moreover, the sensitivity to defocus at the gratings is $M^2+1=\gratingDefocusSensitivity$ times greater than at the
 detectors.
 Another sensitive aspect of the telescope is grating tip/tilt.
-A tolerance of $\sim\pm$\gratingTiltTolerance\ will be needed to ensure that the entire image lands on the active
-area of the \CCD.
+A tolerance of $\sim\pm$\gratingTiltTolerance\ is needed to ensure that the entire image lands on the active area of
+the \CCD.
 
 %Once the visible gratings are aligned and focused, the challenge is to transfer this alignment to the UV gratings.
 %\citet{Johnson18} describes a procedure and the apparatus constructed to accurately transfer the position of an
@@ -255,7 +255,7 @@ area of the \CCD.
 %This alignment transfer apparatus will ensure that the \EUV\ flight gratings are positioned to within the tolerances
 %described in Table~\ref{table:tol}.
 
-Once the visible gratings were aligned and focused, the challenge is to transfer this alignment to the \EUV\ flight
+Once the visible gratings were aligned and focused, the challenge was to transfer this alignment to the \EUV\ flight
 gratings.
 We performed this transfer using a 4D Phasecam 6000 interferometer.
 We aligned the interferometer to each visible grating such that the tip, tilt, and defocus aberrations were zero.
