@@ -33,6 +33,9 @@ _color_footprint = "red"
 _alpha_unpopulated = 0.5
 """How opaque the footprint of a channel which did not fly is drawn."""
 
+_kwargs_extension = {"color": "black", "linewidth": 0.5}
+"""The extension lines of every dimension, thin and black as in the old draft."""
+
 _kwargs_arrow = {
     "arrowstyle": "->",
     "linewidth": 0.75,
@@ -184,39 +187,40 @@ def _channel(ax: matplotlib.axes.Axes) -> None:
         "detector": x["detector"] + _value(camera.sensor.width_active.x / 2),
     }
 
-    # The distances along the axis, on two rows above the drawing, as in the
-    # old draft.
-    row_upper = 190
-    row_lower = 140
+    # The distances along the axis, on two rows high above the drawing, as in
+    # the old draft, which leaves room between the parts and the rows for the
+    # tilts. Each is measured along the axis only, from the top of one part to
+    # the top of the other, so each extension line starts at its own part.
+    row_upper = 280
+    row_lower = 225
 
     def axial(a: str, b: str, row: float, label: None | str = None) -> None:
         """Dimension the distance along the axis from part `a` to part `b`."""
         na.plt.dimension(
-            a=na.Cartesian2dVectorArray(z[a], row) * _unit,
-            b=na.Cartesian2dVectorArray(z[b], row) * _unit,
+            a=na.Cartesian2dVectorArray(z[a], top[a]) * _unit,
+            b=na.Cartesian2dVectorArray(z[b], top[b]) * _unit,
+            offset=(row - top[a]) * _unit,
             label=label,
             decimals=_decimals,
+            along="x",
             ax=ax,
+            kwargs_extension=_kwargs_extension,
         )
-        for part in (a, b):
-            ax.plot(
-                [z[part], z[part]],
-                [top[part] + 5, row],
-                color="gray",
-                linewidth=plt.rcParams["patch.linewidth"],
-            )
 
     axial("obscuration", "field stop", row_upper)
     axial("grating", "field stop", row_lower)
     axial("field stop", "primary", row_upper)
     axial("filter", "primary", row_lower, label="")
     axial("primary", "detector", row_upper, label="")
+
+    # The two short distances are written beside their dimension lines, which
+    # are too short to hold them, where the old draft wrote them.
     ax.text(
-        x=(z["filter"] + z["primary"]) / 2,
-        y=row_lower + 8,
+        x=z["filter"] - 8,
+        y=row_lower,
         s=_label((z["primary"] - z["filter"]) * _unit),
-        ha="center",
-        va="bottom",
+        ha="right",
+        va="center",
     )
     ax.text(
         x=(z["primary"] + z["detector"]) / 2,
@@ -226,33 +230,52 @@ def _channel(ax: matplotlib.axes.Axes) -> None:
         va="bottom",
     )
 
-    # How far each part sits from the axis.
-    for part, side in [("grating", +1), ("filter", -1), ("detector", +1)]:
-        offset = 18 * side
+    # How far each part sits from the axis, dimensioned well to one side of
+    # the part, so that the arrows which name the parts pass clear of it. The
+    # dimension is measured up from the axis, which serves as its lower
+    # extension line, to the height of the part, which is joined to it by an
+    # extension line of its own, as in the old draft. The distance from the
+    # grating is too short to hold its label, which is written beside it.
+    for part, side, label in [
+        ("grating", +100, ""),
+        ("filter", -150, None),
+        ("detector", +120, None),
+    ]:
         na.plt.dimension(
-            a=na.Cartesian2dVectorArray(z[part], 0) * _unit,
+            a=na.Cartesian2dVectorArray(z[part] + side, 0) * _unit,
             b=na.Cartesian2dVectorArray(z[part], x[part]) * _unit,
-            offset=-offset * _unit,
-            label="",
+            label=label,
+            decimals=_decimals,
+            rotate=False,
+            along="y",
             ax=ax,
+            kwargs_extension=_kwargs_extension,
         )
-        ax.text(
-            x=z[part] + offset + 6 * side,
-            y=x[part] / 2,
-            s=_label(x[part] * _unit),
-            ha="left" if side > 0 else "right",
-            va="center",
-        )
+    ax.text(
+        x=z["grating"] + 100 + 8,
+        y=x["grating"] / 2,
+        s=_label(x["grating"] * _unit),
+        ha="left",
+        va="center",
+    )
 
-    # How far each part is tilted from the vertical. The tilts are a few
-    # degrees, too few for an arc to hold arrowheads at this scale, so the
-    # arcs are drawn without them, as in the old draft.
+    # How far each part is tilted from the vertical. The vertical side of each
+    # angle is the extension line of the distance along the axis above the
+    # part, and the arc sits halfway up it, as in the old draft. The tilts are
+    # a few degrees, too few for an arc to hold arrowheads at this scale, so
+    # the arcs are drawn without them, also as in the old draft.
     tilted = [
-        ("grating", grating.surface, halfwidth_grating, "left"),
-        ("filter", filter_.surface, _value(filter_.radius_clear), "right"),
-        ("detector", camera.surface, _value(camera.sensor.width_active.x / 2), "left"),
+        ("grating", grating.surface, halfwidth_grating, row_lower, "left"),
+        ("filter", filter_.surface, _value(filter_.radius_clear), row_lower, "right"),
+        (
+            "detector",
+            camera.surface,
+            _value(camera.sensor.width_active.x / 2),
+            row_upper,
+            "left",
+        ),
     ]
-    for part, surface, radius_inner, ha in tilted:
+    for part, surface, radius_inner, row, ha in tilted:
         direction = _direction(instrument, surface)
         sign = +1 if ha == "left" else -1
         # The direction carries a rounding error of a few parts in 1e16,
@@ -261,16 +284,17 @@ def _channel(ax: matplotlib.axes.Axes) -> None:
         tilt = np.round(np.abs(direction - 90 * u.deg).to(u.deg), 6)
         na.plt.dimension_angular(
             center=na.Cartesian2dVectorArray(z[part], x[part]) * _unit,
-            radius=40 * _unit,
+            radius=((top[part] + row) / 2 - x[part]) * _unit,
             angle_a=90 * u.deg,
             angle_b=direction,
             radius_inner=radius_inner * _unit,
-            angle_label=90 * u.deg - sign * 12 * u.deg,
+            angle_label=90 * u.deg - sign * 8 * u.deg,
             label=na.as_named_array(tilt).to_string_array(
                 f"%.{_decimals}f", pad_unit=""
             ),
             arrowstyle="-",
             ax=ax,
+            kwargs_extension=_kwargs_extension,
             kwargs_text={"ha": ha, "backgroundcolor": "none"},
         )
 
@@ -314,8 +338,8 @@ def _channel(ax: matplotlib.axes.Axes) -> None:
 
     ax.set_aspect("equal")
     ax.set_axis_off()
-    ax.set_xlim(-1480, 250)
-    ax.set_ylim(-200, 225)
+    ax.set_xlim(-1480, 300)
+    ax.set_ylim(-200, 315)
 
 
 def _primary(ax: matplotlib.axes.Axes) -> None:
@@ -425,6 +449,7 @@ def _primary(ax: matplotlib.axes.Axes) -> None:
             offset=(row - height) * _unit,
             decimals=_decimals,
             ax=ax,
+            kwargs_extension=_kwargs_extension,
         )
 
     ax.set_aspect("equal")
@@ -450,39 +475,39 @@ def _grating(ax: matplotlib.axes.Axes) -> None:
     ) -> na.Cartesian2dVectorArray:
         return points[{"vertex": index}]
 
+    # The lengths of the two apertures, measured along the grating only,
+    # from the corner of each at its inner edge to the corner at its outer
+    # edge, with the dimension lines stacked above the grating, as in the
+    # old draft.
     top = vertex(mechanical, 1).y
-    kw = {"ax": ax, "decimals": _decimals}
-    na.plt.dimension(
-        a=na.Cartesian2dVectorArray(vertex(mechanical, 0).x, vertex(mechanical, 0).y),
-        b=na.Cartesian2dVectorArray(vertex(mechanical, 1).x, vertex(mechanical, 0).y),
-        offset=top - vertex(mechanical, 0).y + 3.5 * _unit,
-        **kw,
-    )
-    na.plt.dimension(
-        a=na.Cartesian2dVectorArray(vertex(clear, 0).x, vertex(clear, 0).y),
-        b=na.Cartesian2dVectorArray(vertex(clear, 1).x, vertex(clear, 0).y),
-        offset=top - vertex(clear, 0).y + 1 * _unit,
-        **kw,
-    )
+    kw = {
+        "ax": ax,
+        "decimals": _decimals,
+        "kwargs_extension": _kwargs_extension,
+    }
+    for points, row in [(mechanical, 3.5 * _unit), (clear, 1 * _unit)]:
+        na.plt.dimension(
+            a=vertex(points, 0),
+            b=vertex(points, 1),
+            offset=top - vertex(points, 0).y + row,
+            along="x",
+            **kw,
+        )
+
+    # The widths of the clear aperture at its outer and inner edges.
     na.plt.dimension(
         a=vertex(clear, 2),
         b=vertex(clear, 1),
-        offset=-(vertex(mechanical, 1).x - vertex(clear, 1).x + 2.5 * _unit),
+        offset=-(vertex(mechanical, 1).x - vertex(clear, 1).x + 5 * _unit),
+        rotate=False,
         **kw,
     )
     na.plt.dimension(
         a=vertex(clear, 3),
         b=vertex(clear, 0),
-        offset=-2 * _unit,
-        label="",
-        ax=ax,
-    )
-    ax.text(
-        x=_value(vertex(clear, 0).x) + 3,
-        y=0,
-        s=_label(vertex(clear, 0).y - vertex(clear, 3).y),
-        ha="left",
-        va="center",
+        offset=-4 * _unit,
+        rotate=False,
+        **kw,
     )
 
     ax.text(
@@ -495,7 +520,7 @@ def _grating(ax: matplotlib.axes.Axes) -> None:
 
     ax.set_aspect("equal")
     ax.set_axis_off()
-    ax.set_xlim(-15, 17)
+    ax.set_xlim(-15, 21)
     ax.set_ylim(-14, 17)
 
 
@@ -506,10 +531,10 @@ def schematic() -> aastex.FigureStar:
     designed.
     """
     fig = plt.figure(
-        figsize=(aastex.text_width_inches, 6),
+        figsize=(aastex.text_width_inches, 6.6),
         constrained_layout=True,
     )
-    upper, lower = fig.subfigures(nrows=2, height_ratios=[2.4, 3.6])
+    upper, lower = fig.subfigures(nrows=2, height_ratios=[3.0, 3.6])
     ax_channel = upper.subplots()
     ax_primary, ax_grating = lower.subplots(ncols=2)
 
