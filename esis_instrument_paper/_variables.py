@@ -11,6 +11,7 @@ import optika
 import pylatex
 
 import esis_instrument_paper
+from esis_instrument_paper import _alignment
 
 __all__ = [
     "variables",
@@ -261,6 +262,7 @@ def variables() -> list[aastex.Variable]:
         _pending("spatialResolutionTotal"),
         *_coatings(),
         *_sensitivity(),
+        *_alignment_and_focus(),
     ]
 
 
@@ -601,5 +603,27 @@ def _sensitivity() -> list[aastex.Variable]:
         aastex.Variable(
             name="activeRegionStackLength",
             value=num_active_region * exposure,
+        ),
+    ]
+
+
+def _alignment_and_focus() -> list[aastex.Variable]:
+    """
+    The variables cited by the subsection on the alignment and the focus,
+    from a single channel as designed.
+    """
+    sensitivity = na.as_named_array(_alignment.defocus_sensitivity()).ndarray
+
+    return [
+        aastex.Variable(
+            # a whole number, as the old draft quoted it
+            name="gratingDefocusSensitivity",
+            value=round(float(sensitivity)),
+        ),
+        aastex.Variable(
+            # Two decimals, since a hundredth of a milliradian moves the
+            # image about two pixels.
+            name="gratingTiltTolerance",
+            value=_alignment.tolerance_tilt().round(2),
         ),
     ]
