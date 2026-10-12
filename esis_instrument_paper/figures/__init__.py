@@ -8,6 +8,7 @@ from ._component_efficiency_vs_wavelength import component_efficiency_vs_wavelen
 from ._distortion import distortion, distortion_residual
 from ._grating_efficiency_vs_angle import grating_efficiency_vs_angle
 from ._grating_efficiency_vs_position import grating_efficiency_vs_position
+from ._grating_mount import grating_mount
 from ._grating_multilayer_schematic import grating_multilayer_schematic
 from ._layout import layout
 from ._schematic_moses import schematic_moses
@@ -20,6 +21,7 @@ __all__ = [
     "distortion_residual",
     "grating_efficiency_vs_angle",
     "grating_efficiency_vs_position",
+    "grating_mount",
     "grating_multilayer_schematic",
     "layout",
     "num_emission_lines",

@@ -40,3 +40,13 @@ def test_distortion_wavelength() -> None:
     assert np.isclose(
         variables["distortionWavelength"].value, expected, atol=0.005 * u.AA
     )
+
+
+def test_grating_defocus_sensitivity() -> None:
+    """
+    The text writes the sensitivity as :math:`M^2+1` with :math:`M` the arm
+    ratio, so the two numbers it prints have to agree with each other.
+    """
+    variables = {v.name: v for v in esis_instrument_paper.variables()}
+    arm_ratio = variables["armRatio"].value
+    assert variables["gratingDefocusSensitivity"].value == round(arm_ratio**2 + 1)

@@ -46,6 +46,6 @@ Homepage = "https://github.com/esis-mission/esis-instrument-paper"
 include = ["esis_instrument_paper*"]
 
 [tool.setuptools.package-data]
-esis_instrument_paper = ["*.cls", "*.bst", "*.bib", "*.png"]
+esis_instrument_paper = ["*.cls", "*.bst", "*.bib", "*.png", "figures/static/*.png"]
 
 [tool.setuptools_scm]
