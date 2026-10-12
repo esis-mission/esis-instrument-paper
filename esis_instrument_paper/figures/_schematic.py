@@ -446,6 +446,12 @@ def _primary(ax: matplotlib.axes.Axes) -> None:
     halfwidth_mechanical = _value(primary.width_clear / 2 + primary.width_border)
     halfwidth_obscuration = _value(obscuration.halfwidth)
     radius_label = (halfwidth_obscuration + halfwidth_mechanical) / 2
+
+    # Each channel is named halfway across its footprint, from the obscuration
+    # to the edge of the clear aperture, so that the name stays clear of both.
+    # A white box breaks the extension line which crosses the name of
+    # Channel 0.
+    radius_channel = (halfwidth_obscuration + _value(primary.width_clear / 2)) / 2
     azimuth = na.as_named_array(instrument.grating.azimuth + single.roll + 180 * u.deg)
 
     for index in range(channel.shape[instrument.axis_channel]):
@@ -466,13 +472,15 @@ def _primary(ax: matplotlib.axes.Axes) -> None:
         if not populated[index]:
             label += "\n(inactive)"
         ax.text(
-            x=radius_label * np.cos(angle).value,
-            y=radius_label * np.sin(angle).value,
+            x=radius_channel * np.cos(angle).value,
+            y=radius_channel * np.sin(angle).value,
             s=label,
             ha="center",
             va="center",
+            fontsize="small",
             color=_color_footprint,
             alpha=alpha,
+            bbox={"facecolor": "white", "edgecolor": "none", "pad": 1},
         )
 
     ax.text(x=0, y=radius_label, s="primary\nclear aperture", ha="center", va="center")
