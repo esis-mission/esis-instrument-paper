@@ -281,4 +281,61 @@ Therefore each flight grating was prescribed a specific amount of defocus to acc
 curvature between each optic when transferring alignment and focus.""")
     result.append(subsection_alignment)
 
+    subsection_baffles = aastex.Subsection("Apertures and Baffles")
+    subsection_baffles.append(r"""
+\jake{Needs a big rework}
+Each channel of \ESIS\ was designed with two apertures: one at the surface of the grating and a stop in front of the
+primary mirror.
+The purpose of the aperture at the grating is to mask the out-of-figure margins at the edges of these optics.
+This provides a well defined edge to the clear aperture of each grating while also keeping unwanted rays from being
+reflected from the grating margins and back onto the \CCDs.
+The dimensions of the grating aperture match those of the grating clear aperture shown in Figure~\ref{fig:schematic}c.
+
+The stop at the primary mirror was designed to be the stop of each channel.
+Its area was maximized under the constraint that no rays be vignetted anywhere else in the system.
+The gratings and their clear apertures were the most significant areas of concern for potential vignetting, so the
+shape of the stop was largely influenced by the shape of the grating clear aperture.
+The inner extent of the stop was defined by the occultation of the primary by the shadow cast from the gratings and
+their mounts.
+This presented an intricate geometry problem, as the occultation is a function of the incoming field angle, the
+radial extent of the grating mount, and the distance of the mount to the primary mirror along the optical axis.
+Hence, the inner extent of the stop was solved for iteratively with the optimization described in
+Section~\ref{subsec:OptimizationandTolerancing}, which affected the placement of the gratings relative to the primary
+mirror.
+
+After final optimization, the stop geometry was analyzed with the optical model to check for vignetting at the
+grating.
+A footprint diagram was generated at the grating from multiple grids of rays.
+The incidence angle of each grid of rays corresponded to the extremes of the \FOV\ defined by the positions of the
+eight points of the octagonal field stop.
+The footprint diagram showed that, with the stop completely filled, no ray landed outside of the grating clear
+aperture, and no ray was intercepted by the central obscuration.
+
+This non-vignetting stop left considerable surface area of the primary mirror unused, which could only be put to use
+by relaxing the vignetting constraint.
+Before flight, the stop was removed to increase the sensitivity of the instrument at the expense of vignetting
+(Section~\ref{subsec:Vignetting}), which made the grating aperture the stop of each channel.
+The footprint of the beam of each channel on the primary mirror in Figure~\ref{fig:schematic}b is that of the
+instrument as flown, without the stop.
+
+The \ESIS\ baffles are designed to block direct light paths between the front aperture plate and the \CCDs\ for any
+ray $<$\SI{1.4}{\degree} from the optical axis.
+This angle is purposefully larger than the angular diameter of the sun ($\sim$\SI{0.5}{\degree}) so that any direct
+paths are excluded from bright sources in the solar corona.
+All baffles are bead-blasted, anodized \Al\ sheet metal oriented perpendicular to the optical axis.
+The size and shape of the cutouts were determined using a combination of the ray trace from
+Section~\ref{subsec:OptimizationandTolerancing} and 3D modeling.
+Between the primary mirror and the gratings, each cutout is the footprint of the rays of that trace where they cross
+the baffle.
+Between the gratings and the \CCDs, the light path is defined as the volume that connects each vertex of the grating
+clear aperture to every vertex of the image of the octagonal field stop on the \CCD.
+This is a conservative definition that ensures no rays within the \FOV\ are excluded, and therefore unintentionally
+vignetted by the baffles.
+The cutouts there are the projection of this volume onto the baffle.
+A conservative \SI{1}{\milli\meter} margin is added to each cutout to prevent unintentional vignetting.
+A model of the six baffles, showing their cutouts and positions on the optical bench, is displayed in
+Figure~\ref{fig:baffles}.""")
+    subsection_baffles.append(esis_instrument_paper.figures.baffles())
+    result.append(subsection_baffles)
+
     return result
