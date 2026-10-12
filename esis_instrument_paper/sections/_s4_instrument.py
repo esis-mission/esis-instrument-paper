@@ -25,6 +25,9 @@ The final design parameters are summarized in Table~\ref{table:prescription}.
 A schematic diagram of a single \ESIS\ channel is presented in Figure~\ref{fig:schematic}a, while the mechanical
 features of the primary mirror and gratings are detailed in Figures~\ref{fig:schematic}b and
 \ref{fig:schematic}c, respectively.""")
+    # The old draft placed this figure in the Optics subsection, which is not
+    # ported yet, so it goes beside the paragraph which first cites it.
+    result.append(esis_instrument_paper.figures.schematic())
 
     subsection_pointing = aastex.Subsection("Pointing System")
     subsection_pointing.append(r"""

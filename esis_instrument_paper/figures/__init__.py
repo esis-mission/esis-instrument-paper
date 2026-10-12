@@ -11,6 +11,7 @@ from ._grating_efficiency_vs_position import grating_efficiency_vs_position
 from ._grating_mount import grating_mount
 from ._grating_multilayer_schematic import grating_multilayer_schematic
 from ._layout import layout
+from ._schematic import schematic
 from ._schematic_moses import schematic_moses
 from ._vignetting import vignetting
 
@@ -25,6 +26,7 @@ __all__ = [
     "grating_multilayer_schematic",
     "layout",
     "num_emission_lines",
+    "schematic",
     "schematic_moses",
     "vignetting",
 ]
