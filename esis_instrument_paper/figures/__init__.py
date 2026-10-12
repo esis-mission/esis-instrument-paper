@@ -3,6 +3,7 @@ The figures of this article, each a factory function returning an
 :class:`aastex.Figure`.
 """
 
+from ._baffles import baffles
 from ._bunch import bunch, num_emission_lines
 from ._component_efficiency_vs_wavelength import component_efficiency_vs_wavelength
 from ._distortion import distortion, distortion_residual
@@ -16,6 +17,7 @@ from ._schematic_moses import schematic_moses
 from ._vignetting import vignetting
 
 __all__ = [
+    "baffles",
     "bunch",
     "component_efficiency_vs_wavelength",
     "distortion",
