@@ -67,27 +67,6 @@ _kwargs_arrow = {
 }
 """The arrows which point from the name of a part to the part, as in the old draft."""
 
-_num_field = 10
-"""
-The number of cells along each axis of the field which the footprints on the
-primary mirror are traced from.
-
-The footprint of a channel is the hull of every ray which reaches its
-detector, so it is set by the rays from the edges of the field, which the
-vertices of the cells reach.
-"""
-
-_num_pupil = 40
-"""
-The number of cells along each axis of the pupil which the footprints on the
-primary mirror are traced from.
-
-The pupil is the aperture of the grating, so its edge sets the edge of the
-footprint. Of the rays at the vertices of the cells, those which fall just
-outside the grating are lost, so the footprint is short of its true edge by
-up to a cell, a fortieth of the aperture.
-"""
-
 
 def _instrument() -> esis.optics.Instrument:
     """
@@ -418,30 +397,14 @@ def _primary(ax: matplotlib.axes.Axes) -> None:
     na.plt.fill(clear.x, clear.y, facecolor="white", **kwargs)
     na.plt.fill(obscured.x, obscured.y, facecolor=_color_obscuration, **kwargs)
 
-    # The footprint of each channel is the hull of the rays which reach its
-    # detector, where they cross the primary mirror.
+    # The footprint of each channel is the outline of the light which reaches
+    # its detector, where it crosses the primary mirror.
     surfaces = [surface.name for surface in system.surfaces_all]
-    rays = system.raytrace(
+    footprint = system.beam_footprint(
+        index=surfaces.index("primary"),
         wavelength=esis.flights.f1.spectrum.O_V.wavelength,
-        field=na.Cartesian2dVectorLinearSpace(
-            start=-1,
-            stop=1,
-            axis=na.Cartesian2dVectorArray("field_x", "field_y"),
-            num=_num_field + 1,
-        ),
-        pupil=na.Cartesian2dVectorLinearSpace(
-            start=-1,
-            stop=1,
-            axis=na.Cartesian2dVectorArray("pupil_x", "pupil_y"),
-            num=_num_pupil + 1,
-        ),
-        efficiency=False,
-    ).outputs
-    footprint = na.geometry.convex_hull(
-        points=rays.position[{system.axis_surface: surfaces.index("primary")}].xy,
-        axis=("field_x", "field_y", "pupil_x", "pupil_y"),
-        where=rays.unvignetted[{system.axis_surface: ~0}],
-    ).to(_unit)
+    )
+    footprint = _vertices(footprint, transformation).to(_unit)
 
     halfwidth_mechanical = _value(primary.width_clear / 2 + primary.width_border)
     halfwidth_obscuration = _value(obscuration.halfwidth)
