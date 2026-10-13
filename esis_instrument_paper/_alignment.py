@@ -56,17 +56,15 @@ def defocus_sensitivity() -> na.AbstractScalar:
     that forms it.
 
     The grating images the field stop onto the detector with a magnification
-    :math:`M`, the ratio of their distances from it, and so moves the image
-    :math:`M^2` times as far as the field stop moves. Both lie in front of
-    the grating, so moving the grating towards them by :math:`\\delta` both
-    pushes the image :math:`M^2 \\delta` further away and brings the detector
-    :math:`\\delta` nearer, which leaves the image :math:`(M^2 + 1) \\delta`
-    from the detector.
+    :math:`M` (:attr:`esis.optics.Instrument.magnification`), the ratio of
+    their distances from it, and so moves the image :math:`M^2` times as far
+    as the field stop moves. Both lie in front of the grating, so moving the
+    grating towards them by :math:`\\delta` both pushes the image
+    :math:`M^2 \\delta` further away and brings the detector :math:`\\delta`
+    nearer, which leaves the image :math:`(M^2 + 1) \\delta` from the
+    detector.
     """
-    instrument = optics()
-    distance_input = instrument.distance_grating_input
-    distance_output = instrument.distance_grating_output
-    magnification = distance_output / distance_input
+    magnification = optics().magnification
     return (magnification**2 + 1).to(u.dimensionless_unscaled)
 
 

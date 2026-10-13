@@ -188,11 +188,7 @@ def variables() -> list[aastex.Variable]:
             # apart, and the third decimal is a tenth of a percent.
             name="armRatio",
             value=round(
-                float(
-                    (channel.distance_grating_output / channel.distance_grating_input)
-                    .ndarray.to(u.dimensionless_unscaled)
-                    .value
-                ),
+                float(channel.magnification.ndarray.to(u.dimensionless_unscaled).value),
                 2,
             ),
         ),

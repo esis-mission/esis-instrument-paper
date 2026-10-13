@@ -87,8 +87,7 @@ def distortion() -> aastex.Figure:
     origin = na.Cartesian3dVectorArray() * u.mm
     stop = field_stop.transformation(field_stop.aperture.wire())
     stop = (stop - field_stop.transformation(origin)).xy
-    magnification = optics.distance_grating_output / optics.distance_grating_input
-    stop = sensor.pixels(magnification * stop) - sensor.pixels(0 * stop)
+    stop = sensor.pixels(optics.magnification * stop) - sensor.pixels(0 * stop)
 
     # named as the caption names it, with the wavelength the model carries
     label_image = rf"O\,\textsc{{v}} {wavelength.to_value(u.AA)}\,\AA"
