@@ -6,8 +6,9 @@ import esis_instrument_paper
 
 
 def test_document():
-    doc = esis_instrument_paper.document()
+    doc = esis_instrument_paper.document(linenumbers=False)
     assert isinstance(doc, pylatex.Document)
+    assert "linenumbers" not in doc.documentclass.dumps()
 
 
 def test_pdf(capsys):
@@ -15,6 +16,9 @@ def test_pdf(capsys):
         pdf = esis_instrument_paper.pdf()
     assert isinstance(pdf, pathlib.Path)
     assert pdf.exists()
+
+    tex = pdf.with_suffix(".tex").read_text(encoding="utf-8")
+    assert r"\documentclass[twocolumn,linenumbers]{aastex701}" in tex
 
 
 def test_pdf_bibliography(capsys):
