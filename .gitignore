@@ -37,6 +37,9 @@ docs/_autosummary/
 # subdirectory (e.g. `figures/static/`) so that they are not ignored here.
 esis_instrument_paper/esis-instrument.tex
 esis_instrument_paper/*.pdf
+# aastex copies each static figure next to the .tex file too
+esis_instrument_paper/*.png
+!esis_instrument_paper/orcid-ID.png
 
 # submission archives built by `aastex.Document.generate_archive()`
 *.zip
