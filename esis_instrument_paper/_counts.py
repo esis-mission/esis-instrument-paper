@@ -201,12 +201,23 @@ def noise_read() -> u.Quantity | na.AbstractScalar:
     """
     The read noise of the sensor, as the photons of
     :math:`\\text{O\\,V}` which would free as many electrons.
+
+    It was measured for each tap of each camera, and is averaged in quadrature
+    over the taps and the channels, since the table is for a typical channel.
     """
-    sensor = optics().camera.sensor
+    instrument = optics()
+    camera = instrument.camera
+    sensor = camera.sensor
+    noise = np.sqrt(
+        np.mean(
+            np.square(sensor.readout_noise),
+            axis=(instrument.axis_channel, camera.axis_tap_y, camera.axis_tap_x),
+        )
+    )
     quantum_yield = sensor.material.quantum_yield_ideal(
         esis.flights.f1.spectrum.O_V.wavelength
     )
-    return (sensor.readout_noise / quantum_yield).to(u.ph)
+    return (noise / quantum_yield).to(u.ph)
 
 
 def snr(
