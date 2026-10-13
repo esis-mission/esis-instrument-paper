@@ -341,4 +341,61 @@ A model of the six baffles, showing their cutouts and positions on the optical b
 Figure~\ref{fig:baffles}.""")
     result.append(subsection_baffles)
 
+    subsection_cameras = aastex.Subsection("Cameras")
+    subsection_cameras.append(esis_instrument_paper.figures.cameras())
+    subsection_cameras.append(r"""
+The \ESIS\ \CCD\ cameras were designed and constructed by \MSFC\ and were the latest in a
+series of camera systems developed specifically for use on solar space flight instruments.
+The \ESIS\ camera heritage includes those flown on both the \CLASP~\citep{Kano12,Kobayashi12} and
+\HiC~\citep{Kobayashi2014}.
+
+The \ESIS\ detectors are \detectorName\ astro-process \CCDs\ from \detectorManufacturer.
+For each camera, the \CCD\ is operated in a split frame transfer mode with each of the four ports read out by a
+\detectorAnalogToDigitalBits-bit A/D converter.
+The central $\detectorPixelsX \times \detectorPixelsY$ pixels of the $2k\times2k$ device are used for imaging, while
+the outer two regions are used for storage.
+\DetectorNumOverscanColumnsWords\ overscan columns on either side of the imaging area and
+\detectorNumMaskedRowsWords\ extra rows in each storage region were intended to monitor read noise and dark current.
+When the camera receives the trigger signal, it transfers the image from the imaging region to the storage regions and
+starts image readout.
+The digitized data are sent to the \DACS\ through a SpaceWire interface immediately, one line at a time.
+The frame transfer takes \detectorFrameTransferTime, and readout takes \detectorReadoutTime.
+The cadence is adjustable from \detectorExposureLengthMin\ to \detectorExposureLengthMax\ in increments of
+\detectorExposureLengthIncrement, to satisfy the requirement listed in Table~\ref{table:scireq}.
+Because the imaging region is continuously illuminated, the action of frame transfer (transferring the image from the
+imaging region to the storage regions) also starts the next exposure without delay.
+Thus the exposure time is controlled by the time period between triggers.
+Camera~\detectorTriggerChannel\ (Figure~\ref{fig:cameras}) generates the sync trigger, which is fed back into
+Camera~\detectorTriggerChannel's trigger input and provides independently buffered triggers to the remaining three
+cameras.
+The trigger signals are synchronized to better than $\pm$\detectorSynchronizationError.
+Shutterless operation allows \ESIS\ to observe with a \SI{100}{\percent} duty cycle.
+The cadence is limited only by the \detectorReadoutTime\ readout time.
+
+\MSFC\ custom designed the camera board, enclosure, and mounting structure for \ESIS\ to fit the unique packaging
+requirements of this experiment (Figure~\ref{fig:cameras}).
+The front part of the camera is a metal block which equalizes the temperature across the \CCD\ while fastening it in
+place.
+The carriers of all cameras are connected to a central two-piece copper (\SI{3}{\kilo\gram}) and aluminum
+(\SI{1}{\kilo\gram}) thermal reservoir (cold block) by flexible copper cold straps.
+The flexible cold straps allow individual cameras to be translated parallel to the optical axis (by means of shims) up
+to $\sim$\SI{13}{\milli\meter} to adjust focus in each channel prior to launch.
+The centrally located cold block was cooled by \LN\ flow from outside the payload until just before launch.
+The \LN\ flow was controlled automatically by a \GSE\ computer so that all cameras were maintained above survival
+temperature but below the target temperature of \detectorTemperatureTarget\ to ensure a negligible dark current level.
+
+The gain, read noise, and dark current of the four cameras were measured at \MSFC\ using an ${}^{55}$Fe radioactive
+source.
+Cameras are labeled \channelNames\ with associated serial numbers \detectorSerialNumbers\ respectively in
+Figure~\ref{fig:cameras}.
+Gain ranges from \detectorGainMin\ to \detectorGainMax\ in each quadrant of all four cameras.
+Table~\ref{table:cameras} lists gain, read noise, and dark current by quadrant for each camera.
+
+The \QE\ of the \ESIS\ \CCDs\ was not measured before flight.
+This paper models it with the measurements of a back-illuminated e2v CCD97 by \citet{Moody2017} and
+\citet{Heymes2020}, which give a \QE\ of \detectorQuantumEfficiencyHeI\ at \HeI\ and \detectorQuantumEfficiencyOV\ at
+\OV.""")
+    subsection_cameras.append(esis_instrument_paper.tables.cameras())
+    result.append(subsection_cameras)
+
     return result
