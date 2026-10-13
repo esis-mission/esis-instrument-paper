@@ -105,7 +105,12 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: article
-          path: esis_instrument_paper/esis-instrument.pdf
+          # The formatted bibliography of the pdf, and the BibTeX files it was
+          # formatted from, are published with it.
+          path: |
+            esis_instrument_paper/esis-instrument.pdf
+            esis_instrument_paper/esis-instrument.bbl
+            esis_instrument_paper/*.bib
           if-no-files-found: error
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v7
