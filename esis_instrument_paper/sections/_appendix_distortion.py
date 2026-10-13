@@ -72,8 +72,13 @@ line, its component along the channel's dispersion in pixels and in \si{\kilo\me
 the tiles about it, and the decomposition of the tiles into the linear distortion modes with a test of whether
 what remains is noise (Figure~\ref{fig:coalignmentTiles}).
 \end{enumerate}
-The same chain run on a host without a GPU reproduces the committed tables, the correlations to seven figures
-and the coalignment to \SI{0.01}{pixels}. A second run from a different random seed, on the chain before the
+The committed tables differ from the run before them only in the \AIA\ scene, which a correction to the data
+library moved by one \AIA\ pixel; the fitted pointing moved by that much, \SI{0.8}{\arcsecond}, and everything
+the scene does not touch, the window edges and their drift, the focus of each sector and the registration of the
+channels, came out the same to the noise: the correlations within 0.003, the pointing drifts within
+\SI{0.04}{\arcsecond}, the foci within \SI{9}{\micro\meter} and the registration within \SI{0.02}{pixels}.
+The same chain run on a host without a GPU reproduced that earlier run, the correlations to seven figures and
+the coalignment to \SI{0.01}{pixels}. A second run from a different random seed, on the chain before the
 focus of each sector was added, reproduced the correlations to 0.01 and the coalignment to \SI{0.02}{pixels};
 the parameters differ along the null directions of the problem, with the mapping unchanged to about a pixel at
 the edge of the field.
@@ -135,8 +140,8 @@ tenths of a pixel; an athermal metering structure between them, or a way to meas
 more to the registration of the channels than any improvement of the detectors.
 
 \paragraph{Cost}
-The capture takes one to two hours per channel on one GPU, the later stages four hours more, and the chain
-is about six hours of wall time on a cluster; the same chain on the host without a GPU takes about as long,
+The capture takes one to two hours per channel on one GPU, the later stages five hours more, and the chain
+is six to seven hours of wall time on a cluster; the same chain on the host without a GPU takes about as long,
 and the stages from the focus on fit a workstation with \SI{128}{\giga\byte} of memory."""
     )
     result.append(esis_instrument_paper.figures.coalignment_tiles())
