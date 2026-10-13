@@ -282,6 +282,10 @@ curvature between each optic when transferring alignment and focus.""")
     result.append(subsection_alignment)
 
     subsection_baffles = aastex.Subsection("Apertures and Baffles")
+    # A figure across both columns goes at the top of a page after the one it
+    # is defined on, so it is defined here rather than after the paragraph
+    # that cites it, which would put it after the end of the subsection.
+    subsection_baffles.append(esis_instrument_paper.figures.baffles())
     subsection_baffles.append(r"""
 \jake{Needs a big rework}
 Each channel of \ESIS\ was designed with two apertures: one at the surface of the grating and a stop in front of the
@@ -335,7 +339,6 @@ The cutouts there are the projection of this volume onto the baffle.
 A conservative \SI{1}{\milli\meter} margin is added to each cutout to prevent unintentional vignetting.
 A model of the six baffles, showing their cutouts and positions on the optical bench, is displayed in
 Figure~\ref{fig:baffles}.""")
-    subsection_baffles.append(esis_instrument_paper.figures.baffles())
     result.append(subsection_baffles)
 
     return result
