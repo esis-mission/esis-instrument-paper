@@ -5,6 +5,7 @@ The figures of this article, each a factory function returning an
 
 from ._baffles import baffles
 from ._bunch import bunch, num_emission_lines
+from ._cameras import cameras
 from ._component_efficiency_vs_wavelength import component_efficiency_vs_wavelength
 from ._distortion import distortion, distortion_residual
 from ._grating_efficiency_vs_angle import grating_efficiency_vs_angle
@@ -19,6 +20,7 @@ from ._vignetting import vignetting
 __all__ = [
     "baffles",
     "bunch",
+    "cameras",
     "component_efficiency_vs_wavelength",
     "distortion",
     "distortion_residual",
