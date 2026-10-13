@@ -166,7 +166,7 @@ Figure~\ref{fig:componentEfficiencyVsWavelength}.
 We conservatively estimate filter oxidation at the time of launch as a \filterOxideThickness\ thick layer of Al$_2$O$_3$.
 
 An \Al\ filter is positioned in front of the focal plane of each \CCD\ by a filter tube, creating a light-tight box with a
-labyrinthine evacuation vent (\eg, Figure~\ref{F-cameras}).
+labyrinthine evacuation vent (\eg, Figure~\ref{fig:cameras}).
 The placement of the filter relative to the \CCD\ is optimized so that the filter mesh shadow is not visible.
 By modeling the filter mesh shadow, we find that a position far from the \CCD\ (\filterToDetectorDistance) and mesh grid
 clocking of \filterClocking\ to the detector array reduces the shadow amplitude well below photon statistics.
