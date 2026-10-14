@@ -29,13 +29,16 @@ def grating_mount() -> aastex.Figure:
     """
     A rendering of the solid model of the secondary mount, which holds the
     gratings, with its parts labeled.
+
+    The rendering is drawn without interpolation, so the PDF embeds every
+    pixel of it rather than resampling it to the resolution of the figure.
     """
     fig, ax = plt.subplots(
         figsize=(aastex.column_width_inches, 3),
         constrained_layout=True,
     )
 
-    ax.imshow(plt.imread(_path))
+    ax.imshow(plt.imread(_path), interpolation="none")
     ax.set_axis_off()
 
     for text, xy, xytext in _labels:
