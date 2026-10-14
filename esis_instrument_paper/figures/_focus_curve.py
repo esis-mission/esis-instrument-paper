@@ -103,7 +103,7 @@ def focus_curve() -> aastex.Figure:
 
     ax.set_xlabel(f"detector translation ({u.mm:latex_inline})")
     ax.set_ylabel(f"RMS spot radius ({u.pix:latex_inline})")
-    ax.legend(bbox_to_anchor=(0.5, -0.3), loc="upper center", ncol=2)
+    fig.legend(loc="outside lower center", ncol=2)
 
     result = aastex.Figure("fig:focusCurve", position="!htb")
     result.add_fig(fig, width=None)
