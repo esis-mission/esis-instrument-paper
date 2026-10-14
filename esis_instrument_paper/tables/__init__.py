@@ -8,6 +8,7 @@ from ._counts import counts
 from ._distortion import distortion
 from ._prescription import prescription
 from ._requirements import requirements
+from ._surface_error import surface_error
 
 __all__ = [
     "cameras",
@@ -15,4 +16,5 @@ __all__ = [
     "distortion",
     "prescription",
     "requirements",
+    "surface_error",
 ]
