@@ -80,7 +80,7 @@ def focus_curve() -> aastex.Figure:
         axis=na.Cartesian2dVectorArray("pupil_x", "pupil_y"),
         num=num_pupil,
     )
-    radius = moved.spot_size(
+    radius = moved.radius_spot(
         wavelength=wavelength,
         field=na.Cartesian2dVectorArray(0, 0),
         pupil=pupil,

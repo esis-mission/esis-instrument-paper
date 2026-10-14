@@ -43,8 +43,8 @@ def spot_size() -> aastex.FigureStar:
     single channel, at each of the brightest lines in the passband.
 
     The lines are the brightest of the ones the passband figure labels, in
-    order of wavelength. A spot which misses the detector, as part of the
-    image of the field stop at He I does, is left blank.
+    order of wavelength. A spot whose centroid misses the detector, as part
+    of the image of the field stop at He I does, is left blank.
     """
     optics = esis.flights.f1.optics.design_single(num_distribution=0)
     system = optics.system
@@ -88,7 +88,7 @@ def spot_size() -> aastex.FigureStar:
         seed=_seed,
     )
 
-    radius = system.spot_size(
+    radius = system.radius_spot(
         wavelength=wavelength,
         field=centers,
         pupil=pupil,
