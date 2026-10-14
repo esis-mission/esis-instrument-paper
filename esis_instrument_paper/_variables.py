@@ -98,6 +98,10 @@ def variables() -> list[aastex.Variable]:
             value=3 * u.m,
         ),
         aastex.Variable(
+            name="numChannels",
+            value=num_channels,
+        ),
+        aastex.Variable(
             name="numChannelsWords",
             value=aastex.NoEscape(num2words.num2words(num_channels)),
         ),
@@ -256,6 +260,7 @@ def variables() -> list[aastex.Variable]:
         # instrument rather than a requirement of the mission, and it waits
         # on analysis which has not been ported: the error budget.
         _pending("spatialResolutionTotal"),
+        *_optics(),
         *_coatings(),
         *_sensitivity(),
         *_alignment_and_focus(),
@@ -329,6 +334,42 @@ def _reflectance(
     return material.efficiency(rays, na.Cartesian3dVectorArray(0, 0, -1))
 
 
+def _grooves(
+    rulings: optika.rulings.AbstractRulings,
+    wavelength: u.Quantity | na.AbstractScalar,
+) -> na.AbstractScalar:
+    """
+    The efficiency of the grooves of a grating at normal incidence.
+
+    The coating subsection predicts the efficiency of a grating from the
+    grooves the optics subsection quotes, so both quote them from here.
+    """
+    rays = optika.rays.RayVectorArray(
+        wavelength=wavelength,
+        position=na.Cartesian3dVectorArray() * u.mm,
+        direction=na.Cartesian3dVectorArray(0, 0, 1),
+    )
+    return rulings.efficiency(rays, na.Cartesian3dVectorArray(0, 0, -1))
+
+
+def _fixed(value: u.Quantity, decimals: int) -> aastex.NoEscape:
+    """
+    A quantity written to a fixed number of decimals.
+
+    :class:`aastex.Variable` writes a quantity as :mod:`astropy` prints it,
+    which drops the zeros at the end, so that a plate scale of 0.770 reads as
+    0.77 beside one of 0.734.
+    """
+    result = value.to_string(format="latex_inline", formatter=f".{decimals}f")
+    return aastex.NoEscape(rf"\ensuremath{{{result[1:~0]}}}")
+
+
+def _significant(value: u.Quantity, digits: int) -> u.Quantity:
+    """A quantity rounded to a number of significant digits."""
+    exponent = int(np.floor(np.log10(np.abs(value.value))))
+    return value.round(digits - 1 - exponent)
+
+
 def _percent(fraction: na.AbstractScalar, decimals: int = 0) -> u.Quantity:
     """A fraction written as a percentage, rounded."""
     fraction = na.as_named_array(fraction).ndarray
@@ -345,6 +386,217 @@ def _date(time: astropy.time.Time) -> aastex.NoEscape:
     """A day written as the journal writes dates, such as 2018 January 21."""
     date = time.to_datetime()
     return aastex.NoEscape(f"{date.year} {date:%B} {date.day}")
+
+
+def _optics() -> list[aastex.Variable]:
+    """
+    The variables cited by the subsection on the optics and by the table of
+    the design parameters.
+
+    Each design parameter is taken from a single channel as designed, and its
+    measured counterpart, where there is one, from the instrument that flew.
+    Efficiencies are at the O V line, at normal incidence.
+    """
+    f1 = esis.flights.f1
+    spectrum = f1.spectrum
+    wavelength = spectrum.O_V.wavelength
+    normal = 0 * u.deg
+
+    design = f1.optics.design_single(num_distribution=0)
+    as_built = esis_instrument_paper._counts.optics()
+
+    grating = design.grating
+
+    # The measured radius of each grating, quoted as the middle of their
+    # range plus or minus half of it, as the old draft quoted them.
+    radius = np.abs(na.as_named_array(as_built.grating.sag.radius).ndarray)
+    radius_center = (radius.max() + radius.min()) / 2
+    radius_spread = (radius.max() - radius.min()) / 2
+
+    # The clear aperture of a grating is an isosceles trapezoid whose legs
+    # meet at the axis of the instrument, so its width at a distance from
+    # that apex is twice the distance times the tangent of half the angle
+    # between the legs.
+    aperture = grating.surface.aperture
+    height = aperture.x_right - aperture.x_left
+    tangent = np.tan(aperture.angle / 2)
+
+    spacing = grating.rulings.spacing.coefficients
+    spacing_measured = as_built.grating.rulings.spacing.coefficients
+
+    # A flight grating itself, coating and grooves together, in first order.
+    efficiency = f1.optics.gratings.efficiencies.efficiency_vs_wavelength()
+    efficiency_grating = na.interp(
+        x=wavelength,
+        xp=efficiency.inputs.wavelength,
+        fp=efficiency.outputs,
+    )
+
+    # a filter transmits, and its efficiency is computed as a mirror's is
+    efficiency_filter = _reflectance(design.filter.material, wavelength, normal)
+
+    efficiency_primary = _reflectance(
+        as_built.primary_mirror.material, wavelength, normal
+    )
+    efficiency_sensor = as_built.camera.sensor.material.quantum_efficiency_effective(
+        wavelength
+    )
+
+    # The beam converging on the detector is as long as the exit arm of the
+    # grating, which is the stop, and as wide as the grating is tall, as the
+    # old draft took it.
+    f_number = design.distance_grating_output / height
+
+    plate_scale = design.system.plate_scale(wavelength).to(u.arcsec / u.pix)
+
+    return [
+        aastex.Variable(
+            name="primaryFocalLength",
+            value=_fixed(np.abs(design.primary_mirror.sag.focal_length), 1),
+        ),
+        aastex.Variable(
+            # edge to edge, as the field stop is measured
+            name="primaryDiameter",
+            value=design.primary_mirror.width_clear.round(),
+        ),
+        aastex.Variable(
+            name="primaryEfficiency",
+            value=_percent(
+                _reflectance(design.primary_mirror.material, wavelength, normal)
+            ),
+        ),
+        aastex.Variable(
+            # the coating fitted to the witness, on the substrate of the mirror
+            name="primaryEfficiencyMeasured",
+            value=_percent(efficiency_primary),
+        ),
+        aastex.Variable(
+            name="fieldStopDiameter",
+            value=design.field_stop.width_clear.round(3),
+        ),
+        aastex.Variable(
+            name="gratingRadius",
+            value=_fixed(np.abs(grating.sag.radius), 3),
+        ),
+        aastex.Variable(
+            name="gratingRadiusMeasured",
+            value=aastex.NoEscape(
+                rf"\ensuremath{{{radius_center.to_value(u.mm):.3f}"
+                rf"\pm{radius_spread.to_value(u.mm):.3f}\,\mathrm{{mm}}}}"
+            ),
+        ),
+        aastex.Variable(
+            name="gratingHeight",
+            value=height.round(1),
+        ),
+        aastex.Variable(
+            name="gratingLongWidth",
+            value=(2 * aperture.x_right * tangent).round(1),
+        ),
+        aastex.Variable(
+            name="gratingShortWidth",
+            value=(2 * aperture.x_left * tangent).round(1),
+        ),
+        aastex.Variable(
+            name="gratingRulingSpacing",
+            value=spacing[0].to(u.um).round(5),
+        ),
+        aastex.Variable(
+            name="gratingRulingSpacingMeasured",
+            value=spacing_measured[0].to(u.um).round(5),
+        ),
+        aastex.Variable(
+            name="gratingLinearRulingSpacingCoefficient",
+            value=_significant(spacing[1], 4),
+            unit=(u.um, u.mm**-1),
+        ),
+        aastex.Variable(
+            name="gratingQuadraticRulingSpacingCoefficient",
+            value=_significant(spacing[2], 4),
+            unit=(u.um, u.mm**-2),
+        ),
+        aastex.Variable(
+            name="gratingInputAngle",
+            value=grating.angle_input,
+        ),
+        aastex.Variable(
+            name="gratingOutputAngle",
+            value=grating.angle_output,
+        ),
+        aastex.Variable(
+            name="modeledGratingGrooveEfficiency",
+            value=_percent(_grooves(grating.rulings, wavelength)),
+        ),
+        aastex.Variable(
+            # the grooves of the flight gratings are inferred from the
+            # efficiency of one of them, over the efficiency of its coating
+            name="gratingGrooveEfficiencyMeasured",
+            value=_percent(_grooves(as_built.grating.rulings, wavelength)),
+        ),
+        aastex.Variable(
+            name="gratingEfficiencyMeasured",
+            value=_percent(efficiency_grating),
+        ),
+        aastex.Variable(
+            name="filterDiameter",
+            value=_fixed(2 * design.filter.radius_clear, 1),
+        ),
+        aastex.Variable(
+            name="filterEfficiency",
+            value=_percent(efficiency_filter),
+        ),
+        aastex.Variable(
+            name="detectorPixelSize",
+            value=design.camera.sensor.width_pixel.round(),
+        ),
+        aastex.Variable(
+            name="fNumber",
+            value=aastex.NoEscape(
+                f"$f$/{round(float(na.as_named_array(f_number).ndarray))}"
+            ),
+        ),
+        aastex.Variable(
+            name="plateScaleDispersion",
+            value=_fixed(plate_scale.x.ndarray, 3),
+        ),
+        aastex.Variable(
+            name="plateScaleCrossDispersion",
+            value=_fixed(plate_scale.y.ndarray, 3),
+        ),
+        aastex.Variable(
+            name="dispersion",
+            value=design.dispersion(wavelength).ndarray.round(1),
+            unit=(u.mAA, u.pix**-1),
+        ),
+        aastex.Variable(
+            name="minWavelength",
+            value=design.wavelength_min.ndarray.round(2),
+        ),
+        aastex.Variable(
+            name="maxWavelength",
+            value=design.wavelength_max.ndarray.round(2),
+        ),
+        aastex.Variable(
+            name="MgXwavelength",
+            value=spectrum.Mg_X.wavelength,
+        ),
+        aastex.Variable(
+            # The efficiency of a channel at the O V line: the product of the
+            # efficiencies of its parts, each the measured value where there
+            # is one.
+            name="totalEfficiency",
+            value=_fixed(
+                _percent(
+                    efficiency_primary
+                    * efficiency_grating
+                    * efficiency_filter
+                    * efficiency_sensor,
+                    decimals=2,
+                ),
+                2,
+            ),
+        ),
+    ]
 
 
 def _coatings() -> list[aastex.Variable]:
@@ -392,14 +644,7 @@ def _coatings() -> list[aastex.Variable]:
     # coating, times the efficiency of the designed grooves at normal
     # incidence. The grooves of `as_built` are derived from that measurement,
     # so they cannot predict it.
-    rays = optika.rays.RayVectorArray(
-        wavelength=spectrum.O_V.wavelength,
-        position=na.Cartesian3dVectorArray() * u.mm,
-        direction=na.Cartesian3dVectorArray(0, 0, 1),
-    )
-    grooves = design.grating.surface.rulings.efficiency(
-        rays, na.Cartesian3dVectorArray(0, 0, -1)
-    )
+    grooves = _grooves(design.grating.surface.rulings, spectrum.O_V.wavelength)
     efficiency_predicted = reflectance_ov.mean() * grooves
 
     # The primary witness was measured only down to 450 A, so at He II the

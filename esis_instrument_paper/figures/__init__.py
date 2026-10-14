@@ -8,6 +8,7 @@ from ._bunch import bunch, num_emission_lines
 from ._cameras import cameras
 from ._component_efficiency_vs_wavelength import component_efficiency_vs_wavelength
 from ._distortion import distortion, distortion_residual
+from ._field_stop_projections import field_stop_projections
 from ._grating_efficiency_vs_angle import grating_efficiency_vs_angle
 from ._grating_efficiency_vs_position import grating_efficiency_vs_position
 from ._grating_mount import grating_mount
@@ -24,6 +25,7 @@ __all__ = [
     "component_efficiency_vs_wavelength",
     "distortion",
     "distortion_residual",
+    "field_stop_projections",
     "grating_efficiency_vs_angle",
     "grating_efficiency_vs_position",
     "grating_mount",

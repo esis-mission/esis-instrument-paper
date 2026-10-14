@@ -11,8 +11,10 @@ def instrument() -> aastex.Section:
     """
     The section describing the instrument as it was built.
 
-    The subsections which describe each part of it are still to be ported,
-    and so are the tables and figures the prose here points at.
+    The subsections are in the order of the old draft. The subsection on the
+    optimization and the tolerancing of the design, which follows the one on
+    the optics, is still to be ported, and so is the error budget it
+    tabulates.
     """
     result = aastex.Section(aastex.NoEscape(r"The \ESIS\ Instrument"))
     result.append(r"""
@@ -25,58 +27,61 @@ The final design parameters are summarized in Table~\ref{table:prescription}.
 A schematic diagram of a single \ESIS\ channel is presented in Figure~\ref{fig:schematic}a, while the mechanical
 features of the primary mirror and gratings are detailed in Figures~\ref{fig:schematic}b and
 \ref{fig:schematic}c, respectively.""")
-    # The old draft placed this figure in the Optics subsection, which is not
-    # ported yet, so it goes beside the paragraph which first cites it.
+    # The old draft placed this figure in the Optics subsection, but the
+    # paragraph above cites it first, so it goes beside that paragraph.
     result.append(esis_instrument_paper.figures.schematic())
+    result.append(esis_instrument_paper.tables.prescription())
 
-    subsection_pointing = aastex.Subsection("Pointing System")
-    subsection_pointing.append(r"""
-The imaging target was selected prior to launch, the morning of the day of flight.
-During flight, pointing was maintained by the \SPARCS~\citep{Lockheed69}.
-Images from Camera 1 were downlinked and displayed in real time on the \SPARCS\ control system console at intervals of
-$\sim$\SI{16}{\second} to verify pointing was maintained during flight.""")
-    result.append(subsection_pointing)
-
-    subsection_mechanical = aastex.Subsection("Mechanical")
-    subsection_mechanical.append(
+    subsection_optics = aastex.Subsection("Optics")
+    subsection_optics.append(
         r"""
-\ESIS\ and \MOSES\ are mounted on opposite sides of a composite optical table structure originally developed for the
-\SPDE~\citep{Bruner95lock}.
-The layered carbon fiber structure features a convenient, precisely coplanar array of threaded inserts with precision
-counterbores.
-The carbon fiber layup is designed to minimize the longitudinal coefficient of thermal expansion.
-The optical table is housed in two \skinDiameter\ diameter skin sections, with a total length of \skinLength.
-A ball joint and spindle assembly on one end and flexible metal aperture plate on the other hold the optical table in
-position inside the skin sections.
-The kinematic mounting system isolates the optical table from bending or twisting strain of the skins."""
-    )
-    result.append(subsection_mechanical)
+Figure~\ref{fig:schematic}a shows the relative layout of the optics and detectors for a single
+\ESIS\ channel.
+Here we give specific details of the primary mirror and gratings.
+The features of the field stop have been described previously in Section~\ref{subsec:ESISFeatures}, while the \CCD\ and
+cameras are covered in Section~\ref{subsec:Cameras}.
 
-    subsection_avionics = aastex.Subsection("Avionics")
-    subsection_avionics.append(
-        r"""
-The \ESIS\ \DACS\ is based on the designs used for both \CLASP~\citep{Kano12,Kobayashi12,Narukage2016} and
-\HiC~\citep{Kobayashi2014,Rachmeler2019}.
-The electronics are a combination of \MOTS\ hardware and custom designed components.
-The \DACS\ is a 6-slot, 3U, open VPX PCIe architecture conduction cooled system using an AiTech C873 single board
-computer.
-The data system also includes a \MOTS\ PCIe switch card, \MSFC\ parallel interface card, and two \MOTS\ Spacewire cards.
-A slot for an additional Spacewire card is included to accommodate two more cameras for the next \ESIS\ flight.
-The C873 has a \SI{2.4}{\giga\hertz} Intel i7 processor with \SI{16}{\giga\byte} of memory.
-The operating temperature range for the data system is \SI{-40}{\celsius}
-to \SI{85}{\celsius}.
-The operating system for the flight data system is Linux Fedora 23.
+The primary mirror (Figure~\ref{fig:schematic}b) is octagonal in shape.
+The octagonal shape of the primary allows dynamic clearance for filter tubes that are arranged radially around the
+mirror (Section~\ref{subsec:CoatingsandFilters}).
+The mirror is attached to a backing plate by three \textit{bipods}: thin titanium structures that are flexible in the radial
+dimension, perpendicular to the mirror edge, but rigid in the other two dimensions.
+The bipods form a kinematic mount, isolating the primary mirror figure from mounting stress.
 
-The \DACS\ is responsible for several functions;
-it controls the \ESIS\ experiment, responds to timers and uplinks, acquires and stores image data from the cameras,
-downlinks a subset of images through telemetry, and provides experiment health and status.
-The \DACS\ is housed with the rest of the avionics (power supply, analog signal conditioning system) in a
-\skinDiameter\ to \SI{0.43}{\meter} transition section outside of the experiment section.
-This relaxes the thermal and cleanliness constraints placed on the avionics.
-Custom DC/DC converters are used for secondary voltages required by other electronic components.
-The use of custom designed converters allowed additional ripple filtering for low noise."""
+The mirror had to maintain its figure under direct solar illumination, so a Corning \ULE\ substrate was used.
+The transparency of \ULE, in conjunction with the transparency of the mirror coating in visible and near-IR wavelengths
+(\eg, Table~\ref{table:prescription} and Section~\ref{subsec:CoatingsandFilters}), helps minimize
+the heating of the mirror.
+Surface figure specifications for the \ESIS\ optics are described in Section~\ref{subsec:OptimizationandTolerancing}.
+
+The spherical gratings (Figure~\ref{fig:schematic}c) re-image light from the field stop to form dispersed images at the
+\CCDs.
+Each grating is individually mounted to a backing plate in a similar fashion as the primary mirror.
+For these much smaller optics, lightweight bipods were photo-chemically etched from thin titanium sheet.
+The bipods are bonded to both the grating and backing plate along the three long edges of each grating.
+The individual mounts allow each grating to be adjusted in tip and tilt to center the image on the \CCD."""
     )
-    result.append(subsection_avionics)
+    subsection_optics.append(esis_instrument_paper.figures.field_stop_projections())
+    subsection_optics.append(r"""
+The gratings have a varied line space ruling pattern optimized to provide, in principle,
+pixel-limited imaging from the field stop to the \CCDs.
+The pitch at the center of the grating is $d_0=\text{\gratingRulingSpacing}$ (\gratingRulingSpacingMeasured\ as measured
+by the manufacturer) resulting in a dispersion of \dispersionDoppler\ at the center of the \OV\ \FOV.
+Each grating serves only a single \CCD.
+The groove profile is laminar, with depth optimized for $m=1$.
+Modeled groove efficiency in this order is \modeledGratingGrooveEfficiency.
+
+Figure specification and groove profile are difficult to control near the edges of the gratings.
+Therefore, an uncoated margin was left around the edge of the grating, minimizing reflection in \EUV\
+(Figure~\ref{fig:schematic}c).
+
+The \ESIS\ passband is defined through a combination of the field stop, the grating dispersion, and the \CCD\ size.
+The passband includes the \HeI\ spectral line through \MgXion\ (\MgXwavelength\ and \MgXdimWavelength) to \OV.
+Figure~\ref{fig:projections} shows where images of each of the strong spectral lines fall on the \CCD.
+The instrument dispersion satisfies the spectral resolution requirement in Table~\ref{table:scireq} and ensures that the
+spectral images are well-separated; Figure~\ref{fig:projections} shows that \HeI\ is completely
+separated from the target \OV\ line.""")
+    result.append(subsection_optics)
 
     subsection_vignetting = aastex.Subsection("Vignetting")
     subsection_vignetting.append(r"""
@@ -397,5 +402,54 @@ This paper models it with the measurements of a back-illuminated e2v CCD97 by \c
 \OV.""")
     subsection_cameras.append(esis_instrument_paper.tables.cameras())
     result.append(subsection_cameras)
+
+    subsection_avionics = aastex.Subsection("Avionics")
+    subsection_avionics.append(
+        r"""
+The \ESIS\ \DACS\ is based on the designs used for both \CLASP~\citep{Kano12,Kobayashi12,Narukage2016} and
+\HiC~\citep{Kobayashi2014,Rachmeler2019}.
+The electronics are a combination of \MOTS\ hardware and custom designed components.
+The \DACS\ is a 6-slot, 3U, open VPX PCIe architecture conduction cooled system using an AiTech C873 single board
+computer.
+The data system also includes a \MOTS\ PCIe switch card, \MSFC\ parallel interface card, and two \MOTS\ Spacewire cards.
+A slot for an additional Spacewire card is included to accommodate two more cameras for the next \ESIS\ flight.
+The C873 has a \SI{2.4}{\giga\hertz} Intel i7 processor with \SI{16}{\giga\byte} of memory.
+The operating temperature range for the data system is \SI{-40}{\celsius}
+to \SI{85}{\celsius}.
+The operating system for the flight data system is Linux Fedora 23.
+
+The \DACS\ is responsible for several functions;
+it controls the \ESIS\ experiment, responds to timers and uplinks, acquires and stores image data from the cameras,
+downlinks a subset of images through telemetry, and provides experiment health and status.
+The \DACS\ is housed with the rest of the avionics (power supply, analog signal conditioning system) in a
+\skinDiameter\ to \SI{0.43}{\meter} transition section outside of the experiment section.
+This relaxes the thermal and cleanliness constraints placed on the avionics.
+Custom DC/DC converters are used for secondary voltages required by other electronic components.
+The use of custom designed converters allowed additional ripple filtering for low noise."""
+    )
+    result.append(subsection_avionics)
+
+    subsection_pointing = aastex.Subsection("Pointing System")
+    subsection_pointing.append(r"""
+The imaging target was selected prior to launch, the morning of the day of flight.
+During flight, pointing was maintained by the \SPARCS~\citep{Lockheed69}.
+Images from Camera 1 were downlinked and displayed in real time on the \SPARCS\ control system console at intervals of
+$\sim$\SI{16}{\second} to verify pointing was maintained during flight.""")
+    result.append(subsection_pointing)
+
+    subsection_mechanical = aastex.Subsection("Mechanical")
+    subsection_mechanical.append(
+        r"""
+\ESIS\ and \MOSES\ are mounted on opposite sides of a composite optical table structure originally developed for the
+\SPDE~\citep{Bruner95lock}.
+The layered carbon fiber structure features a convenient, precisely coplanar array of threaded inserts with precision
+counterbores.
+The carbon fiber layup is designed to minimize the longitudinal coefficient of thermal expansion.
+The optical table is housed in two \skinDiameter\ diameter skin sections, with a total length of \skinLength.
+A ball joint and spindle assembly on one end and flexible metal aperture plate on the other hold the optical table in
+position inside the skin sections.
+The kinematic mounting system isolates the optical table from bending or twisting strain of the skins."""
+    )
+    result.append(subsection_mechanical)
 
     return result
