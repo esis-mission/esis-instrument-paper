@@ -1,0 +1,678 @@
+\begin{thebibliography}{}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\providecommand{\url}[1]{\href{#1}{#1}}
+\providecommand{\dodoi}[1]{doi:~\href{http://doi.org/#1}{\nolinkurl{#1}}}
+\providecommand{\doeprint}[1]{\href{http://ascl.net/#1}{\nolinkurl{http://ascl.net/#1}}}
+\providecommand{\doarXiv}[1]{\href{https://arxiv.org/abs/#1}{\nolinkurl{https://arxiv.org/abs/#1}}}
+
+% type= article
+\bibitem[{S. {Atwood} \& C. {Kankelborg}(2018){Atwood} \&
+  {Kankelborg}}]{Atwood18}
+{Atwood}, S., \& {Kankelborg}, C. 2018, \bibinfo{title}{{Blind technique for
+  point spread function equalization with application to the Multi-Order Solar
+  Extreme Ultraviolet Spectrograph},} Journal of Astronomical Telescopes,
+  Instruments, and Systems, 4, 028002, \dodoi{10.1117/1.JATIS.4.2.028002}
+
+% type= article
+\bibitem[{T.~R. {Ayres}(2021){Ayres}}]{Ayres2021}
+{Ayres}, T.~R. 2021, \bibinfo{title}{{In the Trenches of the Solar-Stellar
+  Connection. II. Extreme Ultraviolet Flux-Flux Correlations across Solar Cycle
+  24},} \apj, 908, 205, \dodoi{10.3847/1538-4357/abd095}
+
+% type= article
+\bibitem[{D. {Banerjee} {et~al.}(2009){Banerjee}, {P{\'e}rez-Su{\'a}rez}, \&
+  {Doyle}}]{Banerjee09}
+{Banerjee}, D., {P{\'e}rez-Su{\'a}rez}, D., \& {Doyle}, J.~G. 2009,
+  \bibinfo{title}{{Signatures of Alfv{\'e}n waves in the polar coronal holes as
+  seen by EIS/Hinode},} \aap, 501, L15, \dodoi{10.1051/0004-6361/200912242}
+
+% type= article
+\bibitem[{T.~E. {Berger} {et~al.}(1995){Berger}, {Schrijver}, {Shine},
+  {Tarbell}, {Title}, \& {Scharmer}}]{Berger95ApJ}
+{Berger}, T.~E., {Schrijver}, C.~J., {Shine}, R.~A., {et~al.} 1995,
+  \bibinfo{title}{{New Observations of Subarcsecond Photospheric Bright
+  Points},} \apj, 454, 531, \dodoi{10.1086/176504}
+
+% type= article
+\bibitem[{A. {Bhattacharjee} {et~al.}(2009){Bhattacharjee}, {Huang}, {Yang}, \&
+  {Rogers}}]{Bhattacharjee09}
+{Bhattacharjee}, A., {Huang}, Y.-M., {Yang}, H., \& {Rogers}, B. 2009,
+  \bibinfo{title}{{Fast reconnection in high-Lundquist-number plasmas due to
+  the plasmoid Instability},} Physics of Plasmas, 16, 112102,
+  \dodoi{10.1063/1.3264103}
+
+% type= article
+\bibitem[{R.~M. {Bonnet} {et~al.}(1980){Bonnet}, {Decaudin}, {Bruner}, {Acton},
+  \& {Brown}}]{Bonnet80}
+{Bonnet}, R.~M., {Decaudin}, M., {Bruner}, Jr., E.~C., {Acton}, L.~W., \&
+  {Brown}, W.~A. 1980, \bibinfo{title}{{High-resolution Lyman-alpha filtergrams
+  of the sun},} \apjl, 237, L47, \dodoi{10.1086/183232}
+
+% type= article
+\bibitem[{J.~W. {Brosius} {et~al.}(2014){Brosius}, {Daw}, \&
+  {Rabin}}]{Brosius14}
+{Brosius}, J.~W., {Daw}, A.~N., \& {Rabin}, D.~M. 2014,
+  \bibinfo{title}{{Pervasive Faint Fe XIX Emission from a Solar Active Region
+  Observed with EUNIS-13: Evidence for Nanoflare Heating},} \apj, 790, 112,
+  \dodoi{10.1088/0004-637X/790/2/112}
+
+% type= article
+\bibitem[{J.~W. {Brosius} {et~al.}(2007){Brosius}, {Rabin}, \&
+  {Thomas}}]{Brosius07}
+{Brosius}, J.~W., {Rabin}, D.~M., \& {Thomas}, R.~J. 2007,
+  \bibinfo{title}{{Doppler Velocities Measured in Coronal Emission Lines from a
+  Bright Point Observed with the EUNIS Sounding Rocket},} \apjl, 656, L41,
+  \dodoi{10.1086/512185}
+
+% type= techreport
+\bibitem[{M.~E. {Bruner}(1995){Bruner}}]{Bruner95lock}
+{Bruner}, M.~E. 1995, {SPDE: Solar Plasma Diagnostic Experiment}, Tech. Rep.
+  Contract NAS5-32147, Lockheed Martin Palo Alto Research Lab., Palo Alto, CA.
+
+% type= article
+\bibitem[{F.~V. {Bulygin} {et~al.}(1991){Bulygin}, {Vishnyakov}, {Levin}, \&
+  {Karpukhin}}]{Bulygin91}
+{Bulygin}, F.~V., {Vishnyakov}, G.~N., {Levin}, G.~G., \& {Karpukhin}, D.~V.
+  1991, \bibinfo{title}{{Spectrotomography--a new method of obtaining
+  spectrograms of 2-D objects},} Optics and Spectroscopy, 71, 561
+
+% type= article
+\bibitem[{M.~C.~M. {Cheung} {et~al.}(2022){Cheung}, {Mart{\'i}nez-Sykora},
+  {Testa}, {De Pontieu}, {Chintzoglou}, {et~al.}}]{Cheung2022}
+{Cheung}, M. C.~M., {Mart{\'i}nez-Sykora}, J., {Testa}, P., {et~al.} 2022,
+  \bibinfo{title}{{Probing the Physics of the Solar Atmosphere with the
+  Multi-slit Solar Explorer (MUSE). II. Flares and Eruptions},} \apj, 926, 53,
+  \dodoi{10.3847/1538-4357/ac4223}
+
+% type= phdthesis
+\bibitem[{H.~T. {Courrier}(2020){Courrier}}]{Courrier2020}
+{Courrier}, H.~T. 2020, \bibinfo{title}{{Stigmatic spectroscopy of the solar
+  atmosphere in the vacuum-ultraviolet},} PhD thesis, Montana State University,
+  Bozeman, MT
+
+% type= article
+\bibitem[{H.~T. {Courrier} \& C.~C. {Kankelborg}(2018){Courrier} \&
+  {Kankelborg}}]{Courrier18}
+{Courrier}, H.~T., \& {Kankelborg}, C.~C. 2018, \bibinfo{title}{{Using local
+  correlation tracking to recover solar spectral information from a slitless
+  spectrograph},} Journal of Astronomical Telescopes, Instruments, and Systems,
+  4, 018001, \dodoi{10.1117/1.JATIS.4.1.018001}
+
+% type= article
+\bibitem[{S.~R. {Cranmer} \& A.~A. {van Ballegooijen}(2005){Cranmer} \& {van
+  Ballegooijen}}]{Cranmer05}
+{Cranmer}, S.~R., \& {van Ballegooijen}, A.~A. 2005, \bibinfo{title}{{On the
+  Generation, Propagation, and Reflection of Alfv{\'e}n Waves from the Solar
+  Photosphere to the Distant Heliosphere},} \apjs, 156, 265,
+  \dodoi{10.1086/426507}
+
+% type= article
+\bibitem[{J.~L. {Culhane} {et~al.}(2007){Culhane}, {Harra}, {James},
+  {Al-Janabi}, {Bradley}, {Chaudry}, {Rees}, {Tandy}, {Thomas}, {Whillock},
+  {Winter}, {Doschek}, {Korendyke}, {Brown}, {Myers}, {Mariska}, {Seely},
+  {Lang}, {Kent}, {Shaughnessy}, {Young}, {Simnett}, {Castelli}, {Mahmoud},
+  {Mapson-Menard}, {Probyn}, {Thomas}, {Davila}, {Dere}, {Windt}, {Shea},
+  {Hagood}, {Moye}, {Hara}, {Watanabe}, {Matsuzaki}, {Kosugi}, {Hansteen}, \&
+  {Wikstol}}]{Culhane07}
+{Culhane}, J.~L., {Harra}, L.~K., {James}, A.~M., {et~al.} 2007,
+  \bibinfo{title}{{The EUV Imaging Spectrometer for Hinode},} \solphys, 243,
+  19, \dodoi{10.1007/s01007-007-0293-1}
+
+% type= article
+\bibitem[{J.~M. {Davila} {et~al.}(2019){Davila}, {Oktem}, \&
+  {Kamalabadi}}]{Davila2019}
+{Davila}, J.~M., {Oktem}, F.~S., \& {Kamalabadi}, F. 2019,
+  \bibinfo{title}{{Slitless Solar Imaging Spectroscopy},} \apj, 883, 7,
+  \dodoi{10.3847/1538-4357/ab372a}
+
+% type= article
+\bibitem[{B. {De Pontieu} {et~al.}(2020){De Pontieu}, {Mart{\'\i}nez-Sykora},
+  {Testa}, {Winebarger}, {Daw}, {Hansteen}, {Cheung}, \&
+  {Antolin}}]{DePontieu2020}
+{De Pontieu}, B., {Mart{\'\i}nez-Sykora}, J., {Testa}, P., {et~al.} 2020,
+  \bibinfo{title}{{The Multi-slit Approach to Coronal Spectroscopy with the
+  Multi-slit Solar Explorer (MUSE)},} \apj, 888, 3,
+  \dodoi{10.3847/1538-4357/ab5b03}
+
+% type= article
+\bibitem[{B. {De Pontieu} {et~al.}(2015){De Pontieu}, {McIntosh},
+  {Martinez-Sykora}, {Peter}, \& {Pereira}}]{DePontieu15}
+{De Pontieu}, B., {McIntosh}, S., {Martinez-Sykora}, J., {Peter}, H., \&
+  {Pereira}, T.~M.~D. 2015, \bibinfo{title}{{Why is Non-Thermal Line Broadening
+  of Spectral Lines in the Lower Transition Region of the Sun Independent of
+  Spatial Resolution?},} \apjl, 799, L12, \dodoi{10.1088/2041-8205/799/1/L12}
+
+% type= article
+\bibitem[{B. {De Pontieu} {et~al.}(2022){De Pontieu}, {Testa},
+  {Mart{\'i}nez-Sykora}, {Antolin}, {Karampelas}, {et~al.}}]{DePontieu2022}
+{De Pontieu}, B., {Testa}, P., {Mart{\'i}nez-Sykora}, J., {et~al.} 2022,
+  \bibinfo{title}{{Probing the Physics of the Solar Atmosphere with the
+  Multi-slit Solar Explorer (MUSE). I. Coronal Heating},} \apj, 926, 52,
+  \dodoi{10.3847/1538-4357/ac4222}
+
+% type= article
+\bibitem[{B. {De Pontieu} {et~al.}(2007){De Pontieu}, {McIntosh}, {Carlsson},
+  {Hansteen}, {Tarbell}, {Schrijver}, {Title}, {Shine}, {Tsuneta}, {Katsukawa},
+  {Ichimoto}, {Suematsu}, {Shimizu}, \& {Nagata}}]{DePontieu07}
+{De Pontieu}, B., {McIntosh}, S.~W., {Carlsson}, M., {et~al.} 2007,
+  \bibinfo{title}{{Chromospheric Alfv{\'e}nic Waves Strong Enough to Power the
+  Solar Wind},} Science, 318, 1574, \dodoi{10.1126/science.1151747}
+
+% type= article
+\bibitem[{B. {De Pontieu} {et~al.}(2014){De Pontieu}, {Title}, {Lemen},
+  {Kushner}, {Akin}, {Allard}, {Berger}, {Boerner}, {Cheung}, {Chou}, {Drake},
+  {Duncan}, {Freeland}, {Heyman}, {Hoffman}, {Hurlburt}, {Lindgren}, {Mathur},
+  {Rehse}, {Sabolish}, {Seguin}, {Schrijver}, {Tarbell}, {W{\"u}lser},
+  {Wolfson}, {Yanari}, {Mudge}, {Nguyen-Phuc}, {Timmons}, {van Bezooijen},
+  {Weingrod}, {Brookner}, {Butcher}, {Dougherty}, {Eder}, {Knagenhjelm},
+  {Larsen}, {Mansir}, {Phan}, {Boyle}, {Cheimets}, {DeLuca}, {Golub}, {Gates},
+  {Hertz}, {McKillop}, {Park}, {Perry}, {Podgorski}, {Reeves}, {Saar}, {Testa},
+  {Tian}, {Weber}, {Dunn}, {Eccles}, {Jaeggli}, {Kankelborg}, {Mashburn},
+  {Pust}, {Springer}, {Carvalho}, {Kleint}, {Marmie}, {Mazmanian}, {Pereira},
+  {Sawyer}, {Strong}, {Worden}, {Carlsson}, {Hansteen}, {Leenaarts},
+  {Wiesmann}, {Aloise}, {Chu}, {Bush}, {Scherrer}, {Brekke}, {Martinez-Sykora},
+  {Lites}, {McIntosh}, {Uitenbroek}, {Okamoto}, {Gummin}, {Auker}, {Jerram},
+  {Pool}, \& {Waltham}}]{IRIS14}
+{De Pontieu}, B., {Title}, A.~M., {Lemen}, J.~R., {et~al.} 2014,
+  \bibinfo{title}{{The Interface Region Imaging Spectrograph (IRIS)},}
+  \solphys, 289, 2733, \dodoi{10.1007/s11207-014-0485-y}
+
+% type= article
+\bibitem[{C. {DeForest} {et~al.}(2004){DeForest}, {Elmore}, {Bradford},
+  {Elrod}, \& {Gilliam}}]{DeForest04}
+{DeForest}, C., {Elmore}, D.~F., {Bradford}, M.~P., {Elrod}, J., \& {Gilliam},
+  D.~L. 2004, \bibinfo{title}{{Stereoscopic Spectroscopy for Efficient Spectral
+  Imaging and Magnetography},} \apj, 616, 600, \dodoi{10.1086/424745}
+
+% type= article
+\bibitem[{K.~P. {Dere}(1994){Dere}}]{Dere94}
+{Dere}, K.~P. 1994, \bibinfo{title}{{Explosive events, magnetic reconnection,
+  and coronal heating},} Advances in Space Research, 14, 13,
+  \dodoi{10.1016/0273-1177(94)90154-6}
+
+% type= article
+\bibitem[{K.~P. {Dere} {et~al.}(1991){Dere}, {Bartoe}, {Brueckner}, {Ewing}, \&
+  {Lund}}]{Dere91}
+{Dere}, K.~P., {Bartoe}, J., {Brueckner}, G.~E., {Ewing}, J., \& {Lund}, P.
+  1991, \bibinfo{title}{{Explosive events and magnetic reconnection in the
+  solar atmosphere},} \jgr, 96, 9399, \dodoi{10.1029/90JA02572}
+
+% type= article
+\bibitem[{K.~P. {Dere} {et~al.}(1989){Dere}, {Bartoe}, \& {Brueckner}}]{Dere89}
+{Dere}, K.~P., {Bartoe}, J.-D.~F., \& {Brueckner}, G.~E. 1989,
+  \bibinfo{title}{{Explosive events in the solar transition zone},} \solphys,
+  123, 41, \dodoi{10.1007/BF00150011}
+
+% type= article
+\bibitem[{M. Descour \& E. Dereniak(1995)Descour \& Dereniak}]{Descour95}
+Descour, M., \& Dereniak, E. 1995, \bibinfo{title}{Computed-tomography imaging
+  spectrometer: experimental calibration and reconstruction results,} Appl.
+  Opt., 34, 4817, \dodoi{10.1364/AO.34.004817}
+
+% type= article
+\bibitem[{M.~R. Descour {et~al.}(1997)Descour, Volin, Dereniak, Gleeson,
+  Hopkins, Wilson, \& Maker}]{Descour97}
+Descour, M.~R., Volin, C.~E., Dereniak, E.~L., {et~al.} 1997,
+  \bibinfo{title}{Demonstration of a computed-tomography imaging spectrometer
+  using acomputer-generated hologram disperser,} Appl. Opt., 36, 3694,
+  \dodoi{10.1364/AO.36.003694}
+
+% type= article
+\bibitem[{J.~G. {Doyle} {et~al.}(1998){Doyle}, {Banerjee}, \&
+  {Perez}}]{Doyle98}
+{Doyle}, J.~G., {Banerjee}, D., \& {Perez}, M.~E. 1998,
+  \bibinfo{title}{{Coronal line-width variations},} \solphys, 181, 91,
+  \dodoi{10.1023/A:1005019931323}
+
+% type= article
+\bibitem[{U. {Feldman} {et~al.}(1985){Feldman}, {Doschek}, \&
+  {Seely}}]{Feldman85}
+{Feldman}, U., {Doschek}, G.~A., \& {Seely}, J.~F. 1985, \bibinfo{title}{{New
+  identifications of Fe XVII spectral lines in solar flares},} \mnras, 212,
+  41P, \dodoi{10.1093/mnras/212.1.41P}
+
+% type= phdthesis
+\bibitem[{J.~L. {Fox}(2011){Fox}}]{Fox11}
+{Fox}, J.~L. 2011, \bibinfo{title}{{Snapshot imaging spectroscopy of the solar
+  transition region: The Multi-Order Solar EUV Spectrograph (MOSES) sounding
+  rocket mission},} PhD thesis, Montana State University
+
+% type= article
+\bibitem[{J.~L. {Fox} {et~al.}(2010){Fox}, {Kankelborg}, \& {Thomas}}]{Fox10}
+{Fox}, J.~L., {Kankelborg}, C.~C., \& {Thomas}, R.~J. 2010, \bibinfo{title}{{A
+  Transition Region Explosive Event Observed in He II with the MOSES Sounding
+  Rocket},} \apj, 719, 1132, \dodoi{10.1088/0004-637X/719/2/1132}
+
+% type= article
+\bibitem[{N. {Hagen} \& E.~L. {Dereniak}(2008){Hagen} \& {Dereniak}}]{Hagen08}
+{Hagen}, N., \& {Dereniak}, E.~L. 2008, \bibinfo{title}{{Analysis of computed
+  tomographic imaging spectrometers. I. Spatial and spectral resolution},} \ao,
+  47, F85, \dodoi{10.1364/AO.47.000F85}
+
+% type= article
+\bibitem[{N. {Hagen} \& M.~W. {Kudenov}(2013){Hagen} \& {Kudenov}}]{Hagen2013}
+{Hagen}, N., \& {Kudenov}, M.~W. 2013, \bibinfo{title}{{Review of snapshot
+  spectral imaging technologies},} Optical Engineering, 52, 090901,
+  \dodoi{10.1117/1.OE.52.9.090901}
+
+% type= article
+\bibitem[{M. {Hahn} {et~al.}(2012){Hahn}, {Landi}, \& {Savin}}]{Hahn2012}
+{Hahn}, M., {Landi}, E., \& {Savin}, D.~W. 2012, \bibinfo{title}{{Evidence of
+  Wave Damping at Low Heights in a Polar Coronal Hole},} \apj, 753, 36,
+  \dodoi{10.1088/0004-637X/753/1/36}
+
+% type= article
+\bibitem[{M. {Hahn} \& D.~W. {Savin}(2013){Hahn} \& {Savin}}]{Hahn2013}
+{Hahn}, M., \& {Savin}, D.~W. 2013, \bibinfo{title}{{Observational
+  Quantification of the Energy Dissipated by Alfv{\'e}n Waves in a Polar
+  Coronal Hole: Evidence that Waves Drive the Fast Solar Wind},} \apj, 776, 78,
+  \dodoi{10.1088/0004-637X/776/2/78}
+
+% type= article
+\bibitem[{B.~N. {Handy} {et~al.}(1999){Handy}, {Acton}, {Kankelborg},
+  {Wolfson}, {Akin}, {Bruner}, {Caravalho}, {Catura}, {Chevalier}, {Duncan},
+  {Edwards}, {Feinstein}, {Freeland}, {Friedlaender}, {Hoffmann}, {Hurlburt},
+  {Jurcevich}, {Katz}, {Kelly}, {Lemen}, {Levay}, {Lindgren}, {Mathur},
+  {Meyer}, {Morrison}, {Morrison}, {Nightingale}, {Pope}, {Rehse}, {Schrijver},
+  {Shine}, {Shing}, {Strong}, {Tarbell}, {Title}, {Torgerson}, {Golub},
+  {Bookbinder}, {Caldwell}, {Cheimets}, {Davis}, {Deluca}, {McMullen},
+  {Warren}, {Amato}, {Fisher}, {Maldonado}, \& {Parkinson}}]{Handy99}
+{Handy}, B.~N., {Acton}, L.~W., {Kankelborg}, C.~C., {et~al.} 1999,
+  \bibinfo{title}{{The transition region and coronal explorer},} \solphys, 187,
+  229, \dodoi{10.1023/A:1005166902804}
+
+% type= article
+\bibitem[{R.~A. {Harrison} {et~al.}(1995){Harrison}, {Sawyer}, {Carter},
+  {Cruise}, {Cutler}, {Fludra}, {Hayes}, {Kent}, {Lang}, {Parker}, {Payne},
+  {Pike}, {Peskett}, {Richards}, {Gulhane}, {Norman}, {Breeveld}, {Breeveld},
+  {Al Janabi}, {McCalden}, {Parkinson}, {Self}, {Thomas}, {Poland}, {Thomas},
+  {Thompson}, {Kjeldseth-Moe}, {Brekke}, {Karud}, {Maltby}, {Aschenbach},
+  {Br{\"a}uninger}, {K{\"u}hne}, {Hollandt}, {Siegmund}, {Huber}, {Gabriel},
+  {Mason}, \& {Bromage}}]{Harrison95}
+{Harrison}, R.~A., {Sawyer}, E.~C., {Carter}, M.~K., {et~al.} 1995,
+  \bibinfo{title}{{The Coronal Diagnostic Spectrometer for the Solar and
+  Heliospheric Observatory},} \solphys, 162, 233, \dodoi{10.1007/BF00733431}
+
+% type= article
+\bibitem[{B.~L. {Henke} {et~al.}(1993){Henke}, {Gullikson}, \&
+  {Davis}}]{Henke93}
+{Henke}, B.~L., {Gullikson}, E.~M., \& {Davis}, J.~C. 1993,
+  \bibinfo{title}{{X-Ray Interactions: Photoabsorption, Scattering,
+  Transmission, and Reflection at E = 50-30,000 eV, Z = 1-92},} Atomic Data and
+  Nuclear Data Tables, 54, 181, \dodoi{10.1006/adnd.1993.1013}
+
+% type= article
+\bibitem[{V.~L. {Herde} {et~al.}(2024){Herde}, {Chamberlin}, {Schmit}, {Daw},
+  {Milligan}, {et~al.}}]{Herde2024}
+{Herde}, V.~L., {Chamberlin}, P.~C., {Schmit}, D., {et~al.} 2024,
+  \bibinfo{title}{{The Solar EruptioN Integral Field Spectrograph},} \solphys,
+  299, 120, \dodoi{10.1007/s11207-024-02367-y}
+
+% type= article
+\bibitem[{J. Heymes {et~al.}(2020)Heymes, Soman, Randall, Gottwald, Harris,
+  Kelt, Moody, Meng, \& Holland}]{Heymes2020}
+Heymes, J., Soman, M., Randall, G., {et~al.} 2020, \bibinfo{title}{Comparison
+  of Back-Thinned Detector Ultraviolet Quantum Efficiency for Two Commercially
+  Available Passivation Treatments,} IEEE Transactions on Nuclear Science, 67,
+  1962, \dodoi{10.1109/TNS.2020.3001622}
+
+% type= article
+\bibitem[{D.~E. {Innes} {et~al.}(2015){Innes}, {Guo}, {Huang}, \&
+  {Bhattacharjee}}]{Innes15}
+{Innes}, D.~E., {Guo}, L.-J., {Huang}, Y.-M., \& {Bhattacharjee}, A. 2015,
+  \bibinfo{title}{{IRIS Si IV Line Profiles: An Indication for the Plasmoid
+  Instability during Small-scale Magnetic Reconnection on the Sun},} \apj, 813,
+  86, \dodoi{10.1088/0004-637X/813/2/86}
+
+% type= article
+\bibitem[{D.~E. {Innes} {et~al.}(1997){Innes}, {Inhester}, {Axford}, \&
+  {Wilhelm}}]{Innes97}
+{Innes}, D.~E., {Inhester}, B., {Axford}, W.~I., \& {Wilhelm}, K. 1997,
+  \bibinfo{title}{{Bi-directional plasma jets produced by magnetic reconnection
+  on the Sun},} \nat, 386, 811, \dodoi{10.1038/386811a0}
+
+% type= article
+\bibitem[{D.~E. {Innes} \& G. {T{\'o}th}(1999){Innes} \& {T{\'o}th}}]{Innes99}
+{Innes}, D.~E., \& {T{\'o}th}, G. 1999, \bibinfo{title}{{Simulations of
+  small-scale explosive events on the Sun},} \solphys, 185, 127,
+  \dodoi{10.1023/A:1005162216540}
+
+% type= book
+\bibitem[{A.~C. {Kak} \& M. {Slaney}(1988){Kak} \& {Slaney}}]{Kak88}
+{Kak}, A.~C., \& {Slaney}, M. 1988, Principles of Computerized Tomographic
+  Imaging (345 East 47th Street, New York, NY 10017-2394: IEEE Press)
+
+% type= article
+\bibitem[{U. {Kamaci} \& F. {Kamalabadi}(2026){Kamaci} \&
+  {Kamalabadi}}]{Kamaci2026}
+{Kamaci}, U., \& {Kamalabadi}, F. 2026, \bibinfo{title}{{Solar Slitless
+  Spectroscopy with Learned Reconstruction},} \apj, 1006, 124,
+  \dodoi{10.3847/1538-4357/ae7c6c}
+
+% type= inproceedings
+\bibitem[{C.~C. {Kankelborg} \& R.~J. {Thomas}(2001){Kankelborg} \&
+  {Thomas}}]{KankThom01}
+{Kankelborg}, C.~C., \& {Thomas}, R.~J. 2001, \bibinfo{title}{{Simultaneous
+  imaging and spectroscopy of the solar atmosphere: advantages and challenges
+  of a 3-order slitless spectrograph},} in \procspie, Vol. 4498, UV/EUV and
+  Visible Space Instrumentation for Astronomy and Solar Physics, ed. O.~H.
+  {Siegmund}, S.~{Fineschi}, \& M.~A. {Gummin}, 16--26,
+  \dodoi{10.1117/12.450074}
+
+% type= inproceedings
+\bibitem[{R. {Kano} {et~al.}(2012){Kano}, {Bando}, {Narukage}, {Ishikawa},
+  {Tsuneta}, {Katsukawa}, {Kubo}, {Ishikawa}, {Hara}, {Shimizu}, {Suematsu},
+  {Ichimoto}, {Sakao}, {Goto}, {Kato}, {Imada}, {Kobayashi}, {Holloway},
+  {Winebarger}, {Cirtain}, {De Pontieu}, {Casini}, {Trujillo Bueno}, {{\v
+  S}tep{\'a}n}, {Manso Sainz}, {Belluzzi}, {Asensio Ramos}, {Auch{\`e}re}, \&
+  {Carlsson}}]{Kano12}
+{Kano}, R., {Bando}, T., {Narukage}, N., {et~al.} 2012,
+  \bibinfo{title}{{Chromospheric Lyman-alpha spectro-polarimeter (CLASP)},} in
+  \procspie, Vol. 8443, Space Telescopes and Instrumentation 2012: Ultraviolet
+  to Gamma Ray, 84434F, \dodoi{10.1117/12.925991}
+
+% type= article
+\bibitem[{F.~P. {Keenan} {et~al.}(2006){Keenan}, {Aggarwal}, {Bloomfield},
+  {Msezane}, \& {Widing}}]{Keenan06}
+{Keenan}, F.~P., {Aggarwal}, K.~M., {Bloomfield}, D.~S., {Msezane}, A.~Z., \&
+  {Widing}, K.~G. 2006, \bibinfo{title}{{An investigation of Fe XV emission
+  lines in solar flare spectra},} \aap, 449, 1203,
+  \dodoi{10.1051/0004-6361:20054028}
+
+% type= article
+\bibitem[{K. {Kobayashi} {et~al.}(2000){Kobayashi}, {Hara}, {Kano}, {Nagata},
+  {Sakao}, {Shimizu}, {Tsuneta}, {Yoshida}, \& {Harrison}}]{Kobayashi00}
+{Kobayashi}, K., {Hara}, H., {Kano}, R., {et~al.} 2000, \bibinfo{title}{{On the
+  Detection of Solar Coronal High-Velocity Fields Using the XUV Doppler
+  Telescope},} \pasj, 52, 1165, \dodoi{10.1093/pasj/52.6.1165}
+
+% type= inproceedings
+\bibitem[{K. {Kobayashi} {et~al.}(2012){Kobayashi}, {Kano}, {Trujillo-Bueno},
+  {Asensio Ramos}, {Bando}, {Belluzzi}, {Carlsson}, {De Pontieu}, {Hara},
+  {Ichimoto}, {Ishikawa}, {Katsukawa}, {Kubo}, {Manso Sainz}, {Narukage},
+  {Sakao}, {Stepan}, {Suematsu}, {Tsuneta}, {Watanabe}, \&
+  {Winebarger}}]{Kobayashi12}
+{Kobayashi}, K., {Kano}, R., {Trujillo-Bueno}, J., {et~al.} 2012,
+  \bibinfo{title}{{The Chromospheric Lyman-Alpha SpectroPolarimeter: CLASP},}
+  in Astronomical Society of the Pacific Conference Series, Vol. 456, Fifth
+  Hinode Science Meeting, ed. L.~{Golub}, I.~{De Moortel}, \& T.~{Shimizu}, 233
+
+% type= article
+\bibitem[{K. {Kobayashi} {et~al.}(2014){Kobayashi}, {Cirtain}, {Winebarger},
+  {Korreck}, {Golub}, {Walsh}, {De Pontieu}, {DeForest}, {Title}, {Kuzin},
+  {Savage}, {Beabout}, {Beabout}, {Podgorski}, {Caldwell}, {McCracken},
+  {Ordway}, {Bergner}, {Gates}, {McKillop}, {Cheimets}, {Platt}, {Mitchell}, \&
+  {Windt}}]{Kobayashi2014}
+{Kobayashi}, K., {Cirtain}, J., {Winebarger}, A.~R., {et~al.} 2014,
+  \bibinfo{title}{{The High-Resolution Coronal Imager (Hi-C)},} \solphys, 289,
+  4393, \dodoi{10.1007/s11207-014-0544-4}
+
+% type= article
+\bibitem[{T. {Kudoh} \& K. {Shibata}(1999){Kudoh} \& {Shibata}}]{Kudoh99}
+{Kudoh}, T., \& {Shibata}, K. 1999, \bibinfo{title}{{Alfv{\'e}n Wave Model of
+  Spicules and Coronal Heating},} \apj, 514, 493, \dodoi{10.1086/306930}
+
+% type= article
+\bibitem[{J.~R. {Lemen} {et~al.}(2012){Lemen}, {Title}, {Akin}, {Boerner},
+  {Chou}, {Drake}, {Duncan}, {Edwards}, {Friedlaender}, {Heyman}, {Hurlburt},
+  {Katz}, {Kushner}, {Levay}, {Lindgren}, {Mathur}, {McFeaters}, {Mitchell},
+  {Rehse}, {Schrijver}, {Springer}, {Stern}, {Tarbell}, {Wuelser}, {Wolfson},
+  {Yanari}, {Bookbinder}, {Cheimets}, {Caldwell}, {Deluca}, {Gates}, {Golub},
+  {Park}, {Podgorski}, {Bush}, {Scherrer}, {Gummin}, {Smith}, {Auker},
+  {Jerram}, {Pool}, {Soufli}, {Windt}, {Beardsley}, {Clapp}, {Lang}, \&
+  {Waltham}}]{Lemen12}
+{Lemen}, J.~R., {Title}, A.~M., {Akin}, D.~J., {et~al.} 2012,
+  \bibinfo{title}{{The Atmospheric Imaging Assembly (AIA) on the Solar Dynamics
+  Observatory (SDO)},} \solphys, 275, 17, \dodoi{10.1007/s11207-011-9776-8}
+
+% type= techreport
+\bibitem[{Lockheed Missiles and Space Co. Report(1969)}]{Lockheed69}
+Lockheed Missiles and Space Co. Report. 1969, {Solar Pointing Aerobee Rocket
+  Control System (SPARCS) Final report}, Tech. Rep. Contract NAS2-3500,
+  Lockheed Missiles and Space Co., Sunnyvale, California
+
+% type= book
+\bibitem[{J.~T. Mariska(1992)Mariska}]{Mariska1992}
+Mariska, J.~T. 1992, The solar transition region, Cambridge astrophysics series
+  ; 23 (Cambridge [England] ; New York, NY, USA: Cambridge University Press)
+
+% type= techreport
+\bibitem[{I. Moody {et~al.}(2017)Moody, Watkins, Bell, Soman, Keelan, \&
+  Holland}]{Moody2017}
+Moody, I., Watkins, M., Bell, R., {et~al.} 2017, CCD QE in the Soft X-ray
+  Range, Tech. rep., e2v.
+\newblock
+  \url{https://oro.open.ac.uk/49003/1/Moody%202017%20-%20SXRQE_WhitePaper.pdf}
+
+% type= article
+\bibitem[{T.~G. {Moran}(2001){Moran}}]{Moran01}
+{Moran}, T.~G. 2001, \bibinfo{title}{{Interpretation of coronal off-limb
+  spectral line width measurements},} \aap, 374, L9,
+  \dodoi{10.1051/0004-6361:20010643}
+
+% type= article
+\bibitem[{T.~G. {Moran}(2003){Moran}}]{Moran03}
+{Moran}, T.~G. 2003, \bibinfo{title}{{Test for Alfv{\'e}n Wave Signatures in a
+  Solar Coronal Hole},} \apj, 598, 657, \dodoi{10.1086/378795}
+
+% type= article
+\bibitem[{D. {Moses} {et~al.}(1994){Moses}, {Cook}, {Bartoe}, {Brueckner},
+  {Dere}, {Webb}, {Davis}, {Harvey}, {Recely}, {Martin}, \&
+  {Zirin}}]{1994Moses}
+{Moses}, D., {Cook}, J.~W., {Bartoe}, J.-D.~F., {et~al.} 1994,
+  \bibinfo{title}{{Solar fine scale structures in the corona, transition
+  region, and lower atmosphere},} \apj, 430, 913, \dodoi{10.1086/174461}
+
+% type= inproceedings
+\bibitem[{N. {Narukage} {et~al.}(2016){Narukage}, {McKenzie}, {Ishikawa},
+  {Trujillo-Bueno}, {De Pontieu}, {Kubo}, {Ishikawa}, {Kano}, {Suematsu},
+  {Yoshida}, {Rachmeler}, {Kobayashi}, {Cirtain}, {Winebarger}, {Asensio
+  Ramos}, {del Pino Alem{\'a}n}, {{\v S}t{\v e}p{\'a}n}, {Belluzzi},
+  {Larruquert}, {Auch{\`e}re}, {Leenaarts}, \& {Carlsson}}]{Narukage2016}
+{Narukage}, N., {McKenzie}, D.~E., {Ishikawa}, R., {et~al.} 2016,
+  \bibinfo{title}{{Chromospheric LAyer SpectroPolarimeter (CLASP2)},} in
+  \procspie, Vol. 9905, Space Telescopes and Instrumentation 2016: Ultraviolet
+  to Gamma Ray, 990508, \dodoi{10.1117/12.2232245}
+
+% type= article
+\bibitem[{T. {Okamoto} \& I. {Yamaguchi}(1991){Okamoto} \&
+  {Yamaguchi}}]{okamoto1991}
+{Okamoto}, T., \& {Yamaguchi}, I. 1991, \bibinfo{title}{Simultaneous
+  acquisition of spectral image information,} Opt. Lett., 16, 1277,
+  \dodoi{10.1364/OL.16.001277}
+
+% type= article
+\bibitem[{J.~D. {Parker} \& C.~C. {Kankelborg}(2022){Parker} \&
+  {Kankelborg}}]{Parker2022moses}
+{Parker}, J.~D., \& {Kankelborg}, C.~C. 2022, \bibinfo{title}{{Determining the
+  Spectral Content of MOSES Images},} \apj, 932, 130,
+  \dodoi{10.3847/1538-4357/ac6dd4}
+
+% type= article
+\bibitem[{J.~D. Parker {et~al.}(2022)Parker, Smart, Kankelborg, Winebarger, \&
+  Goldsworth}]{Parker2022}
+Parker, J.~D., Smart, R.~T., Kankelborg, C., Winebarger, A., \& Goldsworth, N.
+  2022, \bibinfo{title}{First Flight of the {EUV} Snapshot Imaging Spectrograph
+  ({ESIS}),} The Astrophysical Journal, 938, 116,
+  \dodoi{10.3847/1538-4357/ac8eaa}
+
+% type= article
+\bibitem[{S. {Patsourakos} \& J.~A. {Klimchuk}(2006){Patsourakos} \&
+  {Klimchuk}}]{Patsourakos06}
+{Patsourakos}, S., \& {Klimchuk}, J.~A. 2006, \bibinfo{title}{{Nonthermal
+  Spectral Line Broadening and the Nanoflare Model},} \apj, 647, 1452,
+  \dodoi{10.1086/505517}
+
+% type= article
+\bibitem[{H.~E. {Petschek}(1964){Petschek}}]{Petschek64}
+{Petschek}, H.~E. 1964, \bibinfo{title}{{Magnetic Field Annihilation},} NASA
+  Special Publication, 50, 425
+
+% type= article
+\bibitem[{L. {Poletto} \& R.~J. {Thomas}(2004){Poletto} \&
+  {Thomas}}]{Poletto04}
+{Poletto}, L., \& {Thomas}, R.~J. 2004, \bibinfo{title}{{Stigmatic
+  Spectrometers for Extended Sources: Design with Toroidal Varied-Line-Space
+  Gratings},} \ao, 43, 2029, \dodoi{10.1364/AO.43.002029}
+
+% type= article
+\bibitem[{F.~R. {Powell} {et~al.}(1990){Powell}, {Vedder}, {Lindblom}, \&
+  {Powell}}]{Powell90}
+{Powell}, F.~R., {Vedder}, P.~W., {Lindblom}, J.~F., \& {Powell}, S.~F. 1990,
+  \bibinfo{title}{{Thin film filter performance for extreme ultraviolet and
+  X-ray applications},} Optical Engineering, 29, 614, \dodoi{10.1117/12.55641}
+
+% type= article
+\bibitem[{E.~R. {Priest} \& T.~G. {Forbes}(2002){Priest} \&
+  {Forbes}}]{Priest02}
+{Priest}, E.~R., \& {Forbes}, T.~G. 2002, \bibinfo{title}{{The magnetic nature
+  of solar flares},} \aapr, 10, 313, \dodoi{10.1007/s001590100013}
+
+% type= article
+\bibitem[{K.~G. {Puschmann} {et~al.}(2012){Puschmann}, {Denker}, {Kneer}, {Al
+  Erdogan}, {Balthasar}, {Bauer}, {Beck}, {Bello Gonz{\'a}lez}, {Collados},
+  {Hahn}, {Hirzberger}, {Hofmann}, {Louis}, {Nicklas}, {Okunev},
+  {Mart{\'{\i}}nez Pillet}, {Popow}, {Seelemann}, {Volkmer}, {Wittmann}, \&
+  {Woche}}]{Puschmann12}
+{Puschmann}, K.~G., {Denker}, C., {Kneer}, F., {et~al.} 2012,
+  \bibinfo{title}{{The GREGOR Fabry-P{\'e}rot Interferometer},} Astronomische
+  Nachrichten, 333, 880, \dodoi{10.1002/asna.201211734}
+
+% type= article
+\bibitem[{L.~A. {Rachmeler} {et~al.}(2019){Rachmeler}, {Winebarger}, {Savage},
+  {Golub}, {Kobayashi}, {Vigil}, {Brooks}, {Cirtain}, {De Pontieu}, {McKenzie},
+  {Morton}, {Peter}, {Testa}, {Tiwari}, {Walsh}, {Warren}, {Alexander},
+  {Ansell}, {Beabout}, {Beabout}, {Bethge}, {Champey}, {Cheimets}, {Cooper},
+  {Creel}, {Gates}, {Gomez}, {Guillory}, {Haight}, {Hogue}, {Holloway}, {Hyde},
+  {Kenyon}, {Marshall}, {McCracken}, {McCracken}, {Mitchell}, {Ordway}, {Owen},
+  {Ranganathan}, {Robertson}, {Payne}, {Podgorski}, {Pryor}, {Samra}, {Sloan},
+  {Soohoo}, {Steele}, {Thompson}, {Thornton}, {Watkinson}, \&
+  {Windt}}]{Rachmeler2019}
+{Rachmeler}, L.~A., {Winebarger}, A.~R., {Savage}, S.~L., {et~al.} 2019,
+  \bibinfo{title}{{The High-Resolution Coronal Imager, Flight 2.1},} \solphys,
+  294, 174, \dodoi{10.1007/s11207-019-1551-2}
+
+% type= article
+\bibitem[{R. {Rosner} {et~al.}(1978){Rosner}, {Tucker}, \& {Vaiana}}]{Rosner78}
+{Rosner}, R., {Tucker}, W.~H., \& {Vaiana}, G.~S. 1978,
+  \bibinfo{title}{{Dynamics of the quiescent solar corona},} \apj, 220, 643,
+  \dodoi{10.1086/155949}
+
+% type= article
+\bibitem[{T. {Rust} \& C.~C. {Kankelborg}(2019){Rust} \&
+  {Kankelborg}}]{Rust2019}
+{Rust}, T., \& {Kankelborg}, C.~C. 2019, \bibinfo{title}{{Quiet-Sun Explosive
+  Events Observed in He\,{\sc ii} $\lambda$304 with MOSES-06},} \apj, 877, 59,
+  \dodoi{10.3847/1538-4357/ab12e2}
+
+% type= phdthesis
+\bibitem[{T.~L. Rust(2017)Rust}]{Rust17}
+Rust, T.~L. 2017, \bibinfo{title}{Explosive Events in the Quiet Sun: Extreme
+  Ultraviolet Imaging Spectroscopy Instrumentation and Observations,} PhD
+  thesis, Montana State Univeristy, Bozeman, MT
+
+% type= article
+\bibitem[{T. {Sakao} {et~al.}(1999){Sakao}, {Tsuneta}, {Hara}, {Shimizu},
+  {Kano}, {Kumagai}, {Yoshida}, {Nagata}, \& {Kobayashi}}]{Sakao99}
+{Sakao}, T., {Tsuneta}, S., {Hara}, H., {et~al.} 1999, \bibinfo{title}{{The XUV
+  Doppler Telescope (XDT)},} \solphys, 187, 303,
+  \dodoi{10.1023/A:1005127827006}
+
+% type= article
+\bibitem[{S.~L. {Savage} {et~al.}(2023){Savage}, {Winebarger}, {Kobayashi},
+  {Athiray}, {Beabout}, {et~al.}}]{Savage2023}
+{Savage}, S.~L., {Winebarger}, A.~R., {Kobayashi}, K., {et~al.} 2023,
+  \bibinfo{title}{{The First Flight of the Marshall Grazing Incidence X-Ray
+  Spectrometer (MaGIXS)},} \apj, 945, 105, \dodoi{10.3847/1538-4357/acbb58}
+
+% type= article
+\bibitem[{G.~B. {Scharmer} {et~al.}(2008){Scharmer}, {Narayan}, {Hillberg}, {de
+  la Cruz Rodriguez}, {L{\"o}fdahl}, {Kiselman}, {S{\"u}tterlin}, {van Noort},
+  \& {Lagg}}]{Scharmer2008}
+{Scharmer}, G.~B., {Narayan}, G., {Hillberg}, T., {et~al.} 2008,
+  \bibinfo{title}{{CRISP Spectropolarimetric Imaging of Penumbral Fine
+  Structure},} \apjl, 689, L69, \dodoi{10.1086/595744}
+
+% type= article
+\bibitem[{J.~T. {Schmelz} {et~al.}(2012){Schmelz}, {Reames}, {von Steiger}, \&
+  {Basu}}]{Schmelz2012}
+{Schmelz}, J.~T., {Reames}, D.~V., {von Steiger}, R., \& {Basu}, S. 2012,
+  \bibinfo{title}{{Composition of the Solar Corona, Solar Wind, and Solar
+  Energetic Particles},} \apj, 755, 33, \dodoi{10.1088/0004-637X/755/1/33}
+
+% type= article
+\bibitem[{F. Schweizer(1979)Schweizer}]{Schweizer1979}
+Schweizer, F. 1979, \bibinfo{title}{Anamorphic Magnification of Grating
+  Spectrographs - A Reminder,} Publications of the Astronomical Society of the
+  Pacific, 91, 149, \dodoi{10.1086/130458}
+
+% type= article
+\bibitem[{ {SPICE Consortium} {et~al.}(2020){SPICE Consortium}, {Anderson},
+  {Appourchaux}, {Auch{\`e}re}, {et~al.}}]{Spice2020}
+{SPICE Consortium}, {Anderson}, M., {Appourchaux}, T., {Auch{\`e}re}, F.,
+  {et~al.} 2020, \bibinfo{title}{{The Solar Orbiter SPICE instrument: An
+  extreme UV imaging spectrometer},} \aap, 642, A14,
+  \dodoi{10.1051/0004-6361/201935574}
+
+% type= article
+\bibitem[{A.~K. {Srivastava} {et~al.}(2017){Srivastava}, {Shetye}, {Murawski},
+  {Doyle}, {Stangalini}, {Scullion}, {Ray}, {W{\'o}jcik}, \&
+  {Dwivedi}}]{Srivastava17}
+{Srivastava}, A.~K., {Shetye}, J., {Murawski}, K., {et~al.} 2017,
+  \bibinfo{title}{{High-frequency torsional Alfv{\'e}n waves as an energy
+  source for coronal heating},} Scientific Reports, 7, 43147,
+  \dodoi{10.1038/srep43147}
+
+% type= article
+\bibitem[{W.~T. {Thompson}(2006){Thompson}}]{Thompson2006}
+{Thompson}, W.~T. 2006, \bibinfo{title}{{Coordinate systems for solar image
+  data},} \aap, 449, 791, \dodoi{10.1051/0004-6361:20054262}
+
+% type= article
+\bibitem[{R. {Tousey} {et~al.}(1977){Tousey}, {Bartoe}, {Brueckner}, \&
+  {Purcell}}]{Tousey77}
+{Tousey}, R., {Bartoe}, J.-D.~F., {Brueckner}, G.~E., \& {Purcell}, J.~D. 1977,
+  \bibinfo{title}{{Extreme ultraviolet spectroheliograph ATM experiment
+  S082A},} \ao, 16, 870
+
+% type= article
+\bibitem[{R. {Tousey} {et~al.}(1973){Tousey}, {Bartoe}, {Bohlin}, {Brueckner},
+  {Purcell}, {Scherrer}, {Sheeley}, {Schumacher}, \& {Vanhoosier}}]{Tousey73}
+{Tousey}, R., {Bartoe}, J.~D.~F., {Bohlin}, J.~D., {et~al.} 1973,
+  \bibinfo{title}{{A Preliminary Study of the Extreme Ultraviolet
+  Spectroheliograms from Skylab},} \solphys, 33, 265,
+  \dodoi{10.1007/BF00152418}
+
+% type= article
+\bibitem[{M. {van Noort} {et~al.}(2022){van Noort}, {Bischoff}, {Kramer},
+  {Solanki}, \& {Kiselman}}]{vanNoort2022}
+{van Noort}, M., {Bischoff}, J., {Kramer}, A., {Solanki}, S.~K., \& {Kiselman},
+  D. 2022, \bibinfo{title}{{A prototype of a microlensed hyperspectral imager
+  for solar observations},} \aap, 668, A149,
+  \dodoi{10.1051/0004-6361/202243464}
+
+% type= article
+\bibitem[{J.~E. {Vernazza} \& E.~M. {Reeves}(1978){Vernazza} \&
+  {Reeves}}]{Vernazza78}
+{Vernazza}, J.~E., \& {Reeves}, E.~M. 1978, \bibinfo{title}{{Extreme
+  ultraviolet composite spectra of representative solar features},} \apjs, 37,
+  485, \dodoi{10.1086/190539}
+
+% type= article
+\bibitem[{A.~R. {Winebarger} {et~al.}(2019){Winebarger}, {Weber}, {Bethge},
+  {Downs}, {Golub}, {DeLuca}, {Savage}, {Del Zanna}, {Samra}, {Madsen},
+  {Ashraf}, \& {Carter}}]{Winebarger2019}
+{Winebarger}, A.~R., {Weber}, M., {Bethge}, C., {et~al.} 2019,
+  \bibinfo{title}{{Unfolding Overlapped Slitless Imaging Spectrometer Data for
+  Extended Sources},} \apj, 882, 12, \dodoi{10.3847/1538-4357/ab21db}
+
+% type= inproceedings
+\bibitem[{J.-P. {Wuelser} {et~al.}(2000){Wuelser}, {Rosenberg}, \&
+  {Bruner}}]{2000WuelserFP}
+{Wuelser}, J.-P., {Rosenberg}, W.~A., \& {Bruner}, M.~E. 2000,
+  \bibinfo{title}{{Tunable Fabry-Perot etalons for the 120- to 150-nm
+  wavelength range},} in \procspie, Vol. 4139, Instrumentation for UV/EUV
+  Astronomy and Solar Missions, ed. S.~{Fineschi}, C.~M. {Korendyke}, O.~H.
+  {Siegmund}, \& B.~E. {Woodgate}, 390--401, \dodoi{10.1117/12.410537}
+
+\end{thebibliography}
