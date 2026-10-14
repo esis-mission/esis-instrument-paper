@@ -309,6 +309,14 @@ Descour, M.~R., Volin, C.~E., Dereniak, E.~L., {et~al.} 1997,
   299, 120, \dodoi{10.1007/s11207-024-02367-y}
 
 % type= article
+\bibitem[{J. Heymes {et~al.}(2020)Heymes, Soman, Randall, Gottwald, Harris,
+  Kelt, Moody, Meng, \& Holland}]{Heymes2020}
+Heymes, J., Soman, M., Randall, G., {et~al.} 2020, \bibinfo{title}{Comparison
+  of Back-Thinned Detector Ultraviolet Quantum Efficiency for Two Commercially
+  Available Passivation Treatments,} IEEE Transactions on Nuclear Science, 67,
+  1962, \dodoi{10.1109/TNS.2020.3001622}
+
+% type= article
 \bibitem[{D.~E. {Innes} {et~al.}(2015){Innes}, {Guo}, {Huang}, \&
   {Bhattacharjee}}]{Innes15}
 {Innes}, D.~E., {Guo}, L.-J., {Huang}, Y.-M., \& {Bhattacharjee}, A. 2015,
@@ -427,6 +435,14 @@ Lockheed Missiles and Space Co. Report. 1969, {Solar Pointing Aerobee Rocket
 \bibitem[{J.~T. Mariska(1992)Mariska}]{Mariska1992}
 Mariska, J.~T. 1992, The solar transition region, Cambridge astrophysics series
   ; 23 (Cambridge [England] ; New York, NY, USA: Cambridge University Press)
+
+% type= techreport
+\bibitem[{I. Moody {et~al.}(2017)Moody, Watkins, Bell, Soman, Keelan, \&
+  Holland}]{Moody2017}
+Moody, I., Watkins, M., Bell, R., {et~al.} 2017, CCD QE in the Soft X-ray
+  Range, Tech. rep., e2v.
+\newblock
+  \url{https://oro.open.ac.uk/49003/1/Moody%202017%20-%20SXRQE_WhitePaper.pdf}
 
 % type= article
 \bibitem[{T.~G. {Moran}(2001){Moran}}]{Moran01}
