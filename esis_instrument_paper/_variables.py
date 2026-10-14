@@ -259,6 +259,7 @@ def variables() -> list[aastex.Variable]:
         *_coatings(),
         *_sensitivity(),
         *_alignment_and_focus(),
+        *_cameras(),
     ]
 
 
@@ -332,6 +333,12 @@ def _percent(fraction: na.AbstractScalar, decimals: int = 0) -> u.Quantity:
     """A fraction written as a percentage, rounded."""
     fraction = na.as_named_array(fraction).ndarray
     return (fraction * u.dimensionless_unscaled).to(u.percent).round(decimals)
+
+
+def _series(items: collections.abc.Sequence[object]) -> aastex.NoEscape:
+    """A list written out in a sentence, such as 1, 2, 3, and 4."""
+    items = [str(item) for item in items]
+    return aastex.NoEscape(", ".join(items[:-1]) + f", and {items[-1]}")
 
 
 def _date(time: astropy.time.Time) -> aastex.NoEscape:
@@ -621,5 +628,125 @@ def _alignment_and_focus() -> list[aastex.Variable]:
             # image about two pixels.
             name="gratingTiltTolerance",
             value=_alignment.tolerance_tilt().round(2),
+        ),
+    ]
+
+
+def _cameras() -> list[aastex.Variable]:
+    """
+    The variables cited by the subsection on the cameras, from the cameras
+    that flew.
+
+    The range of the focus adjustment and the masses of the cold block are
+    still literals, since the model does not carry them.
+    """
+    instrument = esis_instrument_paper._counts.optics()
+    camera = instrument.camera
+    sensor = camera.sensor
+    spectrum = esis.flights.f1.spectrum
+
+    # Each tap reads out its masked rows before the rows of the image area,
+    # so the rows the sensor images with are the active rows less the masked
+    # rows of the two taps along the columns.
+    num_pixel_y = sensor.num_pixel_active.y - 2 * sensor.num_masked
+
+    gain = na.as_named_array(camera.gain).ndarray
+
+    return [
+        aastex.Variable(
+            name="detectorName",
+            value=sensor.family,
+        ),
+        aastex.Variable(
+            name="detectorManufacturer",
+            value=sensor.manufacturer,
+        ),
+        aastex.Variable(
+            name="detectorAnalogToDigitalBits",
+            value=camera.bits_adc,
+        ),
+        aastex.Variable(
+            name="detectorPixelsX",
+            value=sensor.num_pixel_x,
+        ),
+        aastex.Variable(
+            name="detectorPixelsY",
+            value=num_pixel_y,
+        ),
+        aastex.Variable(
+            # it begins a sentence
+            name="DetectorNumOverscanColumnsWords",
+            value=aastex.NoEscape(
+                num2words.num2words(sensor.num_overscan).capitalize()
+            ),
+        ),
+        aastex.Variable(
+            name="detectorNumMaskedRowsWords",
+            value=aastex.NoEscape(num2words.num2words(sensor.num_masked)),
+        ),
+        aastex.Variable(
+            name="detectorFrameTransferTime",
+            value=camera.timedelta_transfer,
+        ),
+        aastex.Variable(
+            name="detectorReadoutTime",
+            value=camera.timedelta_readout,
+        ),
+        aastex.Variable(
+            name="detectorExposureLengthMin",
+            value=camera.timedelta_exposure_min,
+        ),
+        aastex.Variable(
+            name="detectorExposureLengthMax",
+            value=camera.timedelta_exposure_max,
+        ),
+        aastex.Variable(
+            name="detectorExposureLengthIncrement",
+            value=camera.timedelta_exposure_step,
+        ),
+        aastex.Variable(
+            # the name of the channel, which is how the text names the cameras
+            name="detectorTriggerChannel",
+            value=camera.channel_trigger,
+        ),
+        aastex.Variable(
+            name="detectorSynchronizationError",
+            value=camera.timedelta_sync,
+        ),
+        aastex.Variable(
+            name="detectorTemperatureTarget",
+            value=sensor.temperature,
+        ),
+        aastex.Variable(
+            name="channelNames",
+            value=_series(na.as_named_array(camera.channel).ndarray),
+        ),
+        aastex.Variable(
+            name="detectorSerialNumbers",
+            value=_series(na.as_named_array(sensor.serial_number).ndarray),
+        ),
+        aastex.Variable(
+            # Written to two decimals, as the measurements are. The least is a
+            # plain number, since the text gives the unit once, after the
+            # greatest.
+            name="detectorGainMin",
+            value=aastex.NoEscape(f"{gain.min().value:.2f}"),
+        ),
+        aastex.Variable(
+            name="detectorGainMax",
+            value=gain.max(),
+            unit=(u.electron, u.DN**-1),
+        ),
+        aastex.Variable(
+            name="detectorQuantumEfficiencyHeI",
+            value=_percent(
+                sensor.material.quantum_efficiency_effective(spectrum.He_I.wavelength)
+            ),
+        ),
+        aastex.Variable(
+            name="detectorQuantumEfficiencyOV",
+            value=_percent(
+                sensor.material.quantum_efficiency_effective(spectrum.O_V.wavelength)
+            ),
         ),
     ]
