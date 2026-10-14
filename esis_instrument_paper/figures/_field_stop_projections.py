@@ -98,7 +98,7 @@ def field_stop_projections() -> aastex.Figure:
     ax.set_aspect("equal")
     ax.set_xlabel(f"detector $x$ ({u.pix:latex_inline})")
     ax.set_ylabel(f"detector $y$ ({u.pix:latex_inline})")
-    ax.legend(bbox_to_anchor=(0.5, -0.3), loc="upper center", ncol=2)
+    fig.legend(loc="outside lower center", ncol=2)
 
     result = aastex.Figure("fig:projections", position="!htb")
     result.add_fig(fig, width=None)
