@@ -88,7 +88,7 @@ def spot_size() -> aastex.FigureStar:
         seed=_seed,
     )
 
-    radius = system.spot_size_rms(
+    radius = system.spot_size(
         wavelength=wavelength,
         field=centers,
         pupil=pupil,
