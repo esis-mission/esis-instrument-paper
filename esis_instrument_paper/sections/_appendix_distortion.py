@@ -72,12 +72,17 @@ line, its component along the channel's dispersion in pixels and in \si{\kilo\me
 the tiles about it, and the decomposition of the tiles into the linear distortion modes with a test of whether
 what remains is noise (Figure~\ref{fig:coalignmentTiles}).
 \end{enumerate}
-The committed tables differ from the run before them only in the \AIA\ scene, which a correction to the data
-library moved by one \AIA\ pixel; the fitted pointing moved by that much, \SI{0.8}{\arcsecond}, and everything
-the scene does not touch, the window edges and their drift, the focus of each sector and the registration of the
-channels, came out the same to the noise: the correlations within 0.003, the pointing drifts within
-\SI{0.04}{\arcsecond}, the foci within \SI{9}{\micro\meter} and the registration within \SI{0.02}{pixels}.
-The same chain run on a host without a GPU reproduced that earlier run, the correlations to seven figures and
+Two runs preceded the committed tables. The first differed from them only in the gains of the cameras, which
+it took from an earlier summary of the verification tests that had two cameras' gains swapped: three of the
+four captures landed elsewhere along the near-null directions of the problem, the shared pointing moved
+\SI{0.35}{\arcsecond}, and everything measured came out the same to the scatter between seeds, the correlations
+within 0.009, the pointing drifts within \SI{0.08}{\arcsecond}, the foci within \SI{5}{\micro\meter} and the
+registration within \SI{0.01}{pixels}. The run before that differed only in the \AIA\ scene, which a correction
+to the data library moved by one \AIA\ pixel; the fitted pointing moved by that much, \SI{0.8}{\arcsecond}, and
+everything the scene does not touch, the window edges and their drift, the focus of each sector and the
+registration of the channels, came out the same to the noise: the correlations within 0.003, the pointing drifts
+within \SI{0.04}{\arcsecond}, the foci within \SI{9}{\micro\meter} and the registration within \SI{0.02}{pixels}.
+The same chain run on a host without a GPU reproduced that earliest run, the correlations to seven figures and
 the coalignment to \SI{0.01}{pixels}. A second run from a different random seed, on the chain before the
 focus of each sector was added, reproduced the correlations to 0.01 and the coalignment to \SI{0.02}{pixels};
 the parameters differ along the null directions of the problem, with the mapping unchanged to about a pixel at
