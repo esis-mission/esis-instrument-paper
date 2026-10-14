@@ -1,6 +1,8 @@
 import pylatex
+import pytest
 
 import esis_instrument_paper
+from esis_instrument_paper.tables import _surface_error
 
 
 def test_surface_error() -> None:
@@ -20,3 +22,22 @@ def test_surface_error() -> None:
         assert result.count(parameter) == 2
     for header in ["Requirement", "Measured"]:
         assert header in result
+
+
+@pytest.mark.parametrize(
+    argnames="value,expected",
+    argvalues=[
+        (0.436, "0.44"),
+        (0.024, "0.024"),
+        (0.02, "0.020"),
+        (4, "4.0"),
+        (70, "70"),
+    ],
+)
+def test_format(value: float, expected: str) -> None:
+    """
+    Every number in the table has two significant figures: a measurement
+    or the shortest of the periods is not rounded to one, and the zeros of a
+    round number are kept, without a decimal point left trailing.
+    """
+    assert _surface_error._format(value) == expected

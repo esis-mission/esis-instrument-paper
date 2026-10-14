@@ -16,22 +16,44 @@ _unit_slope = u.urad
 _unit_roughness = u.nm
 """The unit of the roughness and the microroughness."""
 
+_digits = 2
+"""
+The number of significant figures of every number in the table.
+
+The specifications are given to two, and the measurements to three, so two
+compares them at the precision of the specifications without rounding the
+measurements, or the shortest of the periods, to a single figure.
+"""
+
+
+def _format(value: float) -> str:
+    """
+    A number to :data:`_digits` significant figures, with the zeros which are
+    significant kept.
+
+    Parameters
+    ----------
+    value
+        The number to format.
+    """
+    return f"{value:#.{_digits}g}".rstrip(".")
+
 
 def _value(value: u.Quantity | na.AbstractScalar, unit: u.UnitBase) -> str:
     """
-    A specification or a measurement, to a tenth of the unit of its row.
+    A specification or a measurement, in the unit of its row.
 
     The gratings were measured one at a time, so their measurements are one
     per channel, and the table gives the mean of the four, as the old draft
     did.
     """
     mean = na.as_named_array(value).mean().ndarray
-    return f"{mean.to_value(unit):.1f}"
+    return _format(mean.to_value(unit))
 
 
 def _length(name: str, value: u.Quantity) -> str:
     """A length which says how a value was measured, in its own unit."""
-    return rf"\quad {name} = {value.value:.1f}\,{value.unit:latex_inline}"
+    return rf"\quad {name} = {_format(value.value)}\,{value.unit:latex_inline}"
 
 
 def _periods(parameters: optika.metrology.RoughnessParameters) -> str:
@@ -39,7 +61,7 @@ def _periods(parameters: optika.metrology.RoughnessParameters) -> str:
     period_min = parameters.period_min
     period_max = parameters.period_max.to(period_min.unit)
     return (
-        rf"\quad Periods = {period_min.value:.2f}--{period_max.value:.1f}"
+        rf"\quad Periods = {_format(period_min.value)}--{_format(period_max.value)}"
         rf"\,{period_min.unit:latex_inline}"
     )
 
