@@ -125,8 +125,9 @@ def surface_error() -> pylatex.Table:
 
     result.add_caption(pylatex.NoEscape(r"""
 Figure and surface roughness requirements compared to metrology for the \ESIS\ optics.
-Slope error (both the numerical estimates and the measurements) is worked out with integration length and sample length
-defined per ISO 10110."""))
+Slope error (both the numerical estimates and the measurements) is worked out by first smoothing the surface with a
+boxcar as wide as the sample length, then dividing the difference in height across the integration length by that
+length."""))
 
     with (
         result.create(pylatex.Center()) as centering,

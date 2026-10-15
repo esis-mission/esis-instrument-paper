@@ -142,7 +142,7 @@ def spot_size() -> aastex.FigureStar:
     result = aastex.FigureStar("fig:spotSize", position="!htb")
     result.add_fig(fig, width=aastex.NoEscape(r"\textwidth"), dpi=_dpi)
     result.add_caption(aastex.NoEscape(rf"""
-2D histogram of RMS spot sizes for the {num_lines} brightest wavelengths in the \ESIS\ passband.
+Maps of the RMS spot radius for the {num_lines} brightest wavelengths in the \ESIS\ passband.
 Each wavelength has ${num_field} \times {num_field}$ field points across the \FOV, and each field point
 has a stratified random grid containing ${num_pupil} \times {num_pupil}$ pupil positions.
 The \HeI\ line appears cropped since it is cut off by the edge of the detector."""))

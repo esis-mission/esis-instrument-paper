@@ -128,10 +128,13 @@ The parameters of Equation~\ref{Eq-d} and $R_g$ were chosen so that the spatial 
 the center of the \OV\ image on the \CCD.
 
 Starting from the analytically-derived optical prescription, a model of the system was developed in raytrace software.
-In the ray trace model, $R_g$, $d_1$, $d_2$, grating cant angle, \CCD\ cant angle, and focus position were then
+In the raytrace model, $R_g$, $d_1$, $d_2$, grating cant angle, \CCD\ cant angle, and focus position were then
 optimized to minimize the RMS spot at select positions in the \OV\ \FOV.
 The resulting performance is illustrated in Figure~\ref{fig:psf}.
-The optical prescription derived from the ray trace is listed in Table~\ref{table:prescription} and
+Figure~\ref{fig:spotSize} maps the RMS spot radius across the \FOV\ at the brightest lines in the \ESIS\ passband,
+and Figure~\ref{fig:focusCurve} shows how the RMS spot radius at the center of the \FOV\ changes as the \CCD\ is
+moved through focus.
+The optical prescription derived from the raytrace is listed in Table~\ref{table:prescription} and
 Figure~\ref{fig:schematic}.""")
     subsection_optimization.append(esis_instrument_paper.figures.spot_diagrams())
     subsection_optimization.append(esis_instrument_paper.figures.spot_size())
@@ -387,7 +390,7 @@ ray $<$\SI{1.4}{\degree} from the optical axis.
 This angle is purposefully larger than the angular diameter of the sun ($\sim$\SI{0.5}{\degree}) so that any direct
 paths are excluded from bright sources in the solar corona.
 All baffles are bead-blasted, anodized \Al\ sheet metal oriented perpendicular to the optical axis.
-The size and shape of the cutouts were determined using a combination of the ray trace from
+The size and shape of the cutouts were determined using a combination of the raytrace from
 Section~\ref{subsec:OptimizationandTolerancing} and 3D modeling.
 Between the primary mirror and the gratings, each cutout is the footprint of the rays of that trace where they cross
 the baffle.
