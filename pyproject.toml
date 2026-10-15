@@ -18,7 +18,7 @@ dependencies = [
     "aastex~=0.6",
     "num2words~=0.5",
     "named-arrays~=2.15",
-    "optika @ git+https://github.com/sun-data/optika.git@feature/spot-size",
+    "optika~=3.4",
     "euv-snapshot-imaging-spectrograph @ git+https://github.com/esis-mission/esis.git@feature/surface-metrology",
     "utu~=0.1",
     "fiasco~=0.8.2",
