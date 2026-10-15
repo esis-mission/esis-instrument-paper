@@ -18,7 +18,8 @@ def distortion_flight() -> aastex.Figure:
     committed tables of the fit: the pointing of the payload, the drift of
     the windows, the defocus of the primary, the focus of each sector of the
     primary about it, and the shift of every channel's sky against channel 1
-    with one focus for the whole primary and with one per sector.
+    with the focus held, with the focus of each sector and with the optional
+    channel offsets.
     """
     # usetex drops the minus sign of a negative tick label unless it is
     # written as a hyphen
@@ -34,7 +35,7 @@ def distortion_flight() -> aastex.Figure:
     for ax, loc, ncol in zip(
         axes,
         ("upper right", "upper center", "lower right", "upper center", "upper center"),
-        (2, 4, 1, 2, 3),
+        (2, 4, 1, 2, 2),
     ):
         ax.legend(frameon=False, fontsize=7, ncol=ncol, loc=loc)
         ax.tick_params(labelsize=8)
@@ -51,7 +52,8 @@ the defocus of the primary mirror at the field stop, the mean over its sectors, 
 from the channels against one another in every exposure and smoothed by a quadratic;
 the focus of each channel's sector of the primary about that mean, measured per exposure
 (dots) and as applied (lines);
-and the shift of each channel's sky against channel 1, dashed with one focus for the whole
-primary and solid with one per sector, with the \coalignmentThreshold\ acceptance threshold
-dotted."""))
+and the shift of each channel's sky against channel 1, dashed with the focus held at its value
+at the reference exposure, solid with the focus of each sector following the flight and
+dash-dotted with the optional channel offsets as well, with the \coalignmentThreshold\
+acceptance threshold dotted."""))
     return result

@@ -296,7 +296,9 @@ def _distortion() -> list[aastex.Variable]:
     ]
     after = {k: rows[f"shift_{v}"].to_value(u.pix) for k, v in lines.items()}
     along = {k: rows[f"along_{v}"].to_value(u.pix) for k, v in lines.items()}
-    rms = lambda a: float(np.sqrt(np.nanmean(np.square(a))))
+
+    def rms(a):
+        return float(np.sqrt(np.nanmean(np.square(a))))
 
     # the optional empirical offsets: what the sector focus leaves, as the
     # registration measurement sees it (one median shift per channel and
@@ -358,6 +360,21 @@ def _distortion() -> list[aastex.Variable]:
                 1,
             )
             * u.pix,
+        ),
+        aastex.Variable(
+            name="windowDriftGratingMax",
+            value=round(
+                float(
+                    np.nanmax(
+                        np.hypot(
+                            pointing["yaw_grating"].to_value(u.arcsec),
+                            pointing["pitch_grating"].to_value(u.arcsec),
+                        )
+                    )
+                ),
+                1,
+            )
+            * u.arcsec,
         ),
         aastex.Variable(
             name="defocusRange",

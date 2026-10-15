@@ -89,9 +89,9 @@ the parameters differ along the null directions of the problem, with the mapping
 the edge of the field.
 
 \paragraph{The focus of each sector}
-With the pointing, the drift and one defocus of the whole primary applied, each channel's image still
-translated against the others' by up to \coalignmentBeforeMax\ between the ends of the flight, rigid, the same
-at both lines and smooth in time.
+With the pointing and the drift applied and the focus held at its value at the reference exposure, each
+channel's image still translated against the others' by up to \coalignmentBeforeMax\ at the first exposure,
+rigid, the same at both lines and smooth in time.
 Tracking the interior of each window and its edges separately against the reference exposure, on the detector,
 the image did not move with the edges, so it was not a motion of a grating or a camera, which carry both; nor a
 decenter of the field stop or of the primary, which move every window, or every image, by one vector; and an
@@ -140,8 +140,9 @@ position.
 An undispersed channel sharing the field stop would anchor the sky absolutely to a few hundredths of a pixel,
 where the \AIA\ proxy anchors it to half a pixel, and would separate a common Doppler shift from a change of
 focus outright.
-The primary's focus drifted by \defocusRange\ and the field stop by a few microns, and each moved the images by
-tenths of a pixel; an athermal metering structure between them, or a way to measure both in flight, is worth
+The primary's focus drifted by \defocusRange\ and the windows by up to \windowDriftMax\ across the detectors,
+and each moved the images by tenths of a pixel; an athermal metering structure between the optics, or a way to
+measure both in flight, is worth
 more to the registration of the channels than any improvement of the detectors.
 
 \paragraph{Cost}
