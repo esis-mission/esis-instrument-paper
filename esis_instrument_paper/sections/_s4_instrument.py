@@ -12,9 +12,9 @@ def instrument() -> aastex.Section:
     The section describing the instrument as it was built.
 
     The subsections are in the order of the old draft. The subsection on the
-    optimization and the tolerancing of the design, which follows the one on
-    the optics, is still to be ported, and so is the error budget it
-    tabulates.
+    optimization and the tolerancing of the design still lacks the old
+    draft's last two paragraphs, on the tolerance analysis and on the error
+    budget it tabulates.
     """
     result = aastex.Section(aastex.NoEscape(r"The \ESIS\ Instrument"))
     result.append(r"""
@@ -82,6 +82,64 @@ The instrument dispersion satisfies the spectral resolution requirement in Table
 spectral images are well-separated; Figure~\ref{fig:projections} shows that \HeI\ is completely
 separated from the target \OV\ line.""")
     result.append(subsection_optics)
+
+    # The old draft ends this subsection with a paragraph on the tolerance
+    # analysis and one on the error budget, which are still to be ported.
+    subsection_optimization = aastex.Subsection("Optimization and Tolerancing")
+    subsection_optimization.append(r"""
+The science resolution requirement of \angularResolutionRequirement\ (Table~\ref{table:scireq}) was
+flowed down to specifications for the \ESIS\ optics.
+To ensure that \ESIS\ meets this requirement, an imaging error budget was developed to track parameters that
+significantly influence instrument resolution.
+The budget is roughly divided into two categories;
+the first includes `variable' parameters that can be controlled to varying degrees (\eg, the figure and finish of the
+optics, grating radius and ruling, placement of the elements in the system, and the accuracy to which the instrument is
+focused).
+The second category consists of `fixed' contributions (\eg, \CCD\ charge diffusion, pointing stability, and diffraction
+from the entrance aperture).
+In this subsection we describe all these contributions to the instrument resolution budget.
+
+Figure and surface roughness specifications for the primary mirror and gratings were developed first by a rule of thumb
+and then validated through a Fourier optics model and Monte Carlo simulations.
+Surface figure errors were randomly generated, using a power law distribution in frequency.
+The model explored a range of power spectral distributions for the surface figure errors, with power laws ranging from
+0.1 to 4.0.
+For each randomly generated array of optical figure errors, the amplitude was adjusted to yield a target \MTF\
+degradation factor, as compared to the diffraction-limited \MTF.
+For the primary mirror, the figure of merit was a \MTF\ degradation of \primaryMtfDegradationFactor\ at
+\angularResolutionRequirement\ resolution.
+Though the grating is smaller and closer to the focal plane, it was allocated somewhat more significant \MTF\
+degradation of \gratingMtfDegradationFactor\ based on manufacturing capabilities.
+The derived requirements are described in Table~\ref{table:error}.
+Note that this modeling exercise was undertaken before the baffle designs were finalized.
+The estimated diffraction \MTF\ and aberrations were therefore modeled for a rough estimate of the \ESIS\ single sector
+aperture.""")
+    subsection_optimization.append(esis_instrument_paper.tables.surface_error())
+    subsection_optimization.append(r"""
+The initial grating radius of curvature, $R_g$, and ruling pattern of the \ESIS\ gratings were
+derived from the analytical equations developed by \citet{Poletto04} for stigmatic spectrometers.
+A second order polynomial describes the ruling pattern,
+\begin{equation} \label{Eq-d}
+d = d_0 + d_1 x + d_2 x^2 \, ,
+\end{equation}
+where $x$ is a Cartesian coordinate running outward from the optical axis with its origin at the center of the grating
+(Figure~\ref{fig:schematic}c).
+The parameters of Equation~\ref{Eq-d} and $R_g$ were chosen so that the spatial and spectral focal curves intersect at
+the center of the \OV\ image on the \CCD.
+
+Starting from the analytically-derived optical prescription, a model of the system was developed in raytrace software.
+In the raytrace model, $R_g$, $d_1$, $d_2$, grating cant angle, \CCD\ cant angle, and focus position were then
+optimized to minimize the RMS spot at select positions in the \OV\ \FOV.
+The resulting performance is illustrated in Figure~\ref{fig:psf}.
+Figure~\ref{fig:spotSize} maps the RMS spot radius across the \FOV\ at the brightest lines in the \ESIS\ passband,
+and Figure~\ref{fig:focusCurve} shows how the RMS spot radius at the center of the \FOV\ changes as the \CCD\ is
+moved through focus.
+The optical prescription derived from the raytrace is listed in Table~\ref{table:prescription} and
+Figure~\ref{fig:schematic}.""")
+    subsection_optimization.append(esis_instrument_paper.figures.spot_diagrams())
+    subsection_optimization.append(esis_instrument_paper.figures.spot_size())
+    subsection_optimization.append(esis_instrument_paper.figures.focus_curve())
+    result.append(subsection_optimization)
 
     subsection_vignetting = aastex.Subsection("Vignetting")
     subsection_vignetting.append(r"""
@@ -332,7 +390,7 @@ ray $<$\SI{1.4}{\degree} from the optical axis.
 This angle is purposefully larger than the angular diameter of the sun ($\sim$\SI{0.5}{\degree}) so that any direct
 paths are excluded from bright sources in the solar corona.
 All baffles are bead-blasted, anodized \Al\ sheet metal oriented perpendicular to the optical axis.
-The size and shape of the cutouts were determined using a combination of the ray trace from
+The size and shape of the cutouts were determined using a combination of the raytrace from
 Section~\ref{subsec:OptimizationandTolerancing} and 3D modeling.
 Between the primary mirror and the gratings, each cutout is the footprint of the rays of that trace where they cross
 the baffle.

@@ -18,8 +18,8 @@ dependencies = [
     "aastex~=0.6",
     "num2words~=0.5",
     "named-arrays~=2.15",
-    "optika~=3.3",
-    "euv-snapshot-imaging-spectrograph @ git+https://github.com/esis-mission/esis.git@319074e877789bf2eb4256f5de20ea2fd83a6ebc",
+    "optika~=3.4",
+    "euv-snapshot-imaging-spectrograph~=1.10",
     "utu~=0.1",
     "fiasco~=0.8.2",
 ]

@@ -40,8 +40,9 @@ def variables() -> list[aastex.Variable]:
 
     A few of these are still literals, since the model does not carry the
     quantity they describe: two which belong to MOSES or to the payload
-    rather than to the instrument, and the spectroscopic name of each
-    emission line, whose wavelength the model does carry.
+    rather than to the instrument, the allocations of the error budget to the
+    figure of the optics, and the spectroscopic name of each emission line,
+    whose wavelength the model does carry.
     """
     design = esis.flights.f1.optics.design()
 
@@ -261,6 +262,7 @@ def variables() -> list[aastex.Variable]:
         # on analysis which has not been ported: the error budget.
         _pending("spatialResolutionTotal"),
         *_optics(),
+        *_optimization(),
         *_coatings(),
         *_sensitivity(),
         *_alignment_and_focus(),
@@ -851,6 +853,30 @@ def _sensitivity() -> list[aastex.Variable]:
         aastex.Variable(
             name="activeRegionStackLength",
             value=num_active_region * exposure,
+        ),
+    ]
+
+
+def _optimization() -> list[aastex.Variable]:
+    """
+    The variables cited by the subsection on the optimization and the
+    tolerancing of the design.
+
+    Both are literals. They are the allocations of the imaging error budget to
+    the figure of the primary mirror and of the gratings, which a Fourier
+    optics model of random figure errors turned into the specifications of
+    the optics, and neither that model nor the allocations are part of the
+    model of the instrument.
+    """
+    return [
+        aastex.Variable(
+            # the degradation of the MTF at the resolution requirement
+            name="primaryMtfDegradationFactor",
+            value=aastex.NoEscape("0.7"),
+        ),
+        aastex.Variable(
+            name="gratingMtfDegradationFactor",
+            value=aastex.NoEscape("0.6"),
         ),
     ]
 
