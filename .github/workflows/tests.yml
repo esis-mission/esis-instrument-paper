@@ -81,19 +81,31 @@ jobs:
           from importlib.metadata import version
           print(f'version={version(\"optika\")}')
           " >> $GITHUB_OUTPUT
-      - name: Restore the spectrum computed from it
+      # The error budget realigns the gratings two dozen times, which takes
+      # several minutes, so it is remembered too, against the version of
+      # `esis` whose model it realigned as well as that of `optika`.
+      - name: Ask which esis is installed
+        id: esis
+        run: |
+          python -c "
+          from importlib.metadata import version
+          print(f'version={version(\"euv-snapshot-imaging-spectrograph\")}')
+          " >> $GITHUB_OUTPUT
+      - name: Restore the spectrum and the error budget computed from them
         uses: actions/cache@v4
         with:
           path: ~/.esis/cache/esis_instrument_paper
           key: >-
             spectrum-${{ steps.chianti.outputs.version }}-${{
             steps.optika.outputs.version }}-${{
-            hashFiles('esis_instrument_paper/_spectrum.py') }}
+            steps.esis.outputs.version }}-${{
+            hashFiles('esis_instrument_paper/_spectrum.py', 'esis_instrument_paper/_error_budget.py') }}
           # An older spectrum is worth restoring even when this module or that
           # version has changed, since `joblib` decides for itself whether what
           # it holds still answers the question, and recomputes when it does
           # not.
           restore-keys: |
+            spectrum-${{ steps.chianti.outputs.version }}-${{ steps.optika.outputs.version }}-${{ steps.esis.outputs.version }}-
             spectrum-${{ steps.chianti.outputs.version }}-${{ steps.optika.outputs.version }}-
             spectrum-${{ steps.chianti.outputs.version }}-
       - name: Test with pytest
