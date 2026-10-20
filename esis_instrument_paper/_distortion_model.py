@@ -6,7 +6,10 @@ It is fit by :meth:`optika.systems.SequentialSystem.distortion` at the lines
 and over the cells of the vignetting figure.
 """
 
+import astropy.units as u
 import esis
+import named_arrays as na
+import numpy as np
 import optika
 
 from esis_instrument_paper import _grids
@@ -16,6 +19,7 @@ __all__ = [
     "degree_linear",
     "model",
     "optics",
+    "residual_max",
 ]
 
 _num_field = 21
@@ -91,3 +95,22 @@ def model(
         seed_field=_seed_field,
         seed_pupil=_seed_pupil,
     )
+
+
+def residual_max(
+    degree: int = degree,
+) -> u.Quantity:
+    """
+    The largest distance between where a polynomial puts a cell of the field
+    on the detector and where the rays traced through it land, over the cells
+    and the lines the residual figure draws.
+
+    Parameters
+    ----------
+    degree
+        The degree of the polynomial, the one the text writes out by default.
+    """
+    distortion = model(degree)
+    residual = (distortion.coordinates_sensor - distortion.fit.predictions).length
+    residual = np.where(distortion.where, residual, -np.inf * na.unit(residual))
+    return residual.max().ndarray

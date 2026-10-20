@@ -40,6 +40,9 @@ esis_instrument_paper/*.pdf
 # aastex copies each static figure next to the .tex file too
 esis_instrument_paper/*.png
 !esis_instrument_paper/orcid-ID.png
+# and writes the BibTeX entries of the software the article cites there,
+# read from Zenodo for the versions installed
+esis_instrument_paper/software.bib
 
 # submission archives built by `aastex.Document.generate_archive()`
 *.zip

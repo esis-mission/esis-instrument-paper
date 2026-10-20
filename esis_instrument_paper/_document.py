@@ -58,7 +58,11 @@ def document(linenumbers: bool = True) -> aastex.Document:
     doc.append(esis_instrument_paper.sections.mission_profile())
     doc.append(esis_instrument_paper.sections.conclusions())
 
-    doc.append(aastex.Bibliography("sources"))
+    doc.append(esis_instrument_paper.acknowledgments())
+    doc.append(esis_instrument_paper.software())
+
+    # the software cited by archive is written into `software.bib`
+    doc.append(aastex.Bibliography("sources,software"))
 
     return doc
 

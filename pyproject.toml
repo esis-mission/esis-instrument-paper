@@ -15,7 +15,7 @@ classifiers = [
 ]
 dependencies = [
     "pylatex~=1.4",
-    "aastex~=0.6",
+    "aastex~=0.9",
     "num2words~=0.5",
     "named-arrays~=2.15",
     "optika~=3.4",

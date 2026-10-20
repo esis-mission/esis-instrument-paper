@@ -161,7 +161,8 @@ reconnection in explosive events and the transport of mass and energy through th
 The latter may take many forms, from \MHD\ waves of various modes to \EUV\ jets or macrospicules.
 To fulfill these goals, \ESIS\ will obtain simultaneous intensity, Doppler shift and line width images of the \OV\ line
 in the solar transition region (\SI{.25}{\mega\kelvin}) at rapid cadence.
-The bright, optically thin \OVion\ emission line is well isolated except for the two coronal \MgXion\ lines.
+The bright, optically thin \OVion\ emission line is well isolated except for the two coronal \MgXion\ lines
+(Figure~\ref{fig:bunch}).
 These coronal lines can be viewed as contamination or as a bonus;
 we expect that with the \numChannelsWords\ \ESIS\ projections it is possible to separate the \OVion\ emission from
 that of \MgXion.

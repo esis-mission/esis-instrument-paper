@@ -120,7 +120,7 @@ Incoming light is brought to focus at an octagonal field stop by a parabolic pri
 In the \ESIS\ layout, the secondary mirror of a typical Gregorian telescope is replaced by a segmented, octagonal array 
 of diffraction gratings.
 From the field stop, the gratings re-image to \CCD\ detectors arranged radially around the primary mirror.
-The gratings are blazed for first order, so that each \CCD\ is fed by a single corresponding grating, and all the 
+The gratings are optimized for first order, so that each \CCD\ is fed by a single corresponding grating, and all the
 gratings are identical in design.
 The features of this new layout address all of the limitations described in 
 Section~\ref{subsec:LimitationsoftheMOSESDesign}, and are summarized here.

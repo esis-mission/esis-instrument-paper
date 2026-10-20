@@ -198,6 +198,26 @@ def variables() -> list[aastex.Variable]:
             .round(2),
         ),
         aastex.Variable(
+            # The largest residuals of the linear and of the quadratic
+            # distortion models, the tops of the two rows of the residual
+            # figure, in pixels, which the text names after the number. Two
+            # significant figures, as the colorbars of the figure read.
+            name="distortionResidualLinear",
+            value=round(
+                esis_instrument_paper._distortion_model.residual_max(
+                    esis_instrument_paper._distortion_model.degree_linear
+                ).to_value(u.pix),
+                1,
+            ),
+        ),
+        aastex.Variable(
+            name="distortionResidualQuadratic",
+            value=round(
+                esis_instrument_paper._distortion_model.residual_max().to_value(u.pix),
+                3,
+            ),
+        ),
+        aastex.Variable(
             name="observingTime",
             value=length_observation.round(1),
         ),
