@@ -244,6 +244,7 @@ def variables() -> list[aastex.Variable]:
             name="chiantiVersion",
             value=aastex.NoEscape(esis_instrument_paper._spectrum.version()),
         ),
+        *_abstract(),
         *_optics(),
         *_optimization(),
         *_coatings(),
@@ -372,6 +373,31 @@ def _date(time: astropy.time.Time) -> aastex.NoEscape:
     """A day written as the journal writes dates, such as 2018 January 21."""
     date = time.to_datetime()
     return aastex.NoEscape(f"{date.year} {date:%B} {date.day}")
+
+
+def _abstract() -> list[aastex.Variable]:
+    """
+    The variables cited by the abstract alone: the plate scale of a channel,
+    as the mean of its plate scales along and across the dispersion, to the
+    two decimals the old draft gave it, and the Mg X line with its
+    wavelength, as the other two lines are written.
+    """
+    f1 = esis.flights.f1
+    wavelength = f1.spectrum.O_V.wavelength
+    design = f1.optics.design_single(num_distribution=0)
+
+    plate_scale = design.system.plate_scale(wavelength).to(u.arcsec / u.pix)
+
+    return [
+        aastex.Variable(
+            name="plateScaleMean",
+            value=_fixed(((plate_scale.x + plate_scale.y) / 2).ndarray, 2),
+        ),
+        aastex.Variable(
+            name="MgX",
+            value=aastex.NoEscape(r"\MgXion~\MgXwavelength"),
+        ),
+    ]
 
 
 def _optics() -> list[aastex.Variable]:
