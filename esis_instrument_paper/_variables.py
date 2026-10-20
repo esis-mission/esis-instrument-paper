@@ -251,6 +251,7 @@ def variables() -> list[aastex.Variable]:
         *_alignment_and_focus(),
         *_cameras(),
         *_mission_profile(),
+        *_conclusions(),
     ]
 
 
@@ -1049,5 +1050,57 @@ def _mission_profile() -> list[aastex.Variable]:
         aastex.Variable(
             name="timeShutterClose",
             value=_fixed(timeline.timedelta_shutter_close, 1),
+        ),
+    ]
+
+
+def _conclusions() -> list[aastex.Variable]:
+    """
+    The variables cited by the conclusions: the resolution of a channel, as
+    two pixels of its detector, as the old draft took it, the length of the
+    observing time, in whole exposures and in minutes, as the old draft
+    rounded it, and the names of the lines the second flight observes.
+    """
+    f1 = esis.flights.f1
+    wavelength = f1.spectrum.O_V.wavelength
+    design = f1.optics.design_single(num_distribution=0)
+
+    # two pixels along the coarser of the two axes of the detector
+    plate_scale = design.system.plate_scale(wavelength).to(u.arcsec / u.pix)
+    resolution_spatial = 2 * u.pix * np.maximum(plate_scale.x, plate_scale.y)
+
+    # two pixels along the dispersion, at the line the dispersion is quoted at
+    resolution_spectral = 2 * u.pix * design.dispersion(wavelength)
+
+    timeline = f1.nsroc.timeline()
+    length_observation = (
+        timeline.timedelta_sparcs_rlg_disable - timeline.timedelta_sparcs_rlg_enable
+    )
+
+    return [
+        aastex.Variable(
+            name="spatialResolutionMax",
+            value=_fixed(resolution_spatial.ndarray, 2),
+        ),
+        aastex.Variable(
+            name="spectralResolution",
+            value=_fixed(resolution_spectral.ndarray.to(u.mAA), 0),
+        ),
+        aastex.Variable(
+            name="numExposuresObserving",
+            value=int(length_observation // design.camera.timedelta_exposure),
+        ),
+        aastex.Variable(
+            name="observingTimeMinutes",
+            value=round(length_observation.to_value(u.min)),
+        ),
+        # the lines of `esis.flights.f2`, whose names its model does not carry
+        aastex.Variable(
+            name="NeVIIion",
+            value=aastex.NoEscape(r"Ne\,\textsc{vii}"),
+        ),
+        aastex.Variable(
+            name="SiXIIion",
+            value=aastex.NoEscape(r"Si\,\textsc{xii}"),
         ),
     ]

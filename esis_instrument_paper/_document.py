@@ -54,6 +54,7 @@ def document(linenumbers: bool = True) -> aastex.Document:
     doc.append(esis_instrument_paper.sections.science_objectives())
     doc.append(esis_instrument_paper.sections.instrument())
     doc.append(esis_instrument_paper.sections.mission_profile())
+    doc.append(esis_instrument_paper.sections.conclusions())
 
     doc.append(aastex.Bibliography("sources"))
 
