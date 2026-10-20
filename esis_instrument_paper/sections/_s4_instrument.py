@@ -11,10 +11,7 @@ def instrument() -> aastex.Section:
     """
     The section describing the instrument as it was built.
 
-    The subsections are in the order of the old draft. The subsection on the
-    optimization and the tolerancing of the design still lacks the old
-    draft's last two paragraphs, on the tolerance analysis and on the error
-    budget it tabulates.
+    The subsections are in the order of the old draft.
     """
     result = aastex.Section(aastex.NoEscape(r"The \ESIS\ Instrument"))
     result.append(r"""
@@ -83,8 +80,6 @@ spectral images are well-separated; Figure~\ref{fig:projections} shows that \HeI
 separated from the target \OV\ line.""")
     result.append(subsection_optics)
 
-    # The old draft ends this subsection with a paragraph on the tolerance
-    # analysis and one on the error budget, which are still to be ported.
     subsection_optimization = aastex.Subsection("Optimization and Tolerancing")
     subsection_optimization.append(r"""
 The science resolution requirement of \angularResolutionRequirement\ (Table~\ref{table:scireq}) was
@@ -139,6 +134,39 @@ Figure~\ref{fig:schematic}.""")
     subsection_optimization.append(esis_instrument_paper.figures.spot_diagrams())
     subsection_optimization.append(esis_instrument_paper.figures.spot_size())
     subsection_optimization.append(esis_instrument_paper.figures.focus_curve())
+    subsection_optimization.append(r"""
+The raytrace model was also used to quantify how mirror and positional tolerances affect the instrument's spatial
+resolution.
+Each element of the model was individually perturbed to either end of its tolerance, then a compensation was applied to
+adjust the image on the \CCD.
+The compensation optimized the grating tip/tilt angles and focus position, so that the image was re-centered and the
+RMS spot radius minimized over a regular grid of points across the \FOV.
+The defocus of the gratings and of the \CCDs\ was not compensated, since each is a residual error of the focus itself.
+We then computed the change in the RMS spot radius at \OV, averaged over the \FOV, between the optimized and perturbed
+models, and kept the larger change of the two ends of each tolerance.
+
+The imaging error budget is displayed in Table~\ref{table:errorBudget}.
+For the primary mirror and grating surface figure contributions, we list the \MTF\ degradations calculated by the
+Fourier optics code.
+To quantify the remaining entries, we assume that each term can be represented by a Gaussian function, of RMS radius
+$\sigma$, that ``blurs'' the final image.
+For each tolerance, $\sigma^2 = r^2 - r_0^2$, where $r$ and $r_0$ are the RMS spot radii of the perturbed and optimized
+models found by the tolerance analysis described above, and the aberrations of the optimized model contribute
+$\sigma = r_0$ itself.
+Diffraction is approximated by a Gaussian fit to the diffraction pattern of a slit as wide as the beam on the primary
+mirror along the dispersion.
+Charge diffusion is computed with the method of \citet{Janesick2001} for the model of the \CCD\ described in
+Section~\ref{subsec:Cameras}.
+The pointing terms are the specifications of the \SPARCS\ over an exposure of \detectorExposureLength, with their
+peak-to-peak values converted to RMS as for a sinusoid, and the thermal drift of the instrument is allocated the same as
+the pointing drift.
+The value of the \MTF\ in the right-most column of Table~\ref{table:errorBudget} is computed from each of the Gaussian
+blur terms at \mtfFrequency, the spatial frequency of the \angularResolutionRequirement\ resolution requirement.
+From Table~\ref{table:errorBudget}, we estimate the total \MTF\ of \ESIS\ at its required \spatialResolutionRequirement\
+resolution to be \mtfTotal.
+By way of comparison, the widely used Rayleigh criterion~\citep{Rayleigh_1879} for diffraction from a circular aperture
+corresponds to an \MTF\ of \mtfRayleigh\ at the resolution limit.""")
+    subsection_optimization.append(esis_instrument_paper.tables.error_budget())
     result.append(subsection_optimization)
 
     subsection_vignetting = aastex.Subsection("Vignetting")

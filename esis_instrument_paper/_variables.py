@@ -11,24 +11,11 @@ import optika
 import pylatex
 
 import esis_instrument_paper
-from esis_instrument_paper import _alignment
+from esis_instrument_paper import _alignment, _error_budget
 
 __all__ = [
     "variables",
 ]
-
-
-def _pending(name: str) -> aastex.Variable:
-    """
-    A quantity the model cannot supply yet, marked where it is cited.
-
-    Every number in this article is computed from the instrument model, and
-    these are the ones the model has no answer for. They are written into the
-    text as ``??`` rather than guessed at or left out, so that a draft shows
-    plainly what is still owed and no placeholder can be mistaken for a
-    measurement.
-    """
-    return aastex.Variable(name=name, value=aastex.NoEscape(r"\textbf{??}"))
 
 
 def variables() -> list[aastex.Variable]:
@@ -257,10 +244,6 @@ def variables() -> list[aastex.Variable]:
             name="chiantiVersion",
             value=aastex.NoEscape(esis_instrument_paper._spectrum.version()),
         ),
-        # A quantity the model cannot supply yet. It is a capability of the
-        # instrument rather than a requirement of the mission, and it waits
-        # on analysis which has not been ported: the error budget.
-        _pending("spatialResolutionTotal"),
         *_optics(),
         *_optimization(),
         *_coatings(),
@@ -862,21 +845,40 @@ def _optimization() -> list[aastex.Variable]:
     The variables cited by the subsection on the optimization and the
     tolerancing of the design.
 
-    Both are literals. They are the allocations of the imaging error budget to
-    the figure of the primary mirror and of the gratings, which a Fourier
-    optics model of random figure errors turned into the specifications of
-    the optics, and neither that model nor the allocations are part of the
-    model of the instrument.
+    The degradation factors are literals. They are the allocations of the
+    imaging error budget to the figure of the primary mirror and of the
+    gratings, which a Fourier optics model of random figure errors turned into
+    the specifications of the optics, and neither that model nor the
+    allocations are part of the model of the instrument.
     """
+    frequency = _error_budget.frequency()
     return [
         aastex.Variable(
             # the degradation of the MTF at the resolution requirement
             name="primaryMtfDegradationFactor",
-            value=aastex.NoEscape("0.7"),
+            value=aastex.NoEscape(str(_error_budget.mtf_figure_primary)),
         ),
         aastex.Variable(
             name="gratingMtfDegradationFactor",
-            value=aastex.NoEscape("0.6"),
+            value=aastex.NoEscape(str(_error_budget.mtf_figure_grating)),
+        ),
+        aastex.Variable(
+            # Written out rather than set by siunitx, which does not take a
+            # cycle for a unit.
+            name="mtfFrequency",
+            value=aastex.NoEscape(
+                rf"\ensuremath{{{frequency.value:.2f}}}~cycles~arcsec$^{{-1}}$"
+            ),
+        ),
+        aastex.Variable(
+            # two decimals, as the old draft compared it with the Rayleigh
+            # criterion
+            name="mtfTotal",
+            value=round(_error_budget.mtf_total(), 2),
+        ),
+        aastex.Variable(
+            name="mtfRayleigh",
+            value=round(_error_budget.mtf_rayleigh(), 2),
         ),
     ]
 

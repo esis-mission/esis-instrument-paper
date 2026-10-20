@@ -10,15 +10,17 @@ def requirements() -> pylatex.Table:
     What the mission asked of the instrument, and what the instrument does.
 
     The requirement in each row is taken from
-    :func:`esis.flights.f1.optics.requirements`. Several of the capabilities
-    are still marked ``??``: see :func:`esis_instrument_paper.variables`.
+    :func:`esis.flights.f1.optics.requirements`. The capability for the
+    spatial resolution is the MTF at the resolution required, from the error
+    budget.
     """
     result = pylatex.Table(position="!htb")
     result._star_latex_name = True
 
     result.add_caption(
         pylatex.NoEscape(
-            r"""\ESIS\ instrument requirements and capabilties. Note that MTF exceeds the Rayleigh criterion of 0.109."""
+            r"""\ESIS\ instrument requirements and capabilities. The capability for spatial resolution is the \MTF\ at the
+required resolution, which exceeds the \MTF\ of \mtfRayleigh\ given by the Rayleigh criterion."""
         )
     )
 
@@ -50,7 +52,7 @@ def requirements() -> pylatex.Table:
                 r"Spatial resolution",
                 r"\angularResolutionRequirement (\spatialResolutionRequirement)",
                 r"\hyperref[t1_2]{\EEs}",
-                r"\spatialResolutionTotal, Table~\ref{table:errorBudget}",
+                r"\MTF\ of \mtfTotal, Table~\ref{table:errorBudget}",
             ]
         )
         tabular.add_row(
