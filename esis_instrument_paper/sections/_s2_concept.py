@@ -94,7 +94,7 @@ Consequently, every second of observing time is precious, both to achieve adequa
 full development of dynamical phenomena. 
 The \MOSES\ observing duty cycle is $\sim$\SI{50}{\percent} since it is limited by the readout time of its \CCDs. 
 Thus, valuable observing time is lost. The readout data gap compelled us to develop a sequence with exposures ranging 
-from $0.25$-\SI{24}{\second}, a careful trade-off between deep and fast exposures. 
+from $0.25$--\SI{24}{\second}, a careful trade-off between deep and fast exposures. 
 
 In summary, our experience leads us to conclude that the \MOSES\ design has the following primary limitations:
 \begin{enumerate}
@@ -166,7 +166,7 @@ This confers two advantages.
 First, the field stop fully defines the instrument \FOV, so that \ESIS\ is not susceptible to the spectral confusion 
 observed in \MOSES\ data (Section~\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-FOV}).
 Second, each spectral line image observed by \ESIS\ is bordered by the outline of the field stop 
-(\eg, Section~\ref{subsec:Optics}).
+(\eg, Figure~\ref{fig:projections}).
 This aids the inversion process since outside of this sharp edge the intensity is zero for any look angle through an 
 \ESIS\ data cube.
 The size and octagonal shape of the field stop are defined by the requirement that all \CCDs\ must see the entire \FOV\ 
@@ -176,7 +176,7 @@ Lastly, in contrast to \MOSES, \ESIS\ employs frame transfer \CCDs\ to make opti
 time.
 The \ESIS\ design is shutterless, so that each detector is always integrating.
 The result is a \SI{100}{\percent} duty cycle.
-The lack of downtime for readout also allows \ESIS\ to operate at a fixed, rapid cadence of \SI{10}{\second}.
+The lack of downtime for readout also allows \ESIS\ to operate at a fixed, rapid cadence of \detectorExposureLength.
 Longer integration times can be achieved for faint features by exposure stacking 
 (Section~\ref{subsec:LimitationsoftheMOSESDesign} item~\ref{item-CAD}).
 

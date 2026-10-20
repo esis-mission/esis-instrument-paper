@@ -70,6 +70,8 @@ def variables() -> list[aastex.Variable]:
         aastex.Variable(
             name="mosesDispersionDoppler",
             value=29 * u.km / u.s / u.pix,
+            # in the order of dispersionDoppler, which astropy would not keep
+            unit=(u.km, u.s**-1, u.pix**-1),
         ),
         # TODO: the current model carries neither of these; they are the 22
         # inch and 3 metre values from the old model and the old draft.

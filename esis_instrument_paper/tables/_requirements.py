@@ -50,7 +50,7 @@ required resolution, which exceeds the \MTF\ of \mtfRayleigh\ given by the Rayle
         tabular.add_row(
             [
                 r"Spatial resolution",
-                r"\angularResolutionRequirement (\spatialResolutionRequirement)",
+                r"\angularResolutionRequirement\ (\spatialResolutionRequirement)",
                 r"\hyperref[t1_2]{\EEs}",
                 r"\MTF\ of \mtfTotal, Table~\ref{table:errorBudget}",
             ]

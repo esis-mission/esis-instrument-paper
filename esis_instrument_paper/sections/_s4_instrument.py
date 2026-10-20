@@ -101,7 +101,7 @@ The model explored a range of power spectral distributions for the surface figur
 0.1 to 4.0.
 For each randomly generated array of optical figure errors, the amplitude was adjusted to yield a target \MTF\
 degradation factor, as compared to the diffraction-limited \MTF.
-For the primary mirror, the figure of merit was a \MTF\ degradation of \primaryMtfDegradationFactor\ at
+For the primary mirror, the figure of merit was an \MTF\ degradation of \primaryMtfDegradationFactor\ at
 \angularResolutionRequirement\ resolution.
 Though the grating is smaller and closer to the focal plane, it was allocated somewhat more significant \MTF\
 degradation of \gratingMtfDegradationFactor\ based on manufacturing capabilities.
@@ -295,7 +295,7 @@ The signal requirement in Table~\ref{table:scireq} is met by stacking exposures.
 Good quality images ($\sim$\goodImageCounts\ counts) in active regions can be obtained by stacking
 \activeRegionStackLength\ worth of exposures.
 This cadence is sufficient to observe explosive events, but will not resolve torsional Alfv\'en waves described in
-Section~\ref{sec:ScienceObjectives}.
+Section~\ref{subsec:EnergyTransfer}.
 However, by stacking multiple \detectorExposureLength\ exposures, sufficient \SNR\ \emph{and} temporal resolution of
 torsional Alfv\'en wave oscillations can be obtained.""")
     subsection_sensitivity.append(esis_instrument_paper.tables.counts())
@@ -415,7 +415,7 @@ instrument as flown, without the stop.
 
 The \ESIS\ baffles are designed to block direct light paths between the front aperture plate and the \CCDs\ for any
 ray $<$\SI{1.4}{\degree} from the optical axis.
-This angle is purposefully larger than the angular diameter of the sun ($\sim$\SI{0.5}{\degree}) so that any direct
+This angle is purposefully larger than the angular diameter of the Sun ($\sim$\SI{0.5}{\degree}) so that any direct
 paths are excluded from bright sources in the solar corona.
 All baffles are bead-blasted, anodized \Al\ sheet metal oriented perpendicular to the optical axis.
 The size and shape of the cutouts were determined using a combination of the raytrace from
@@ -497,8 +497,8 @@ The \ESIS\ \DACS\ is based on the designs used for both \CLASP~\citep{Kano12,Kob
 The electronics are a combination of \MOTS\ hardware and custom designed components.
 The \DACS\ is a 6-slot, 3U, open VPX PCIe architecture conduction cooled system using an AiTech C873 single board
 computer.
-The data system also includes a \MOTS\ PCIe switch card, \MSFC\ parallel interface card, and two \MOTS\ Spacewire cards.
-A slot for an additional Spacewire card is included to accommodate two more cameras for the next \ESIS\ flight.
+The data system also includes a \MOTS\ PCIe switch card, \MSFC\ parallel interface card, and two \MOTS\ SpaceWire cards.
+A slot for an additional SpaceWire card is included to accommodate two more cameras for the next \ESIS\ flight.
 The C873 has a \SI{2.4}{\giga\hertz} Intel i7 processor with \SI{16}{\giga\byte} of memory.
 The operating temperature range for the data system is \SI{-40}{\celsius}
 to \SI{85}{\celsius}.

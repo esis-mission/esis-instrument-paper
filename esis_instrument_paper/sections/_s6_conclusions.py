@@ -21,7 +21,7 @@ def conclusions() -> aastex.Section:
     result.append(r"""
 \ESIS\ is a next generation slitless spectrograph, designed to obtain co-temporal spectral and spatial images of the solar
 transition region and corona.
-In this report, we present details of the scientific objectives, instrument, image and spectral resolution, data
+In this paper, we present details of the scientific objectives, instrument, image and spectral resolution, data
 acquisition, and flight profile.
 
 Operating at a \detectorExposureLength\ cadence, \ESIS\ acquired spectra over its full \FOV\
