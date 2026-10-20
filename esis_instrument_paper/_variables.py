@@ -250,6 +250,7 @@ def variables() -> list[aastex.Variable]:
         *_sensitivity(),
         *_alignment_and_focus(),
         *_cameras(),
+        *_mission_profile(),
     ]
 
 
@@ -1021,5 +1022,32 @@ def _cameras() -> list[aastex.Variable]:
             value=_percent(
                 sensor.material.quantum_efficiency_effective(spectrum.O_V.wavelength)
             ),
+        ),
+    ]
+
+
+def _mission_profile() -> list[aastex.Variable]:
+    """
+    The variables cited by the section on the flight: the times of its events
+    after launch, from the timeline NSROC provided, to the tenth of a second
+    it gives them to.
+    """
+    timeline = esis.flights.f1.nsroc.timeline()
+    return [
+        aastex.Variable(
+            name="timeShutterOpen",
+            value=_fixed(timeline.timedelta_shutter_open, 1),
+        ),
+        aastex.Variable(
+            name="timeRlgEnable",
+            value=_fixed(timeline.timedelta_sparcs_rlg_enable, 1),
+        ),
+        aastex.Variable(
+            name="timeRlgDisable",
+            value=_fixed(timeline.timedelta_sparcs_rlg_disable, 1),
+        ),
+        aastex.Variable(
+            name="timeShutterClose",
+            value=_fixed(timeline.timedelta_shutter_close, 1),
         ),
     ]
