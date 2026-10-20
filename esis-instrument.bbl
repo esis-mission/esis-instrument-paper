@@ -338,6 +338,11 @@ Heymes, J., Soman, M., Randall, G., {et~al.} 2020, \bibinfo{title}{Comparison
   \dodoi{10.1023/A:1005162216540}
 
 % type= book
+\bibitem[{J.~R. Janesick(2001)Janesick}]{Janesick2001}
+Janesick, J.~R. 2001, Scientific Charge-Coupled Devices (Bellingham,
+  Washington: SPIE Press), \dodoi{10.1117/3.374903}
+
+% type= book
 \bibitem[{A.~C. {Kak} \& M. {Slaney}(1988){Kak} \& {Slaney}}]{Kak88}
 {Kak}, A.~C., \& {Slaney}, M. 1988, Principles of Computerized Tomographic
   Imaging (345 East 47th Street, New York, NY 10017-2394: IEEE Press)
@@ -430,6 +435,13 @@ Heymes, J., Soman, M., Randall, G., {et~al.} 2020, \bibinfo{title}{Comparison
 Lockheed Missiles and Space Co. Report. 1969, {Solar Pointing Aerobee Rocket
   Control System (SPARCS) Final report}, Tech. Rep. Contract NAS2-3500,
   Lockheed Missiles and Space Co., Sunnyvale, California
+
+% type= article
+\bibitem[{ {Lord Rayleigh F.R.S.}(1879){Lord Rayleigh F.R.S.}}]{Rayleigh_1879}
+{Lord Rayleigh F.R.S.} 1879, \bibinfo{title}{{XXXI. Investigations in optics,
+  with special reference to the spectroscope},} The London, Edinburgh, and
+  Dublin Philosophical Magazine and Journal of Science, 8, 261,
+  \dodoi{10.1080/14786447908639684}
 
 % type= book
 \bibitem[{J.~T. Mariska(1992)Mariska}]{Mariska1992}
