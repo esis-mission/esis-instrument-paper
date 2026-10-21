@@ -6,6 +6,77 @@
 \providecommand{\doarXiv}[1]{\href{https://arxiv.org/abs/#1}{\nolinkurl{https://arxiv.org/abs/#1}}}
 
 % type= article
+\bibitem[{ {Astropy Collaboration} {et~al.}(2013){Astropy Collaboration},
+  {Robitaille}, {Tollerud}, {Greenfield}, {Droettboom}, {Bray}, {Aldcroft},
+  {Davis}, {Ginsburg}, {Price-Whelan}, {Kerzendorf}, {Conley}, {Crighton},
+  {Barbary}, {Muna}, {Ferguson}, {Grollier}, {Parikh}, {Nair}, {Unther},
+  {Deil}, {Woillez}, {Conseil}, {Kramer}, {Turner}, {Singer}, {Fox}, {Weaver},
+  {Zabalza}, {Edwards}, {Azalee Bostroem}, {Burke}, {Casey}, {Crawford},
+  {Dencheva}, {Ely}, {Jenness}, {Labrie}, {Lim}, {Pierfederici}, {Pontzen},
+  {Ptak}, {Refsdal}, {Servillat}, \& {Streicher}}]{Astropy2013}
+{Astropy Collaboration}, {Robitaille}, T.~P., {Tollerud}, E.~J., {et~al.} 2013,
+  \bibinfo{title}{{Astropy: A community Python package for astronomy},} \aap,
+  558, A33, \dodoi{10.1051/0004-6361/201322068}
+
+% type= article
+\bibitem[{ {Astropy Collaboration} {et~al.}(2018){Astropy Collaboration},
+  {Price-Whelan}, {Sip{\H{o}}cz}, {G{\"u}nther}, {Lim}, {Crawford}, {Conseil},
+  {Shupe}, {Craig}, {Dencheva}, {Ginsburg}, {VanderPlas}, {Bradley},
+  {P{\'e}rez-Su{\'a}rez}, {de Val-Borro}, {Aldcroft}, {Cruz}, {Robitaille},
+  {Tollerud}, {Ardelean}, {Babej}, {Bach}, {Bachetti}, {Bakanov}, {Bamford},
+  {Barentsen}, {Barmby}, {Baumbach}, {Berry}, {Biscani}, {Boquien}, {Bostroem},
+  {Bouma}, {Brammer}, {Bray}, {Breytenbach}, {Buddelmeijer}, {Burke},
+  {Calderone}, {Cano Rodr{\'\i}guez}, {Cara}, {Cardoso}, {Cheedella}, {Copin},
+  {Corrales}, {Crichton}, {D'Avella}, {Deil}, {Depagne}, {Dietrich}, {Donath},
+  {Droettboom}, {Earl}, {Erben}, {Fabbro}, {Ferreira}, {Finethy}, {Fox},
+  {Garrison}, {Gibbons}, {Goldstein}, {Gommers}, {Greco}, {Greenfield},
+  {Groener}, {Grollier}, {Hagen}, {Hirst}, {Homeier}, {Horton}, {Hosseinzadeh},
+  {Hu}, {Hunkeler}, {Ivezi{\'c}}, {Jain}, {Jenness}, {Kanarek}, {Kendrew},
+  {Kern}, {Kerzendorf}, {Khvalko}, {King}, {Kirkby}, {Kulkarni}, {Kumar},
+  {Lee}, {Lenz}, {Littlefair}, {Ma}, {Macleod}, {Mastropietro}, {McCully},
+  {Montagnac}, {Morris}, {Mueller}, {Mumford}, {Muna}, {Murphy}, {Nelson},
+  {Nguyen}, {Ninan}, {N{\"o}the}, {Ogaz}, {Oh}, {Parejko}, {Parley}, {Pascual},
+  {Patil}, {Patil}, {Plunkett}, {Prochaska}, {Rastogi}, {Reddy Janga},
+  {Sabater}, {Sakurikar}, {Seifert}, {Sherbert}, {Sherwood-Taylor}, {Shih},
+  {Sick}, {Silbiger}, {Singanamalla}, {Singer}, {Sladen}, {Sooley},
+  {Sornarajah}, {Streicher}, {Teuben}, {Thomas}, {Tremblay}, {Turner},
+  {Terr{\'o}n}, {van Kerkwijk}, {de la Vega}, {Watkins}, {Weaver}, {Whitmore},
+  {Woillez}, {Zabalza}, \& {Astropy Contributors}}]{Astropy2018}
+{Astropy Collaboration}, {Price-Whelan}, A.~M., {Sip{\H{o}}cz}, B.~M., {et~al.}
+  2018, \bibinfo{title}{{The Astropy Project: Building an Open-science Project
+  and Status of the v2.0 Core Package},} \aj, 156, 123,
+  \dodoi{10.3847/1538-3881/aabc4f}
+
+% type= article
+\bibitem[{ {Astropy Collaboration} {et~al.}(2022){Astropy Collaboration},
+  {Price-Whelan}, {Lim}, {Earl}, {Starkman}, {Bradley}, {Shupe}, {Patil},
+  {Corrales}, {Brasseur}, {N{\"o}the}, {Donath}, {Tollerud}, {Morris},
+  {Ginsburg}, {Vaher}, {Weaver}, {Tocknell}, {Jamieson}, {van Kerkwijk},
+  {Robitaille}, {Merry}, {Bachetti}, {G{\"u}nther}, {Aldcroft},
+  {Alvarado-Montes}, {Archibald}, {B{\'o}di}, {Bapat}, {Barentsen},
+  {Baz{\'a}n}, {Biswas}, {Boquien}, {Burke}, {Cara}, {Cara}, {Conroy},
+  {Conseil}, {Craig}, {Cross}, {Cruz}, {D'Eugenio}, {Dencheva}, {Devillepoix},
+  {Dietrich}, {Eigenbrot}, {Erben}, {Ferreira}, {Foreman-Mackey}, {Fox},
+  {Freij}, {Garg}, {Geda}, {Glattly}, {Gondhalekar}, {Gordon}, {Grant},
+  {Greenfield}, {Groener}, {Guest}, {Gurovich}, {Handberg}, {Hart},
+  {Hatfield-Dodds}, {Homeier}, {Hosseinzadeh}, {Jenness}, {Jones}, {Joseph},
+  {Kalmbach}, {Karamehmetoglu}, {Ka{\l}uszy{\'n}ski}, {Kelley}, {Kern},
+  {Kerzendorf}, {Koch}, {Kulumani}, {Lee}, {Ly}, {Ma}, {MacBride}, {Maljaars},
+  {Muna}, {Murphy}, {Norman}, {O'Steen}, {Oman}, {Pacifici}, {Pascual},
+  {Pascual-Granado}, {Patil}, {Perren}, {Pickering}, {Rastogi}, {Roulston},
+  {Ryan}, {Rykoff}, {Sabater}, {Sakurikar}, {Salgado}, {Sanghi}, {Saunders},
+  {Savchenko}, {Schwardt}, {Seifert-Eckert}, {Shih}, {Jain}, {Shukla}, {Sick},
+  {Simpson}, {Singanamalla}, {Singer}, {Singhal}, {Sinha}, {Sip{\H{o}}cz},
+  {Spitler}, {Stansby}, {Streicher}, {{\v{S}}umak}, {Swinbank}, {Taranu},
+  {Tewary}, {Tremblay}, {de Val-Borro}, {Van Kooten}, {Vasovi{\'c}}, {Verma},
+  {de Miranda Cardoso}, {Williams}, {Wilson}, {Winkel}, {Wood-Vasey}, {Xue},
+  {Yoachim}, {Zhang}, {Zonca}, \& {Astropy Project Contributors}}]{Astropy2022}
+{Astropy Collaboration}, {Price-Whelan}, A.~M., {Lim}, P.~L., {et~al.} 2022,
+  \bibinfo{title}{{The Astropy Project: Sustaining and Growing a
+  Community-oriented Open-source Project and the Latest Major Release (v5.0) of
+  the Core Package},} \apj, 935, 167, \dodoi{10.3847/1538-4357/ac7c74}
+
+% type= article
 \bibitem[{S. {Atwood} \& C. {Kankelborg}(2018){Atwood} \&
   {Kankelborg}}]{Atwood18}
 {Atwood}, S., \& {Kankelborg}, C. 2018, \bibinfo{title}{{Blind technique for
@@ -204,6 +275,13 @@
   123, 41, \dodoi{10.1007/BF00150011}
 
 % type= article
+\bibitem[{K.~P. {Dere} {et~al.}(1997){Dere}, {Landi}, {Mason}, {Monsignori
+  Fossi}, \& {Young}}]{Dere97}
+{Dere}, K.~P., {Landi}, E., {Mason}, H.~E., {Monsignori Fossi}, B.~C., \&
+  {Young}, P.~R. 1997, \bibinfo{title}{{CHIANTI - an atomic database for
+  emission lines},} \aaps, 125, 149, \dodoi{10.1051/aas:1997368}
+
+% type= article
 \bibitem[{M. Descour \& E. Dereniak(1995)Descour \& Dereniak}]{Descour95}
 Descour, M., \& Dereniak, E. 1995, \bibinfo{title}{Computed-tomography imaging
   spectrometer: experimental calibration and reconstruction results,} Appl.
@@ -223,6 +301,15 @@ Descour, M.~R., Volin, C.~E., Dereniak, E.~L., {et~al.} 1997,
 {Doyle}, J.~G., {Banerjee}, D., \& {Perez}, M.~E. 1998,
   \bibinfo{title}{{Coronal line-width variations},} \solphys, 181, 91,
   \dodoi{10.1023/A:1005019931323}
+
+% type= article
+\bibitem[{R.~P. {Dufresne} {et~al.}(2024){Dufresne}, {Del Zanna}, {Young},
+  {Dere}, {Deliporanidou}, {Barnes}, \& {Landi}}]{Dufresne2024}
+{Dufresne}, R.~P., {Del Zanna}, G., {Young}, P.~R., {et~al.} 2024,
+  \bibinfo{title}{{CHIANTI{\textemdash}An Atomic Database for Emission
+  Lines{\textemdash}Paper. XVIII. Version 11, Advanced Ionization Equilibrium
+  Models: Density and Charge Transfer Effects},} \apj, 974, 71,
+  \dodoi{10.3847/1538-4357/ad6765}
 
 % type= article
 \bibitem[{U. {Feldman} {et~al.}(1985){Feldman}, {Doschek}, \&
@@ -282,6 +369,16 @@ Descour, M.~R., Volin, C.~E., Dereniak, E.~L., {et~al.} 1997,
   229, \dodoi{10.1023/A:1005166902804}
 
 % type= article
+\bibitem[{C.~R. {Harris} {et~al.}(2020){Harris}, {Millman}, {van der Walt},
+  {Gommers}, {Virtanen}, {Cournapeau}, {Wieser}, {Taylor}, {Berg}, {Smith},
+  {Kern}, {Picus}, {Hoyer}, {van Kerkwijk}, {Brett}, {Haldane}, {del R{\'\i}o},
+  {Wiebe}, {Peterson}, {G{\'e}rard-Marchant}, {Sheppard}, {Reddy}, {Weckesser},
+  {Abbasi}, {Gohlke}, \& {Oliphant}}]{Harris2020}
+{Harris}, C.~R., {Millman}, K.~J., {van der Walt}, S.~J., {et~al.} 2020,
+  \bibinfo{title}{{Array programming with NumPy},} \nat, 585, 357,
+  \dodoi{10.1038/s41586-020-2649-2}
+
+% type= article
 \bibitem[{R.~A. {Harrison} {et~al.}(1995){Harrison}, {Sawyer}, {Carter},
   {Cruise}, {Cutler}, {Fludra}, {Hayes}, {Kent}, {Lang}, {Parker}, {Payne},
   {Pike}, {Peskett}, {Richards}, {Gulhane}, {Norman}, {Breeveld}, {Breeveld},
@@ -315,6 +412,11 @@ Heymes, J., Soman, M., Randall, G., {et~al.} 2020, \bibinfo{title}{Comparison
   of Back-Thinned Detector Ultraviolet Quantum Efficiency for Two Commercially
   Available Passivation Treatments,} IEEE Transactions on Nuclear Science, 67,
   1962, \dodoi{10.1109/TNS.2020.3001622}
+
+% type= article
+\bibitem[{J.~D. {Hunter}(2007){Hunter}}]{Hunter2007}
+{Hunter}, J.~D. 2007, \bibinfo{title}{{Matplotlib: A 2D Graphics Environment},}
+  Computing in Science and Engineering, 9, 90, \dodoi{10.1109/MCSE.2007.55}
 
 % type= article
 \bibitem[{D.~E. {Innes} {et~al.}(2015){Innes}, {Guo}, {Huang}, \&
@@ -431,10 +533,11 @@ Janesick, J.~R. 2001, Scientific Charge-Coupled Devices (Bellingham,
   Observatory (SDO)},} \solphys, 275, 17, \dodoi{10.1007/s11207-011-9776-8}
 
 % type= techreport
-\bibitem[{Lockheed Missiles and Space Co. Report(1969)}]{Lockheed69}
-Lockheed Missiles and Space Co. Report. 1969, {Solar Pointing Aerobee Rocket
-  Control System (SPARCS) Final report}, Tech. Rep. Contract NAS2-3500,
-  Lockheed Missiles and Space Co., Sunnyvale, California
+\bibitem[{ {Lockheed Missiles and Space Co.}(1969){Lockheed Missiles and Space
+  Co.}}]{Lockheed69}
+{Lockheed Missiles and Space Co.} 1969, {Solar Pointing Aerobee Rocket Control
+  System (SPARCS) Final report}, Tech. Rep. Contract NAS2-3500, Lockheed
+  Missiles and Space Co., Sunnyvale, California
 
 % type= article
 \bibitem[{ {Lord Rayleigh F.R.S.}(1879){Lord Rayleigh F.R.S.}}]{Rayleigh_1879}
@@ -581,7 +684,7 @@ Parker, J.~D., Smart, R.~T., Kankelborg, C., Winebarger, A., \& Goldsworth, N.
 \bibitem[{T.~L. Rust(2017)Rust}]{Rust17}
 Rust, T.~L. 2017, \bibinfo{title}{Explosive Events in the Quiet Sun: Extreme
   Ultraviolet Imaging Spectroscopy Instrumentation and Observations,} PhD
-  thesis, Montana State Univeristy, Bozeman, MT
+  thesis, Montana State University, Bozeman, MT
 
 % type= article
 \bibitem[{T. {Sakao} {et~al.}(1999){Sakao}, {Tsuneta}, {Hara}, {Shimizu},
@@ -618,6 +721,40 @@ Schweizer, F. 1979, \bibinfo{title}{Anamorphic Magnification of Grating
   Spectrographs - A Reminder,} Publications of the Astronomical Society of the
   Pacific, 91, 149, \dodoi{10.1086/130458}
 
+% type=
+\bibitem[{R.~T. Smart(2026{\natexlab{a}})Smart}]{aastex}
+Smart, R.~T. 2026{\natexlab{a}}, {aastex}, v0.9.1 Zenodo,
+  \dodoi{10.5281/zenodo.23327184}
+
+% type=
+\bibitem[{R.~T. Smart(2026{\natexlab{b}})Smart}]{utu}
+Smart, R.~T. 2026{\natexlab{b}}, {utu}, v0.5.0 Zenodo,
+  \dodoi{10.5281/zenodo.23425775}
+
+% type=
+\bibitem[{R.~T. Smart \& J.~D. Parker(2026{\natexlab{a}})Smart \&
+  Parker}]{msfc_ccd}
+Smart, R.~T., \& Parker, J.~D. 2026{\natexlab{a}}, {msfc{-}ccd}, v1.2.0 Zenodo,
+  \dodoi{10.5281/zenodo.23400570}
+
+% type=
+\bibitem[{R.~T. Smart \& J.~D. Parker(2026{\natexlab{b}})Smart \&
+  Parker}]{named_arrays}
+Smart, R.~T., \& Parker, J.~D. 2026{\natexlab{b}}, {named{-}arrays}, v2.15.0
+  Zenodo, \dodoi{10.5281/zenodo.23324753}
+
+% type=
+\bibitem[{R.~T. Smart {et~al.}(2026{\natexlab{a}})Smart, Parker, \&
+  Kankelborg}]{esis}
+Smart, R.~T., Parker, J.~D., \& Kankelborg, C.~C. 2026{\natexlab{a}}, {esis},
+  v1.10.0 Zenodo, \dodoi{10.5281/zenodo.23482368}
+
+% type=
+\bibitem[{R.~T. Smart {et~al.}(2026{\natexlab{b}})Smart, Parker, \&
+  Kankelborg}]{optika}
+Smart, R.~T., Parker, J.~D., \& Kankelborg, C.~C. 2026{\natexlab{b}}, {optika},
+  v3.4.0 Zenodo, \dodoi{10.5281/zenodo.23382960}
+
 % type= article
 \bibitem[{ {SPICE Consortium} {et~al.}(2020){SPICE Consortium}, {Anderson},
   {Appourchaux}, {Auch{\`e}re}, {et~al.}}]{Spice2020}
@@ -645,7 +782,7 @@ Schweizer, F. 1979, \bibinfo{title}{Anamorphic Magnification of Grating
   {Purcell}}]{Tousey77}
 {Tousey}, R., {Bartoe}, J.-D.~F., {Brueckner}, G.~E., \& {Purcell}, J.~D. 1977,
   \bibinfo{title}{{Extreme ultraviolet spectroheliograph ATM experiment
-  S082A},} \ao, 16, 870
+  S082A},} \ao, 16, 870, \dodoi{10.1364/AO.16.000870}
 
 % type= article
 \bibitem[{R. {Tousey} {et~al.}(1973){Tousey}, {Bartoe}, {Bohlin}, {Brueckner},
@@ -669,6 +806,13 @@ Schweizer, F. 1979, \bibinfo{title}{Anamorphic Magnification of Grating
 {Vernazza}, J.~E., \& {Reeves}, E.~M. 1978, \bibinfo{title}{{Extreme
   ultraviolet composite spectra of representative solar features},} \apjs, 37,
   485, \dodoi{10.1086/190539}
+
+% type=
+\bibitem[{ {Will Barnes} {et~al.}(2026){Will Barnes}, {David Stansby}, {Nick
+  Murphy}, {Jeffrey Reep}, {Stuart Mumford}, {Nabil Freij}, \& {Laura
+  Hayes}}]{fiasco}
+{Will Barnes}, {David Stansby}, {Nick Murphy}, {et~al.} 2026, {fiasco}, v0.8.2
+  Zenodo, \dodoi{10.5281/zenodo.21716503}
 
 % type= article
 \bibitem[{A.~R. {Winebarger} {et~al.}(2019){Winebarger}, {Weber}, {Bethge},
