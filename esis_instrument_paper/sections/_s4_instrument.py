@@ -65,9 +65,9 @@ pixel-limited imaging from the field stop to the \CCDs.
 The pitch at the center of the grating is $d_0=\text{\gratingRulingSpacing}$ (\gratingRulingSpacingMeasured\ as measured
 by the manufacturer) resulting in a dispersion of \dispersionDoppler\ at the center of the \OV\ \FOV.
 Each grating serves only a single \CCD.
-The groove profile is quasi-sinusoidal, with depth optimized for $m=1$.
-We model it as a laminar profile, which gives a groove efficiency of \modeledGratingGrooveEfficiency\ in this order,
-close to the \gratingGrooveEfficiencyMeasured\ measured (Table~\ref{table:prescription}).
+The groove profile is laminar, with depth optimized for $m=1$.
+The modeled groove efficiency in this order is \modeledGratingGrooveEfficiency, close to the
+\gratingGrooveEfficiencyMeasured\ measured (Table~\ref{table:prescription}).
 
 Figure specification and groove profile are difficult to control near the edges of the gratings.
 Therefore, an uncoated margin was left around the edge of the grating, minimizing reflection in \EUV\
