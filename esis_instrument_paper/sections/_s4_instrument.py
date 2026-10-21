@@ -66,7 +66,8 @@ The pitch at the center of the grating is $d_0=\text{\gratingRulingSpacing}$ (\g
 by the manufacturer) resulting in a dispersion of \dispersionDoppler\ at the center of the \OV\ \FOV.
 Each grating serves only a single \CCD.
 The groove profile is laminar, with depth optimized for $m=1$.
-Modeled groove efficiency in this order is \modeledGratingGrooveEfficiency.
+The modeled groove efficiency in this order is \modeledGratingGrooveEfficiency, close to the
+\gratingGrooveEfficiencyMeasured\ measured (Table~\ref{table:prescription}).
 
 Figure specification and groove profile are difficult to control near the edges of the gratings.
 Therefore, an uncoated margin was left around the edge of the grating, minimizing reflection in \EUV\
@@ -101,7 +102,7 @@ The model explored a range of power spectral distributions for the surface figur
 0.1 to 4.0.
 For each randomly generated array of optical figure errors, the amplitude was adjusted to yield a target \MTF\
 degradation factor, as compared to the diffraction-limited \MTF.
-For the primary mirror, the figure of merit was a \MTF\ degradation of \primaryMtfDegradationFactor\ at
+For the primary mirror, the figure of merit was an \MTF\ degradation of \primaryMtfDegradationFactor\ at
 \angularResolutionRequirement\ resolution.
 Though the grating is smaller and closer to the focal plane, it was allocated somewhat more significant \MTF\
 degradation of \gratingMtfDegradationFactor\ based on manufacturing capabilities.
@@ -190,10 +191,16 @@ Imaging from the prime focus to the detector introduces distortion.
 Since the \numChannelsWords\ \ESIS\ channels are arranged in four different orientations, the distortion complicates the
 comparison of the channels, and we must correct for it.
 The distortion is due to two factors: first, the tilt of the detector as needed to maintain good focus over the
-\FOV~\citep{Poletto04}; second, the anamorphic magnification of the grating (see \citet{Schweizer1979})."""
+\FOV~\citep{Poletto04}; second, the anamorphic magnification of the grating~\citep{Schweizer1979}.
+Together they make the plate scale finer along the dispersion than across it (\plateScaleDispersion\ against
+\plateScaleCrossDispersion, Table~\ref{table:prescription}), so the image of the field stop is stretched along the
+dispersion compared with the field stop magnified by the ratio of the grating arms (Figure~\ref{fig:distortion}).
+
+We describe where each point of the \FOV\ lands on the detector with the quadratic polynomial"""
     )
-    subsection_distortion.append(r"""
-\begin{equation}
+    # Neither the equation nor the sentence after it starts with a newline, so
+    # that the three stay one paragraph and "where" is not indented.
+    subsection_distortion.append(r"""\begin{equation}
 \begin{split}
 \left(x', y'\right) &= \C + \C_x x + \C_y y + \C_\lambda \lambda \\
 &+ \C_{xx} x^2 + \C_{xy} x y + \C_{x \lambda} x \lambda \\
@@ -201,6 +208,15 @@ The distortion is due to two factors: first, the tilt of the detector as needed 
 \end{split}
 \label{eq:distortion}
 \end{equation}""")
+    subsection_distortion.append(
+        r"""where $(x, y)$ is the field angle, $\lambda$ is the wavelength, and $(x', y')$ is the position on
+the detector.
+The coefficients are fit to rays traced through the model of a single channel at the three target lines in the
+passband, and Table~\ref{table:distortion} lists them.
+A linear polynomial is not enough: it misplaces the field by as much as \distortionResidualLinear\ pixels, while the
+quadratic polynomial is within \distortionResidualQuadratic\ pixels of the raytrace wherever the field lands on the
+detector (Figure~\ref{fig:distortionResidual})."""
+    )
     subsection_distortion.append(esis_instrument_paper.tables.distortion())
     subsection_distortion.append(esis_instrument_paper.figures.distortion())
     subsection_distortion.append(esis_instrument_paper.figures.distortion_residual())
@@ -210,12 +226,15 @@ The distortion is due to two factors: first, the tilt of the detector as needed 
     subsection_coatings.append(r"""
 The diffraction gratings are coated with a multilayer optimized for a center wavelength of \OV,
 developed by a collaboration between Reflective X-ray Optics LLC and \LBNL.
-In Figure~\ref{fig:gratingEfficiencyVsAngle}, characterization of a single, randomly selected multilayer coated grating at \LBNL\ shows
-that the grating reflectivity is constant over the instrument \FOV\ in the $m=1$ order while the $m=0$ order is almost
-completely suppressed.
-Figure~\ref{fig:gratingMultilayerSchematic} shows a schematic of the coating that achieves peak reflectivity and selectivity in the
-$m=0$ order using \gratingCoatingNumLayersWords\ layer pairs of \SiC\ and \Mg.
+\LBNL\ characterized a single, randomly selected grating after it was coated.
+Its reflectivity in the $m=1$ order is constant over the instrument \FOV, while the $m=0$ order is almost completely
+suppressed (Figure~\ref{fig:gratingEfficiencyVsAngle}), and its efficiency is nearly uniform across its surface, away
+from its edges (Figure~\ref{fig:gratingEfficiencyVsPosition}).
+Figure~\ref{fig:gratingMultilayerSchematic} shows a schematic of the coating, which consists of
+\gratingCoatingNumLayersWords\ layer pairs of \SiC\ and \Mg.
 The \Al\ layers are deposited adjacent to each \Mg\ layer to mitigate corrosion.
+\roy{As Charles mentioned, this doesn't make sense.
+Why can it go \SiCShort\ to \MgShort, but not \MgShort\ to \SiCShort?}
 
 The maximum reflectance for the coating alone in the nominal instrument passband is $\sim$\gratingWitnessEfficiency\ in
 the upper panel of Figure~\ref{fig:componentEfficiencyVsWavelength}, measured from witness samples coated at the same time as the diffraction gratings.
@@ -266,17 +285,18 @@ no detectable signature of the filter mesh is found in data and inversion residu
 
 To prevent oxidation, and to minimize the risk of tears, pinholes, and breakage from handling, the filters were
 stored in a nitrogen purged environment until after payload vibration testing.""")
+    # in the order the text cites them, so that they are numbered that way
     subsection_coatings.append(
         esis_instrument_paper.figures.grating_efficiency_vs_angle()
+    )
+    subsection_coatings.append(
+        esis_instrument_paper.figures.grating_efficiency_vs_position()
     )
     subsection_coatings.append(
         esis_instrument_paper.figures.grating_multilayer_schematic()
     )
     subsection_coatings.append(
         esis_instrument_paper.figures.component_efficiency_vs_wavelength()
-    )
-    subsection_coatings.append(
-        esis_instrument_paper.figures.grating_efficiency_vs_position()
     )
     result.append(subsection_coatings)
 
@@ -295,7 +315,7 @@ The signal requirement in Table~\ref{table:scireq} is met by stacking exposures.
 Good quality images ($\sim$\goodImageCounts\ counts) in active regions can be obtained by stacking
 \activeRegionStackLength\ worth of exposures.
 This cadence is sufficient to observe explosive events, but will not resolve torsional Alfv\'en waves described in
-Section~\ref{sec:ScienceObjectives}.
+Section~\ref{subsec:EnergyTransfer}.
 However, by stacking multiple \detectorExposureLength\ exposures, sufficient \SNR\ \emph{and} temporal resolution of
 torsional Alfv\'en wave oscillations can be obtained.""")
     subsection_sensitivity.append(esis_instrument_paper.tables.counts())
@@ -362,7 +382,7 @@ When transferring the focus and alignment two key details were considered.
 First, there is nothing about the tuffet that constrains the grating roll.
 Therefore, we needed to ensure each flight grating had the same roll as each visible grating.
 This was accomplished by using a \HeNe\ laser diverged through a cylindrical optic that illuminated each grating with a
-line perpendicular \jake{better make sure I know which direction is implied here} to the grating blaze direction.
+line perpendicular \jake{better make sure I know which direction is implied here} to the dispersion direction of the grating.
 The line of light was reflected back onto a ruled target that could be compared between gratings.
 Since our alignment gratings were ruled to image light of approximately an order of magnitude longer wavelength the
 laser and cylindrical optic were placed at the position of Littrow for the 10th order image in the visible grating,
@@ -415,7 +435,7 @@ instrument as flown, without the stop.
 
 The \ESIS\ baffles are designed to block direct light paths between the front aperture plate and the \CCDs\ for any
 ray $<$\SI{1.4}{\degree} from the optical axis.
-This angle is purposefully larger than the angular diameter of the sun ($\sim$\SI{0.5}{\degree}) so that any direct
+This angle is purposefully larger than the angular diameter of the Sun ($\sim$\SI{0.5}{\degree}) so that any direct
 paths are excluded from bright sources in the solar corona.
 All baffles are bead-blasted, anodized \Al\ sheet metal oriented perpendicular to the optical axis.
 The size and shape of the cutouts were determined using a combination of the raytrace from
@@ -497,8 +517,8 @@ The \ESIS\ \DACS\ is based on the designs used for both \CLASP~\citep{Kano12,Kob
 The electronics are a combination of \MOTS\ hardware and custom designed components.
 The \DACS\ is a 6-slot, 3U, open VPX PCIe architecture conduction cooled system using an AiTech C873 single board
 computer.
-The data system also includes a \MOTS\ PCIe switch card, \MSFC\ parallel interface card, and two \MOTS\ Spacewire cards.
-A slot for an additional Spacewire card is included to accommodate two more cameras for the next \ESIS\ flight.
+The data system also includes a \MOTS\ PCIe switch card, \MSFC\ parallel interface card, and two \MOTS\ SpaceWire cards.
+A slot for an additional SpaceWire card is included to accommodate two more cameras for the next \ESIS\ flight.
 The C873 has a \SI{2.4}{\giga\hertz} Intel i7 processor with \SI{16}{\giga\byte} of memory.
 The operating temperature range for the data system is \SI{-40}{\celsius}
 to \SI{85}{\celsius}.

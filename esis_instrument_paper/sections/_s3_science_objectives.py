@@ -36,7 +36,7 @@ vertical transport of energy over a wide \FOV.""")
 Magnetic reconnection describes the re-arrangement of the magnetic topology wherein magnetic energy
 is converted to kinetic energy resulting in the acceleration of plasma particles.
 Reconnection is implicated in many dynamic, high-energy solar events.
-Solar flares are a well-studied example (\eg, \citet{Priest02} and the references therein); however, we have little hope
+Solar flares are a well-studied example (\eg, \citealt{Priest02} and the references therein); however, we have little hope
 of pointing in the right place at the right time to observe a significant flare event in a rocket flight lasting only
 five minutes.
 Instead, we will search for signatures of magnetic reconnection in \TR\ spectral lines.
@@ -54,12 +54,12 @@ speed, \citet{Dere91} first suggested that \EEs\ may result from the model of fa
 reconnection.
 
 The spectral line profile of \EEs\ may indicate the type of reconnection that is occurring in the \TR\
-(\eg, \citet{Rust17}).
+(\eg, \citealt{Rust17}).
 For example, the Petschek model of reconnection predicts a `bi-directional jet' line profile with highly
 Doppler-shifted wings, but little emission from the line core~\citep{Innes99}.
 \citet{Innes15} developed a reconnection model resulting from a plasmoid instability~\citep{Bhattacharjee09}.
 In contrast to the bi-directional jet, this modeled line profile has bright core emission and broad wings.
-Both types of profile are seen in slit spectrograph data (\eg, \citet{Innes97,Innes15}, and the references therein);
+Both types of profile are seen in slit spectrograph data (\eg, \citealt{Innes97,Innes15}, and the references therein);
 however, \MOSES\ observed \EEs\ with more complicated morphologies than either of these two models
 suggest~\citep{Fox10,Rust17}.
 It is unclear whether the differing observations are a function of wavelength and temperature, a result of a limited
@@ -73,8 +73,8 @@ slit spectrograph data.
 additional \TR\ lines.
 Explosive events are well suited to sounding rocket observations;
 a significant portion of their temporal evolution can be captured in $>$\SI{150}{\second} (\eg, the analysis by
-\citet{Rust17}) and they are sufficiently common to provide a statistically meaningful sample in a 5-minute rocket
-flight (\eg, \citet{Dere89,Dere91}).
+\citealt{Rust17}) and they are sufficiently common to provide a statistically meaningful sample in a 5-minute rocket
+flight (\eg, \citealt{Dere89,Dere91}).
 In similarity with \MOSES, we sought a \TR\ line for \ESIS\ that is bright and well enough isolated from neighboring
 emission lines so as to be easily distinguished.""")
     result.append(subsection_reconnection)
@@ -86,7 +86,7 @@ Tracking the mass and energy flow through the solar atmosphere is a long-standin
 Bulk mass flow is evidenced by Doppler shifts or skewness in spectral lines.
 However, the observed non-thermal broadening of \TR\ spectral lines may result from a variety of physical processes,
 including \MHD\ waves~\citep{DePontieu15, DePontieu07}, high-speed evaporative upflows (\eg, nanoflares,
-\citet{Patsourakos06}), turbulence, and other sources (\eg, \citet{Mariska1992}).
+\citealt{Patsourakos06}), turbulence, and other sources (\eg, \citealt{Mariska1992}).
 This is a broad topic which \ESIS\ can address in many ways.
 Here we will focus on a single application;
 \ESIS\ will search for sources of Alfv\'en waves in the solar atmosphere by observing Doppler shifts and line broadening
@@ -97,10 +97,10 @@ Pointing near the limb may make it more difficult to observe distinct \EEs, desc
 since the average width of \TR\ lines often increases near the limb of the Sun~\citep{Ayres2021}, thus decreasing the
 \SNR\ of single events.
 
-Alfv\'en waves in coronal holes are observed to carry an energy flux of
+Alfv\'en waves in \CHs\ are observed to carry an energy flux of
 \SI{7e5}{erg\per\centi\square\meter\per\second}, enough to energize the fast solar wind~\citep{Hahn2012,Hahn2013}.
 The source and frequency spectrum of these waves is unknown.
-Here, we hypothesize that \MHD\ waves are similarly ubiquitous in quiet Sun and active regions, and play an important
+Here, we hypothesize that \MHD\ waves are similarly ubiquitous in \QS\ and \ARs, and play an important
 role in the energization of the quiescent corona.
 
 %label to track table 1 references
@@ -114,7 +114,7 @@ effects are negligible for observations sufficiently far from disk center.
 Since the solar wind is not accelerated to an appreciable fraction of the Alfv\'en wave velocity at altitudes
 $R \leq 1.15R_\odot$~\citep{Cranmer05}, the wave amplitude, $v_{nt}$, depends only weakly on electron density, $n_e$, so
 that $v_{nt} \propto n_e^{-1/4}$~\citep{Hahn2013,Moran01}.
-Assuming pressure balance between the low corona and transition zone, we may infer non-thermal velocities in the \TR\ by
+Assuming pressure balance between the low corona and \TR, we may infer non-thermal velocities in the \TR\ by
 scaling according to the temperature drop, $v_{nt} \propto T^{1/4}$.
 The measured non-thermal velocity of \SI{24}{\kilo\meter\per\second} for Si\,\textsc{viii}~\citep{Doyle98}
 (\SI{0.8}{\mega\kelvin}~\citep{Moran03}) near the limb should, neglecting damping, correspond to velocities of at least
@@ -150,7 +150,7 @@ localized sources (scenario~\ref{wave-2}) are associated with converging or emer
 spicules, spicule bushes, or other sources beneath the \TR.
 For these comparisons, we need only to localize, rather than resolve, wave sources.
 A spatial resolution of $\sim$\SI{2}{\mega\meter} is sufficient to localize sources associated with magnetic flux
-tubes that are rooted in photospheric intergranular network lanes (\eg, \citet{Berger95ApJ})."""
+tubes that are rooted in photospheric intergranular network lanes (\eg, \citealt{Berger95ApJ})."""
     )
     result.append(subsection_energy)
 
@@ -158,10 +158,11 @@ tubes that are rooted in photospheric intergranular network lanes (\eg, \citet{B
     subsection_requirements.append(r"""
 \ESIS\ will investigate two science targets:
 reconnection in explosive events and the transport of mass and energy through the transition region.
-The latter may take many forms, from \MHD\ waves of various modes to \EUV\ jets or macro-spicules.
+The latter may take many forms, from \MHD\ waves of various modes to \EUV\ jets or macrospicules.
 To fulfill these goals, \ESIS\ will obtain simultaneous intensity, Doppler shift and line width images of the \OV\ line
 in the solar transition region (\SI{.25}{\mega\kelvin}) at rapid cadence.
-The bright, optically thin \OVion\ emission line is well isolated except for the two coronal \MgXion\ lines.
+The bright, optically thin \OVion\ emission line is well isolated except for the two coronal \MgXion\ lines
+(Figure~\ref{fig:bunch}).
 These coronal lines can be viewed as contamination or as a bonus;
 we expect that with the \numChannelsWords\ \ESIS\ projections it is possible to separate the \OVion\ emission from
 that of \MgXion.

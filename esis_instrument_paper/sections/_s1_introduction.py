@@ -98,11 +98,12 @@ distributed around the payload rather than confined to a plane.
 \ESISCapital\ flew for the first time on 2019 September 30, and first results from that flight are reported by
 \citet{Parker2022}.
 An earlier form of the design was described by \citet{Courrier2020};
-the instrument that flew differs from it, most consequentially in the removal of the primary mask, which
+the instrument that flew differs from it, most consequentially in the removal of the primary aperture stop, which
 admits vignetting into the system.
 This paper describes the instrument as it was built and flown.
 In Section~\ref{sec:TheESISConcept} we explain how experience with \MOSES\ shaped the design of \ESIS.
 Section~\ref{sec:ScienceObjectives} states the scientific objectives and the requirements they impose.
-Section~\ref{sec:TheESISInstrument} describes the instrument itself, and
-Section~\ref{sec:MissionProfile} the mission profile.""")
+Section~\ref{sec:TheESISInstrument} describes the instrument itself, Section~\ref{sec:MissionProfile} the mission
+profile, and Section~\ref{sec:ConclusionsandOutlook} looks ahead to the next flight of \ESIS\ and to an orbital
+instrument.""")
     return result

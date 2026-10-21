@@ -70,6 +70,8 @@ def variables() -> list[aastex.Variable]:
         aastex.Variable(
             name="mosesDispersionDoppler",
             value=29 * u.km / u.s / u.pix,
+            # in the order of dispersionDoppler, which astropy would not keep
+            unit=(u.km, u.s**-1, u.pix**-1),
         ),
         # TODO: the current model carries neither of these; they are the 22
         # inch and 3 metre values from the old model and the old draft.
@@ -194,6 +196,26 @@ def variables() -> list[aastex.Variable]:
             value=esis_instrument_paper._distortion_model.model()
             .fit.center.wavelength.ndarray.to(u.AA)
             .round(2),
+        ),
+        aastex.Variable(
+            # The largest residuals of the linear and of the quadratic
+            # distortion models, the tops of the two rows of the residual
+            # figure, in pixels, which the text names after the number. Two
+            # significant figures, as the colorbars of the figure read.
+            name="distortionResidualLinear",
+            value=round(
+                esis_instrument_paper._distortion_model.residual_max(
+                    esis_instrument_paper._distortion_model.degree_linear
+                ).to_value(u.pix),
+                1,
+            ),
+        ),
+        aastex.Variable(
+            name="distortionResidualQuadratic",
+            value=round(
+                esis_instrument_paper._distortion_model.residual_max().to_value(u.pix),
+                3,
+            ),
         ),
         aastex.Variable(
             name="observingTime",

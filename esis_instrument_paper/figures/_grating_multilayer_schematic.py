@@ -41,7 +41,7 @@ def grating_multilayer_schematic() -> aastex.Figure:
     result = aastex.Figure("fig:gratingMultilayerSchematic", position="!htb")
     result.add_fig(fig, width=None)
     result.add_caption(aastex.NoEscape(r"""
-Schematic of the \AlShort/\SiCShort/\MgShort\ multilayer with
-$N=\gratingCoatingNumLayers$ layers."""))
+Schematic of the \AlShort/\SiCShort/\MgShort\ multilayer, with
+$N=\gratingCoatingNumLayers$ pairs of \SiCShort\ and \MgShort\ layers."""))
 
     return result
