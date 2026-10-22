@@ -112,8 +112,8 @@ Figure~\ref{fig:distortionFlight} shows what moved during the flight.
 The pointing drifted by \pointingYawRange\ in yaw and \pointingPitchRange\ in pitch, and the windows drifted by
 up to \windowDriftMax, which the model carries as a rotation of each channel's grating of up to
 \windowDriftGratingMax.
-With those applied, the channels' skies still slid against one another by \coalignmentBefore\ rms, and by
-\coalignmentBeforeMax\ at the first exposure: a translation of each channel's whole image inside its window, the
+With those applied, the channels' skies still slid against one another by \coalignmentBefore\ rms, and by up
+to \coalignmentBeforeMax: a translation of each channel's whole image inside its window, the
 same at both lines and smooth in time, which nothing after the field stop can produce.
 Each channel views the Sun through its own sector of the primary mirror, and a change of focus moves its image
 along its own dispersion while the field stop's edges stay put; the motion is reproduced, to the precision of the

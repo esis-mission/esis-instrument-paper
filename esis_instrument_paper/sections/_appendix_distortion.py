@@ -72,26 +72,21 @@ line, its component along the channel's dispersion in pixels and in \si{\kilo\me
 the tiles about it, and the decomposition of the tiles into the linear distortion modes with a test of whether
 what remains is noise (Figure~\ref{fig:coalignmentTiles}).
 \end{enumerate}
-Two runs preceded the committed tables. The first differed from them only in the gains of the cameras, which
-it took from an earlier summary of the verification tests that had two cameras' gains swapped: three of the
-four captures landed elsewhere along the near-null directions of the problem, the shared pointing moved
-\SI{0.35}{\arcsecond}, and everything measured came out the same to the scatter between seeds, the correlations
-within 0.009, the pointing drifts within \SI{0.08}{\arcsecond}, the foci within \SI{5}{\micro\meter} and the
-registration within \SI{0.01}{pixels}. The run before that differed only in the \AIA\ scene, which a correction
-to the data library moved by one \AIA\ pixel; the fitted pointing moved by that much, \SI{0.8}{\arcsecond}, and
-everything the scene does not touch, the window edges and their drift, the focus of each sector and the
-registration of the channels, came out the same to the noise: the correlations within 0.003, the pointing drifts
-within \SI{0.04}{\arcsecond}, the foci within \SI{9}{\micro\meter} and the registration within \SI{0.02}{pixels}.
-The same chain run on a host without a GPU reproduced that earliest run, the correlations to seven figures and
-the coalignment to \SI{0.01}{pixels}. A second run from a different random seed, on the chain before the
-focus of each sector was added, reproduced the correlations to 0.01 and the coalignment to \SI{0.02}{pixels};
-the parameters differ along the null directions of the problem, with the mapping unchanged to about a pixel at
-the edge of the field.
+The fit is stochastic: the capture draws its population at random, and every linearization samples the field
+and the pupil at random positions inside its cells. One seed sets all of these draws, and every committed table
+records the seed it was made with, zero. To see how much the draws matter, the whole chain was run from five
+seeds. The registration of the channels against one another, the median tile shift of each channel against
+channel 1 at each line and bright exposure, varies between the runs by \seedScatter\ rms, small against the
+registration itself. The parameters differ more, along the near-null directions of the problem, with the
+mapping unchanged to about a pixel at the edge of the field. In one of the twenty captures the differential
+evolution settled in a false optimum, a correlation of 0.65 where the others reach 0.81, from which the later
+stages cannot continue; that run is left out of the scatter. On the cluster's GPUs a seed repeats the fit only
+to about 0.0005 in correlation, not exactly.
 
 \paragraph{The focus of each sector}
 With the pointing and the drift applied and the focus held at its value at the reference exposure, each
-channel's image still translated against the others' by up to \coalignmentBeforeMax\ at the first exposure,
-rigid, the same at both lines and smooth in time.
+channel's image still translated against the others' by up to \coalignmentBeforeMax, rigid, the same at both
+lines and smooth in time.
 Tracking the interior of each window and its edges separately against the reference exposure, on the detector,
 the image did not move with the edges, so it was not a motion of a grating or a camera, which carry both; nor a
 decenter of the field stop or of the primary, which move every window, or every image, by one vector; and an

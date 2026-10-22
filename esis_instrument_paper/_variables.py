@@ -328,6 +328,15 @@ def _distortion() -> list[aastex.Variable]:
             name="coalignmentThreshold",
             value=0.1 * u.pix,
         ),
+        # the scatter of the registration between runs of the chain from
+        # different seeds; the committed tables hold one run, so this is the
+        # rms over every channel, line and bright exposure of the departure of
+        # each run's median tile shift from the mean of the runs, measured on
+        # seeds 0, 1, 2 and 4 and a repeat of seed 0
+        aastex.Variable(
+            name="seedScatter",
+            value=0.03 * u.pix,
+        ),
         aastex.Variable(
             name="coalignmentBefore",
             value=round(rms(before), 2) * u.pix,
