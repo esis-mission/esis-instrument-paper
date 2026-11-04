@@ -19,9 +19,6 @@ def authors() -> list[aastex.Author]:
     msfc = aastex.Affiliation(
         "NASA Marshall Space Flight Center, " "Huntsville, AL 35812, USA"
     )
-    gsfc = aastex.Affiliation(
-        "NASA Goddard Space Flight Center, " "Greenbelt, MD 20771, USA"
-    )
     lbnl = aastex.Affiliation(
         "Lawrence Berkeley National Laboratory, "
         "1 Cyclotron Road, Berkeley, CA 94720, USA"
@@ -45,7 +42,7 @@ def authors() -> list[aastex.Author]:
         ),
         aastex.Author(
             name="Jacob D. Parker",
-            affiliation=gsfc,
+            affiliation=msu,
             orcid="0000-0001-8732-8284",
         ),
         aastex.Author(
