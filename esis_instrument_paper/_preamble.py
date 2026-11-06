@@ -30,6 +30,8 @@ def preamble() -> list[pylatex.base_classes.LatexObject]:
 \makeatother"""),
         pylatex.NoEscape(r"\newcommand{\ie}{i.e.}"),
         pylatex.NoEscape(r"\newcommand{\eg}{e.g.}"),
+        # the coefficients of the distortion model
+        pylatex.NoEscape(r"\newcommand{\C}{\mathbf{C}}"),
         pylatex.NoEscape(r"\newcommand{\amy}[1]{{{\color{red} #1}}}"),
         pylatex.NoEscape(r"\newcommand{\jake}[1]{{{\color{purple} #1}}}"),
         pylatex.NoEscape(r"\newcommand{\roy}[1]{{{\color{blue} #1}}}"),

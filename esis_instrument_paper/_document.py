@@ -11,9 +11,14 @@ __all__ = [
 ]
 
 
-def document() -> aastex.Document:
+def document(linenumbers: bool = True) -> aastex.Document:
     """
     An :mod:`aastex` representation of the article.
+
+    Parameters
+    ----------
+    linenumbers
+        Whether to number the lines, as the journal requires for review.
     """
 
     plt.rcParams["text.usetex"] = True
@@ -27,6 +32,7 @@ def document() -> aastex.Document:
         ],
         lmodern=False,
         textcomp=False,
+        linenumbers=linenumbers,
     )
 
     doc.packages.append(aastex.Package("amsmath"))
@@ -43,25 +49,38 @@ def document() -> aastex.Document:
 
     doc += esis_instrument_paper.authors()
 
+    doc.append(esis_instrument_paper.abstract())
+
     doc.append(esis_instrument_paper.sections.introduction())
     doc.append(esis_instrument_paper.sections.concept())
     doc.append(esis_instrument_paper.sections.science_objectives())
     doc.append(esis_instrument_paper.sections.instrument())
+    doc.append(esis_instrument_paper.sections.mission_profile())
+    doc.append(esis_instrument_paper.sections.conclusions())
+
+    doc.append(esis_instrument_paper.acknowledgments())
+    doc.append(esis_instrument_paper.software())
 
     doc.append(aastex.Appendix())
     doc.append(esis_instrument_paper.sections.distortion_fit())
 
-    doc.append(aastex.Bibliography("sources"))
+    # the software cited by archive is written into `software.bib`
+    doc.append(aastex.Bibliography("sources,software"))
 
     return doc
 
 
-def pdf() -> pathlib.Path:
+def pdf(linenumbers: bool = True) -> pathlib.Path:
     """
     Build a pdf version of :func:`document` and return the path of the document.
+
+    Parameters
+    ----------
+    linenumbers
+        Whether to number the lines, as the journal requires for review.
     """
 
-    doc = document()
+    doc = document(linenumbers=linenumbers)
 
     path = pathlib.Path(__file__).parent / "esis-instrument"
     doc.generate_pdf(

@@ -8,7 +8,7 @@ def test_distortion_fit():
     assert isinstance(result, pylatex.Table)
     dumped = result.dumps()
     assert "table:distortionFit" in dumped
-    # one row per stage, one column per channel, and the held-out row is a
+    # one row per stage, one column per channel, and the row across the flight is a
     # correlation between zero and one
-    assert "Held out" in dumped
+    assert "Across the flight" in dumped
     assert "Channel 3" in dumped

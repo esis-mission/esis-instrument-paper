@@ -54,20 +54,22 @@ departure from it in each exposure is the drift of the windows.
 sensor roll, which move the windows without moving the sky inside them, and the sky terms are re-polished.
 \item \emph{Shared.} The pointing is set to one value for the four channels, and each channel's grating and
 sensor placement is polished again with it fixed.
+The displacement of the primary is held at nominal, since a scan of it does not discriminate on the flight data.
 \item \emph{Internal alignment.} Each channel's exposure is read onto a common sky grid through its own mapping
 at \HeIion\ and \OVion, inside the window that line illuminates, and cross-correlated tile by tile against channel 1;
 the parameters are moved so that the mappings reproduce the measured shifts.
 Two lines separate a geometric error, the same shift in both, from a dispersion error.
-\item \emph{Focus.} The channels are measured against channel 1 in every exposure.
+\item \emph{Focus.} The channels are measured against channel 1 in every exposure, with the windows placed by the
+smoothed drift since the reference exposure, at which the reference was fit with no grating offset.
 Each channel views the Sun through its own sector of the primary, so a defocus moves its image along its own
 dispersion while the windows stay put; the focus of every sector is solved from the shifts through the model,
 four unknowns from six measured components, and smoothed by a quadratic through the flight.
 The mean over the sectors is the defocus of the primary as a whole.
 \item \emph{Pointing.} The pitch and yaw of every exposure are polished on the mean merit of the four channels,
-with the roll held and the windows placed by the smoothed drift and the primary defocused by that exposure's
-value.
-\item \emph{Acceptance.} The model is scored on exposures the fit never saw, and in every exposure the
-coalignment metric is measured: the length of the median tile shift of each channel against channel 1 at each
+with the roll held, each channel's grating offset by the smoothed drift of its windows since the reference
+exposure, and each sector of the primary focused by that exposure's value.
+\item \emph{Acceptance.} The model is scored on six exposures across the flight, the reference exposure among
+them, with each exposure's own pitch and yaw applied, and in every exposure the coalignment metric is measured: the length of the median tile shift of each channel against channel 1 at each
 line, its component along the channel's dispersion in pixels and in \si{\kilo\meter\per\second}, the scatter of
 the tiles about it, and the decomposition of the tiles into the linear distortion modes with a test of whether
 what remains is noise (Figure~\ref{fig:coalignmentTiles}).
@@ -76,12 +78,13 @@ The fit is stochastic: the capture draws its population at random, and every lin
 and the pupil at random positions inside its cells. One seed sets all of these draws, and every committed table
 records the seed it was made with, zero. To see how much the draws matter, the whole chain was run from five
 seeds. The registration of the channels against one another, the median tile shift of each channel against
-channel 1 at each line and bright exposure, varies between the runs by \seedScatter\ rms, small against the
-registration itself. The parameters differ more, along the near-null directions of the problem, with the
-mapping unchanged to about a pixel at the edge of the field. In one of the twenty captures the differential
-evolution settled in a false optimum, a correlation of 0.65 where the others reach 0.81, from which the later
-stages cannot continue; that run is left out of the scatter. On the cluster's GPUs a seed repeats the fit only
-to about 0.0005 in correlation, not exactly.
+channel 1 at each line and exposure, varies between the runs by \seedScatter\ rms over the first 29 exposures,
+small against the registration itself. The scatter grows as the signal falls late in the flight, and reaches
+\seedScatterLast\ rms in the last and faintest exposure, which holds \SI{14}{\percent} of the peak signal.
+The parameters differ more, along the near-null directions of the problem, with the mapping differing by about \SI{0.4}{pixels} in the median over the field and by up to about a pixel at its edge. In an earlier set of runs, on the code before its last corrections, one of the twenty captures settled in a false
+optimum, a correlation of 0.65 where the others reached 0.79 to 0.85, from which the later stages could not
+continue; that seed was not repeated and another stands in for it, and all twenty captures of this set reach 0.79
+to 0.85. On the cluster's GPUs a seed repeats the fit only to about 0.0005 in correlation, not exactly.
 
 \paragraph{The focus of each sector}
 With the pointing and the drift applied and the focus held at its value at the reference exposure, each
@@ -92,7 +95,7 @@ the image did not move with the edges, so it was not a motion of a grating or a 
 decenter of the field stop or of the primary, which move every window, or every image, by one vector; and an
 error of plate scale or roll would have to be eight percent or five degrees.
 A focus that differs from sector to sector moves each channel's image along its own dispersion by its own
-amount, three parameters per exposure against six measured components, and it fits: it leaves the floor of the
+amount, four parameters per exposure against six measured components, and it fits: it leaves the floor of the
 measurement, where the figure modes tried first, astigmatism, coma and trefoil, which force the sectors into a
 fixed relation, left three times that.
 Each sector's focus is smooth in time to the precision of a single exposure, a few microns.
@@ -141,9 +144,9 @@ measure both in flight, is worth
 more to the registration of the channels than any improvement of the detectors.
 
 \paragraph{Cost}
-The capture takes one to two hours per channel on one GPU, the later stages five hours more, and the chain
-is six to seven hours of wall time on a cluster; the same chain on the host without a GPU takes about as long,
-and the stages from the focus on fit a workstation with \SI{128}{\giga\byte} of memory."""
+The capture takes one to two and a half hours per channel on one GPU, the later stages about three hours more,
+and the chain is about six hours of wall time on a cluster if no job is interrupted; on earlier code the same
+chain on the host without a GPU took about as long, and the stages from the focus on fit a workstation with \SI{128}{\giga\byte} of memory."""
     )
     result.append(esis_instrument_paper.figures.coalignment_tiles())
     return result

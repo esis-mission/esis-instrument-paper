@@ -16,6 +16,9 @@ instrument model. Calling `esis_instrument_paper.pdf()` produces the final PDF.
 
 Here is a link to the [pdf version](https://esis-mission.github.io/esis-instrument-paper/esis-instrument.pdf)
 of the article.
+Its formatted bibliography and BibTeX file are published beside it, as
+`esis-instrument.bbl` and `esis-instrument.bib`, for the cumulative References
+Cited of the dissertation that includes it.
 
 ## Building the article
 
