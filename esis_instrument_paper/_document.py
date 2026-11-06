@@ -61,6 +61,9 @@ def document(linenumbers: bool = True) -> aastex.Document:
     doc.append(esis_instrument_paper.acknowledgments())
     doc.append(esis_instrument_paper.software())
 
+    doc.append(aastex.Appendix())
+    doc.append(esis_instrument_paper.sections.distortion_fit())
+
     # the software cited by archive is written into `software.bib`
     doc.append(aastex.Bibliography("sources,software"))
 

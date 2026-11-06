@@ -6,8 +6,10 @@ The figures of this article, each a factory function returning an
 from ._baffles import baffles
 from ._bunch import bunch, num_emission_lines
 from ._cameras import cameras
+from ._coalignment_tiles import coalignment_tiles
 from ._component_efficiency_vs_wavelength import component_efficiency_vs_wavelength
 from ._distortion import distortion, distortion_residual
+from ._distortion_flight import distortion_flight
 from ._field_stop_projections import field_stop_projections
 from ._focus_curve import focus_curve
 from ._grating_efficiency_vs_angle import grating_efficiency_vs_angle
@@ -25,8 +27,10 @@ __all__ = [
     "baffles",
     "bunch",
     "cameras",
+    "coalignment_tiles",
     "component_efficiency_vs_wavelength",
     "distortion",
+    "distortion_flight",
     "distortion_residual",
     "field_stop_projections",
     "focus_curve",

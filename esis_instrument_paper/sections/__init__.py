@@ -3,6 +3,7 @@ The sections of this article, each a factory function returning an
 :class:`aastex.Section`.
 """
 
+from ._appendix_distortion import distortion_fit
 from ._s1_introduction import introduction
 from ._s2_concept import concept
 from ._s3_science_objectives import science_objectives
@@ -13,6 +14,7 @@ from ._s6_conclusions import conclusions
 __all__ = [
     "concept",
     "conclusions",
+    "distortion_fit",
     "instrument",
     "introduction",
     "mission_profile",
