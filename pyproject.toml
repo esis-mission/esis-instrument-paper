@@ -18,8 +18,8 @@ dependencies = [
     "aastex~=0.9",
     "num2words~=0.5",
     "named-arrays~=2.15",
-    "optika~=3.4",
-    "euv-snapshot-imaging-spectrograph~=1.10",
+    "optika~=3.9",
+    "euv-snapshot-imaging-spectrograph~=1.11",
     "utu~=0.1",
     "fiasco~=0.8.2",
 ]
