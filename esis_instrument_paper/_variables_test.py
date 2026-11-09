@@ -1,4 +1,5 @@
 import aastex
+import astropy.constants
 import astropy.units as u
 import numpy as np
 
@@ -50,3 +51,20 @@ def test_grating_defocus_sensitivity() -> None:
     variables = {v.name: v for v in esis_instrument_paper.variables()}
     arm_ratio = variables["armRatio"].value
     assert variables["gratingDefocusSensitivity"].value == round(arm_ratio**2 + 1)
+
+
+def test_thermal_speed_o_v() -> None:
+    r"""
+    The subsection on energy transfer says that the non-thermal velocity it
+    expects of O V is larger than the thermal speed of O V.
+
+    Both are most probable speeds, so the thermal speed is
+    :math:`\sqrt{2 k T / m}` rather than the standard deviation
+    :math:`\sqrt{k T / m}`, which is smaller by a factor of the root of two.
+    """
+    variables = {v.name: v for v in esis_instrument_paper.variables()}
+    temperature = variables["temperatureOV"].value
+    expected = np.sqrt(2 * astropy.constants.k_B * temperature / (15.999 * u.u))
+    speed = variables["thermalSpeedOV"].value
+    assert np.isclose(speed, expected, atol=0.5 * u.km / u.s)
+    assert variables["nonthermalVelocityOV"].value > speed

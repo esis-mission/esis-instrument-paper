@@ -116,10 +116,11 @@ $R \leq 1.15R_\odot$~\citep{Cranmer05}, the wave amplitude, $v_{nt}$, depends on
 that $v_{nt} \propto n_e^{-1/4}$~\citep{Hahn2013,Moran01}.
 Assuming pressure balance between the low corona and \TR, we may infer non-thermal velocities in the \TR\ by
 scaling according to the temperature drop, $v_{nt} \propto T^{1/4}$.
-The measured non-thermal velocity of \SI{24}{\kilo\meter\per\second} for Si\,\textsc{viii}~\citep{Doyle98}
-(\SI{0.8}{\mega\kelvin}~\citep{Moran03}) near the limb should, neglecting damping, correspond to velocities of at least
-\SI{18}{\kilo\meter\per\second} in the \OVion\ (\SI{0.25}{\mega\kelvin}) line.
-This is larger than the thermal width of \SI{11}{\kilo\meter\per\second}.
+The measured non-thermal velocity of \nonthermalVelocitySiVIII\ for Si\,\textsc{viii}~\citep{Doyle98}
+(\temperatureSiVIII~\citep{Moran03}) near the limb should, neglecting damping, correspond to velocities of at least
+\nonthermalVelocityOV\ in the \OVion\ (\temperatureOV) line.
+This is larger than \thermalSpeedOV, the most probable thermal speed, $\sqrt{2 k_B T / m}$, of the oxygen ions at
+that temperature, which adds to the non-thermal velocity in quadrature to broaden the line~\citep{Banerjee98}.
 
 More recently, \citet{Srivastava17} observed torsional Alfv\'en waves with amplitude
 $\sim$\SI{20}{\kilo\meter\per\second} and period $\sim$\SI{30}{\second} in the chromosphere.
@@ -160,7 +161,7 @@ tubes that are rooted in photospheric intergranular network lanes (\eg, \citealt
 reconnection in explosive events and the transport of mass and energy through the transition region.
 The latter may take many forms, from \MHD\ waves of various modes to \EUV\ jets or macrospicules.
 To fulfill these goals, \ESIS\ will obtain simultaneous intensity, Doppler shift and line width images of the \OV\ line
-in the solar transition region (\SI{.25}{\mega\kelvin}) at rapid cadence.
+in the solar transition region (\temperatureOV) at rapid cadence.
 The bright, optically thin \OVion\ emission line is well isolated except for the two coronal \MgXion\ lines
 (Figure~\ref{fig:bunch}).
 These coronal lines can be viewed as contamination or as a bonus;

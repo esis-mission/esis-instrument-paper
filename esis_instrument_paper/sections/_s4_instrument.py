@@ -109,7 +109,11 @@ degradation of \gratingMtfDegradationFactor\ based on manufacturing capabilities
 The derived requirements are described in Table~\ref{table:error}.
 Note that this modeling exercise was undertaken before the baffle designs were finalized.
 The estimated diffraction \MTF\ and aberrations were therefore modeled for a rough estimate of the \ESIS\ single sector
-aperture.""")
+aperture.
+
+Table~\ref{table:error} also compares these requirements with the metrology of the flight optics.
+The gratings meet all of their requirements, as do the roughness and microroughness of the primary mirror, but the
+slope error of the primary mirror exceeds its requirement.""")
     subsection_optimization.append(esis_instrument_paper.tables.surface_error())
     subsection_optimization.append(r"""
 The initial grating radius of curvature, $R_g$, and ruling pattern of the \ESIS\ gratings were
@@ -166,7 +170,10 @@ blur terms at \mtfFrequency, the spatial frequency of the \angularResolutionRequ
 From Table~\ref{table:errorBudget}, we estimate the total \MTF\ of \ESIS\ at its required \spatialResolutionRequirement\
 resolution to be \mtfTotal.
 By way of comparison, the widely used Rayleigh criterion~\citep{Rayleigh_1879} for diffraction from a circular aperture
-corresponds to an \MTF\ of \mtfRayleigh\ at the resolution limit.""")
+corresponds to an \MTF\ of \mtfRayleigh\ at the resolution limit.
+This estimate takes the figure of the primary mirror to meet its requirement.
+Its measured slope error does not (Table~\ref{table:error}), so the \MTF\ of \ESIS\ as built is likely somewhat
+lower.""")
     subsection_optimization.append(esis_instrument_paper.tables.error_budget())
     result.append(subsection_optimization)
 
@@ -314,8 +321,9 @@ Table~\ref{table:counts} shows that \ESIS\ is effectively shot noise limited wit
 The signal requirement in Table~\ref{table:scireq} is met by stacking exposures.
 Good quality images ($\sim$\goodImageCounts\ counts) in active regions can be obtained by stacking
 \activeRegionStackLength\ worth of exposures.
-This cadence is sufficient to observe explosive events, but will not resolve torsional Alfv\'en waves described in
-Section~\ref{subsec:EnergyTransfer}.
+This cadence is shorter than the typical lifetime of an explosive event
+(Section~\ref{subsec:MagneticReconnectionEvents}), so it is sufficient to observe explosive events, but will not resolve
+torsional Alfv\'en waves described in Section~\ref{subsec:EnergyTransfer}.
 However, by stacking multiple \detectorExposureLength\ exposures, sufficient \SNR\ \emph{and} temporal resolution of
 torsional Alfv\'en wave oscillations can be obtained.""")
     subsection_sensitivity.append(esis_instrument_paper.tables.counts())
@@ -503,8 +511,9 @@ Gain ranges from \detectorGainMin\ to \detectorGainMax\ in each quadrant of all 
 Table~\ref{table:cameras} lists gain, read noise, and dark current by quadrant for each camera.
 
 The \QE\ of the \ESIS\ \CCDs\ was not measured before flight.
-This paper models it with the measurements of a back-illuminated e2v CCD97 by \citet{Moody2017} and
-\citet{Heymes2020}, which give a \QE\ of \detectorQuantumEfficiencyHeI\ at \HeI\ and \detectorQuantumEfficiencyOV\ at
+This paper models it by fitting the model of \citet{Stern1994} to the measurements of a back-illuminated e2v CCD97 by
+\citet{Moody2017} and \citet{Heymes2020}.
+The fit gives a \QE\ of \detectorQuantumEfficiencyHeI\ at \HeI\ and \detectorQuantumEfficiencyOV\ at
 \OV.""")
     subsection_cameras.append(esis_instrument_paper.tables.cameras())
     result.append(subsection_cameras)
