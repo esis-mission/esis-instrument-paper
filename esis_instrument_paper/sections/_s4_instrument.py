@@ -112,7 +112,7 @@ The estimated diffraction \MTF\ and aberrations were therefore modeled for a rou
 aperture.
 
 Table~\ref{table:error} also compares these requirements with the metrology of the flight optics.
-The gratings meet all of their requirements, as do the roughness and microroughness of the primary mirror, but the
+The gratings meet all of their requirements, as do the roughness and micro\-roughness of the primary mirror, but the
 slope error of the primary mirror exceeds its requirement.""")
     subsection_optimization.append(esis_instrument_paper.tables.surface_error())
     subsection_optimization.append(r"""
