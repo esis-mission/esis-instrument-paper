@@ -728,8 +728,8 @@ Smart, R.~T. 2026{\natexlab{a}}, {aastex}, v0.9.1 Zenodo,
 
 % type=
 \bibitem[{R.~T. Smart(2026{\natexlab{b}})Smart}]{utu}
-Smart, R.~T. 2026{\natexlab{b}}, {utu}, v0.5.0 Zenodo,
-  \dodoi{10.5281/zenodo.23425775}
+Smart, R.~T. 2026{\natexlab{b}}, {utu}, v0.6.0 Zenodo,
+  \dodoi{10.5281/zenodo.24089690}
 
 % type=
 \bibitem[{R.~T. Smart \& J.~D. Parker(2026{\natexlab{a}})Smart \&
@@ -740,8 +740,8 @@ Smart, R.~T., \& Parker, J.~D. 2026{\natexlab{a}}, {msfc{-}ccd}, v1.2.0 Zenodo,
 % type=
 \bibitem[{R.~T. Smart \& J.~D. Parker(2026{\natexlab{b}})Smart \&
   Parker}]{named_arrays}
-Smart, R.~T., \& Parker, J.~D. 2026{\natexlab{b}}, {named{-}arrays}, v2.18.0
-  Zenodo, \dodoi{10.5281/zenodo.23774406}
+Smart, R.~T., \& Parker, J.~D. 2026{\natexlab{b}}, {named{-}arrays}, v2.19.0
+  Zenodo, \dodoi{10.5281/zenodo.24087829}
 
 % type=
 \bibitem[{R.~T. Smart {et~al.}(2026{\natexlab{a}})Smart, Parker, \&
@@ -753,7 +753,7 @@ Smart, R.~T., Parker, J.~D., \& Kankelborg, C.~C. 2026{\natexlab{a}}, {esis},
 \bibitem[{R.~T. Smart {et~al.}(2026{\natexlab{b}})Smart, Parker, \&
   Kankelborg}]{optika}
 Smart, R.~T., Parker, J.~D., \& Kankelborg, C.~C. 2026{\natexlab{b}}, {optika},
-  v3.8.0 Zenodo, \dodoi{10.5281/zenodo.23993175}
+  v3.9.0 Zenodo, \dodoi{10.5281/zenodo.24056394}
 
 % type= article
 \bibitem[{ {SPICE Consortium} {et~al.}(2020){SPICE Consortium}, {Anderson},
