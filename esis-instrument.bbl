@@ -98,6 +98,13 @@
   seen by EIS/Hinode},} \aap, 501, L15, \dodoi{10.1051/0004-6361/200912242}
 
 % type= article
+\bibitem[{D. {Banerjee} {et~al.}(1998){Banerjee}, {Teriaca}, {Doyle}, \&
+  {Wilhelm}}]{Banerjee98}
+{Banerjee}, D., {Teriaca}, L., {Doyle}, J.~G., \& {Wilhelm}, K. 1998,
+  \bibinfo{title}{{Broadening of SI VIII lines observed in the solar polar
+  coronal holes},} \aap, 339, 208
+
+% type= article
 \bibitem[{T.~E. {Berger} {et~al.}(1995){Berger}, {Schrijver}, {Shine},
   {Tarbell}, {Title}, \& {Scharmer}}]{Berger95ApJ}
 {Berger}, T.~E., {Schrijver}, C.~J., {Shine}, R.~A., {et~al.} 1995,
@@ -747,7 +754,7 @@ Smart, R.~T., \& Parker, J.~D. 2026{\natexlab{b}}, {named{-}arrays}, v2.19.0
 \bibitem[{R.~T. Smart {et~al.}(2026{\natexlab{a}})Smart, Parker, \&
   Kankelborg}]{esis}
 Smart, R.~T., Parker, J.~D., \& Kankelborg, C.~C. 2026{\natexlab{a}}, {esis},
-  v1.11.0 Zenodo, \dodoi{10.5281/zenodo.24060380}
+  v1.12.0 Zenodo, \dodoi{10.5281/zenodo.24100052}
 
 % type=
 \bibitem[{R.~T. Smart {et~al.}(2026{\natexlab{b}})Smart, Parker, \&
@@ -771,6 +778,14 @@ Smart, R.~T., Parker, J.~D., \& Kankelborg, C.~C. 2026{\natexlab{b}}, {optika},
   \bibinfo{title}{{High-frequency torsional Alfv{\'e}n waves as an energy
   source for coronal heating},} Scientific Reports, 7, 43147,
   \dodoi{10.1038/srep43147}
+
+% type= article
+\bibitem[{R.~A. {Stern} {et~al.}(1994){Stern}, {Shing}, \&
+  {Blouke}}]{Stern1994}
+{Stern}, R.~A., {Shing}, L., \& {Blouke}, M.~M. 1994, \bibinfo{title}{{Quantum
+  efficiency measurements and modeling of ion-implanted, laser-annealed
+  charge-coupled devices: x-ray, extreme-ultraviolet, ultraviolet, and optical
+  data},} \ao, 33, 2521, \dodoi{10.1364/AO.33.002521}
 
 % type= article
 \bibitem[{W.~T. {Thompson}(2006){Thompson}}]{Thompson2006}
