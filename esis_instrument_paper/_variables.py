@@ -1,6 +1,7 @@
 import collections.abc
 
 import aastex
+import astropy.constants
 import astropy.time
 import astropy.units as u
 import esis
@@ -28,8 +29,9 @@ def variables() -> list[aastex.Variable]:
     A few of these are still literals, since the model does not carry the
     quantity they describe: two which belong to MOSES or to the payload
     rather than to the instrument, the allocations of the error budget to the
-    figure of the optics, and the spectroscopic name of each emission line,
-    whose wavelength the model does carry.
+    figure of the optics, the measurements from the literature which the
+    science objectives start from, and the spectroscopic name of each
+    emission line, whose wavelength the model does carry.
     """
     design = esis.flights.f1.optics.design()
 
@@ -267,6 +269,7 @@ def variables() -> list[aastex.Variable]:
             value=aastex.NoEscape(esis_instrument_paper._spectrum.version()),
         ),
         *_abstract(),
+        *_energy_transfer(),
         *_optics(),
         *_optimization(),
         *_coatings(),
@@ -419,6 +422,60 @@ def _abstract() -> list[aastex.Variable]:
         aastex.Variable(
             name="MgX",
             value=aastex.NoEscape(r"\MgXion~\MgXwavelength"),
+        ),
+    ]
+
+
+def _energy_transfer() -> list[aastex.Variable]:
+    """
+    The variables cited by the subsection on energy transfer, which scales the
+    non-thermal velocity measured in Si VIII down to the temperature of O V
+    and compares it with the thermal speed of O V.
+
+    The non-thermal velocity of Si VIII and the two temperatures are literals
+    from the literature. The non-thermal velocities are most probable speeds,
+    which add in quadrature to the thermal speed sqrt(2 k T / m) to broaden a
+    line, so it is that speed they are compared with, rather than the
+    standard deviation sqrt(k T / m) of the speeds along the line of sight.
+    """
+    # measured near the limb by Doyle et al. (1998)
+    velocity_si_viii = 24 * u.km / u.s
+
+    # the temperature of Si VIII, as Moran (2003) gives it
+    temperature_si_viii = 0.8 * u.MK
+
+    # the temperature at which O V forms
+    temperature_o_v = 0.25 * u.MK
+
+    # Assuming pressure balance between the low corona and the transition
+    # region, the amplitude of an undamped Alfven wave scales as the fourth
+    # root of the temperature.
+    velocity_o_v = velocity_si_viii * (temperature_o_v / temperature_si_viii) ** (1 / 4)
+
+    # the standard atomic weight of oxygen
+    mass = 15.999 * u.u
+    speed_thermal = np.sqrt(2 * astropy.constants.k_B * temperature_o_v / mass)
+
+    return [
+        aastex.Variable(
+            name="nonthermalVelocitySiVIII",
+            value=velocity_si_viii,
+        ),
+        aastex.Variable(
+            name="temperatureSiVIII",
+            value=temperature_si_viii,
+        ),
+        aastex.Variable(
+            name="temperatureOV",
+            value=temperature_o_v,
+        ),
+        aastex.Variable(
+            name="nonthermalVelocityOV",
+            value=_significant(velocity_o_v.to(u.km / u.s), 2),
+        ),
+        aastex.Variable(
+            name="thermalSpeedOV",
+            value=_significant(speed_thermal.to(u.km / u.s), 2),
         ),
     ]
 
