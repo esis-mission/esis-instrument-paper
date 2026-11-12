@@ -113,8 +113,11 @@ aperture.
 
 Table~\ref{table:error} also compares these requirements with the metrology of the flight optics.
 The gratings meet all of their requirements, as do the roughness and micro\-roughness of the primary mirror, but the
-slope error of the primary mirror exceeds its requirement.""")
+slope error of the primary mirror exceeds its requirement.
+Figure~\ref{fig:primaryFigure} shows the measured figure of the primary mirror, from which its slope error was
+computed.""")
     subsection_optimization.append(esis_instrument_paper.tables.surface_error())
+    subsection_optimization.append(esis_instrument_paper.figures.primary_figure())
     subsection_optimization.append(r"""
 The initial grating radius of curvature, $R_g$, and ruling pattern of the \ESIS\ gratings were
 derived from the analytical equations developed by \citet{Poletto04} for stigmatic spectrometers.
