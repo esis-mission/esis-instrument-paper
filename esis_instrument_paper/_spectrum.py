@@ -12,6 +12,7 @@ import utu
 __all__ = [
     "abundance",
     "area_effective",
+    "contribution_function",
     "dem",
     "emission_measure",
     "lines",
@@ -182,6 +183,86 @@ def lines(
         The longest wavelength to compute.
     """
     return _lines(wavelength_min, wavelength_max, version())
+
+
+@esis.memory.cache
+def _contribution_function(
+    wavelength_min: u.Quantity,
+    wavelength_max: u.Quantity,
+    num: int,
+    chianti_version: str,
+) -> na.FunctionArray:
+    """
+    Compute the contribution functions, and remember them, since the ratio of
+    protons to electrons walks the whole database.
+
+    ``chianti_version`` is not read here. It is an argument for the reason
+    given in :func:`_lines`.
+    """
+    import fiasco
+
+    brightest = lines(wavelength_min, wavelength_max)[{"line": slice(num)}]
+    ions = brightest.inputs.components["ion"]
+    wavelengths = brightest.inputs.components["wavelength"]
+
+    t = temperature()
+    ratio = fiasco.proton_electron_ratio(t.ndarray, abundance=abundance)
+
+    # every line of an ion comes out of one call, so an ion with more than
+    # one line among the brightest is computed once
+    functions: dict[str, na.FunctionArray] = {}
+    result = []
+    for index in range(num):
+        i = {"line": index}
+        ion = ions[i].ndarray.item()
+        if ion not in functions:
+            functions[ion] = utu.spectrum.contribution_function(
+                ion=fiasco.Ion(ion, t.ndarray, abundance=abundance),
+                density=pressure / t,
+                axis_temperature=_axis,
+                axis="transition",
+                proton_electron_ratio=ratio,
+            )
+        g = functions[ion]
+
+        # the wavelengths of the lines are those of the same transitions in
+        # the same database, so a line is found by its wavelength exactly
+        match = g.inputs == wavelengths[i]
+        if np.sum(match).ndarray != 1:  # pragma: nocover
+            raise ValueError(
+                f"{ion} has {np.sum(match).ndarray} transitions at {wavelengths[i]}"
+            )
+        result.append(g.outputs[np.argmax(match, axis="transition")])
+
+    return na.FunctionArray(
+        inputs=brightest.inputs,
+        outputs=na.stack(result, axis="line"),
+    )
+
+
+def contribution_function(
+    wavelength_min: u.Quantity,
+    wavelength_max: u.Quantity,
+    num: int,
+) -> na.FunctionArray:
+    """
+    The contribution functions of the brightest lines of :func:`lines`, at
+    each of :func:`temperature`.
+
+    They are computed with the same abundances and the same pressure as the
+    lines, so that they are the functions the intensities of the lines were
+    summed from.
+
+    Parameters
+    ----------
+    wavelength_min
+        The shortest wavelength to compute.
+    wavelength_max
+        The longest wavelength to compute.
+    num
+        How many of the brightest lines to compute.
+    """
+    return _contribution_function(wavelength_min, wavelength_max, num, version())
 
 
 @esis.memory.cache

@@ -7,6 +7,7 @@ from ._baffles import baffles
 from ._bunch import bunch, num_emission_lines
 from ._cameras import cameras
 from ._component_efficiency_vs_wavelength import component_efficiency_vs_wavelength
+from ._contribution_function import contribution_function
 from ._distortion import distortion, distortion_residual
 from ._field_stop_projections import field_stop_projections
 from ._focus_curve import focus_curve
@@ -27,6 +28,7 @@ __all__ = [
     "bunch",
     "cameras",
     "component_efficiency_vs_wavelength",
+    "contribution_function",
     "distortion",
     "distortion_residual",
     "field_stop_projections",
