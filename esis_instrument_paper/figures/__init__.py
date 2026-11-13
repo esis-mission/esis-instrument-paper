@@ -15,6 +15,7 @@ from ._grating_efficiency_vs_position import grating_efficiency_vs_position
 from ._grating_mount import grating_mount
 from ._grating_multilayer_schematic import grating_multilayer_schematic
 from ._layout import layout
+from ._primary_figure import primary_figure
 from ._schematic import schematic
 from ._schematic_moses import schematic_moses
 from ._spot_diagrams import spot_diagrams
@@ -37,6 +38,7 @@ __all__ = [
     "layout",
     "num_emission_lines",
     "num_lines",
+    "primary_figure",
     "schematic",
     "schematic_moses",
     "spot_diagrams",
