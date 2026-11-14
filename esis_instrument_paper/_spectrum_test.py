@@ -1,5 +1,6 @@
 import astropy.units as u
 import esis
+import named_arrays as na
 import numpy as np
 
 import esis_instrument_paper
@@ -33,5 +34,12 @@ def test_contribution_function() -> None:
     for component in ("wavelength", "ion"):
         expected = lines.inputs.components[component]
         assert np.all(result.inputs.components[component] == expected)
-    intensity = (result.outputs * spectrum.emission_measure()).sum(spectrum._axis)
+
+    # utu.spectrum.lines() sums each line along a contiguous axis of
+    # temperature, and numpy adds the terms of a sum in a different order
+    # along a strided axis, which can change the last bit, so the sum is
+    # taken in the same layout here
+    axes = ("line", spectrum._axis)
+    g = na.ScalarArray(result.outputs.ndarray_aligned(axes).copy(order="C"), axes)
+    intensity = (g * spectrum.emission_measure()).sum(spectrum._axis)
     assert np.all(intensity == lines.outputs)

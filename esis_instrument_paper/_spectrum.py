@@ -193,50 +193,27 @@ def _contribution_function(
     chianti_version: str,
 ) -> na.FunctionArray:
     """
-    Compute the contribution functions, and remember them, since the ratio of
-    protons to electrons walks the whole database.
+    Compute the contribution functions, and remember them, since solving the
+    levels of each ion takes seconds.
 
     ``chianti_version`` is not read here. It is an argument for the reason
     given in :func:`_lines`.
     """
-    import fiasco
-
     brightest = lines(wavelength_min, wavelength_max)[{"line": slice(num)}]
-    ions = brightest.inputs.components["ion"]
-    wavelengths = brightest.inputs.components["wavelength"]
 
     t = temperature()
-    ratio = fiasco.proton_electron_ratio(t.ndarray, abundance=abundance)
-
-    # every line of an ion comes out of one call, so an ion with more than
-    # one line among the brightest is computed once
-    functions: dict[str, na.FunctionArray] = {}
-    result = []
-    for index in range(num):
-        i = {"line": index}
-        ion = ions[i].ndarray.item()
-        if ion not in functions:
-            functions[ion] = utu.spectrum.contribution_function(
-                ion=fiasco.Ion(ion, t.ndarray, abundance=abundance),
-                density=pressure / t,
-                axis_temperature=_axis,
-                axis="transition",
-                proton_electron_ratio=ratio,
-            )
-        g = functions[ion]
-
-        # the wavelengths of the lines are those of the same transitions in
-        # the same database, so a line is found by its wavelength exactly
-        match = g.inputs == wavelengths[i]
-        if np.sum(match).ndarray != 1:  # pragma: nocover
-            raise ValueError(
-                f"{ion} has {np.sum(match).ndarray} transitions at {wavelengths[i]}"
-            )
-        result.append(g.outputs[np.argmax(match, axis="transition")])
+    result = utu.spectrum.contribution_function_line(
+        ion=brightest.inputs.components["ion"],
+        wavelength=brightest.inputs.components["wavelength"],
+        temperature=t,
+        density=pressure / t,
+        axis_temperature=_axis,
+        abundance=abundance,
+    )
 
     return na.FunctionArray(
         inputs=brightest.inputs,
-        outputs=na.stack(result, axis="line"),
+        outputs=result.outputs,
     )
 
 
