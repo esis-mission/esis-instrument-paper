@@ -137,16 +137,23 @@ def _lines(
     wavelength_min: u.Quantity,
     wavelength_max: u.Quantity,
     chianti_version: str,
+    fiasco_version: str,
+    utu_version: str,
 ) -> na.FunctionArray:
     """
     Compute the lines, and remember them, since it takes several minutes.
 
-    ``chianti_version`` is not read here. It is an argument so that it is part of
-    what the cache is keyed on, since the answer depends on it and nothing
-    else in the key does: :mod:`joblib` hashes the arguments and the source
-    of this function, neither of which knows which database is installed.
-    Without it, installing a new database would go on returning the numbers
-    computed from the old one, under a caption naming the new.
+    The versions are not read here. They are arguments so that they are part
+    of what the cache is keyed on, since the answer depends on them and
+    nothing else in the key does: :mod:`joblib` hashes the arguments and the
+    source of this function, neither of which knows which database is
+    installed, or which versions of :mod:`fiasco` and :mod:`utu` computed
+    from it. Without the first, installing a new database would go on
+    returning the numbers computed from the old one, under a caption naming
+    the new. Without the others, the lines computed by fiasco 0.8.3 and utu
+    0.6.1 went on being returned beside contribution functions computed by
+    fiasco 0.9.0 and utu 0.7.0, which differ from them by two parts in a
+    billion.
     """
     t = temperature()
     return utu.spectrum.lines(
@@ -182,7 +189,13 @@ def lines(
     wavelength_max
         The longest wavelength to compute.
     """
-    return _lines(wavelength_min, wavelength_max, version())
+    return _lines(
+        wavelength_min=wavelength_min,
+        wavelength_max=wavelength_max,
+        chianti_version=version(),
+        fiasco_version=importlib.metadata.version("fiasco"),
+        utu_version=importlib.metadata.version("utu"),
+    )
 
 
 @esis.memory.cache
@@ -191,13 +204,15 @@ def _contribution_function(
     wavelength_max: u.Quantity,
     num: int,
     chianti_version: str,
+    fiasco_version: str,
+    utu_version: str,
 ) -> na.FunctionArray:
     """
     Compute the contribution functions, and remember them, since solving the
     levels of each ion takes seconds.
 
-    ``chianti_version`` is not read here. It is an argument for the reason
-    given in :func:`_lines`.
+    The versions are not read here. They are arguments for the reasons given
+    in :func:`_lines`.
     """
     brightest = lines(wavelength_min, wavelength_max)[{"line": slice(num)}]
 
@@ -239,7 +254,14 @@ def contribution_function(
     num
         How many of the brightest lines to compute.
     """
-    return _contribution_function(wavelength_min, wavelength_max, num, version())
+    return _contribution_function(
+        wavelength_min=wavelength_min,
+        wavelength_max=wavelength_max,
+        num=num,
+        chianti_version=version(),
+        fiasco_version=importlib.metadata.version("fiasco"),
+        utu_version=importlib.metadata.version("utu"),
+    )
 
 
 @esis.memory.cache
