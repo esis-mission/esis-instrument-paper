@@ -83,6 +83,7 @@ def authors() -> list[aastex.Author]:
         aastex.Author(
             name="James A. Duffy",
             affiliation=msfc,
+            altaffiliation="Deceased",
         ),
         aastex.Author(
             name="Eric Gullikson",
