@@ -1,6 +1,5 @@
 import astropy.units as u
 import esis
-import named_arrays as na
 import numpy as np
 
 import esis_instrument_paper
@@ -35,11 +34,12 @@ def test_contribution_function() -> None:
         expected = lines.inputs.components[component]
         assert np.all(result.inputs.components[component] == expected)
 
-    # utu.spectrum.lines() sums each line along a contiguous axis of
-    # temperature, and numpy adds the terms of a sum in a different order
-    # along a strided axis, which can change the last bit, so the sum is
-    # taken in the same layout here
-    axes = ("line", spectrum._axis)
-    g = na.ScalarArray(result.outputs.ndarray_aligned(axes).copy(order="C"), axes)
-    intensity = (g * spectrum.emission_measure()).sum(spectrum._axis)
-    assert np.all(intensity == lines.outputs)
+    # the last bits can differ: the lines may come from the cache of another
+    # machine, whose powers of ten can round differently from this one's, and
+    # numpy adds the terms of a sum in a different order along a strided axis
+    # than along a contiguous one. A difference in what computed them moves
+    # the sums by far more than a part in a trillion: the lines computed by
+    # fiasco 0.8.3 and utu 0.6.1 are two parts in a billion from these.
+    intensity = (result.outputs * spectrum.emission_measure()).sum(spectrum._axis)
+    expected = lines.outputs
+    assert np.all(np.abs(intensity - expected) <= 1e-12 * np.abs(expected))
