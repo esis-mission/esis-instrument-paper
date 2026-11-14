@@ -17,7 +17,7 @@ __all__ = [
 _height = 3.0
 """The height of the figure in inches, with room for the legend beneath it."""
 
-_unit = u.erg * u.cm**3 / u.s
+_unit = u.erg * u.cm**3 / u.s / u.sr
 """The unit the contribution functions are drawn in."""
 
 _range = 1e3
@@ -54,7 +54,10 @@ def contribution_function() -> aastex.Figure:
         latex=True,
     )
     order = np.argsort(na.as_named_array(wavelength).ndarray.value)
-    outputs = g.outputs.to(_unit)
+    # the emission is isotropic, so each function is spread over the whole
+    # sphere, the way the passband figure spreads the intensities into
+    # radiances
+    outputs = (g.outputs / (4 * np.pi * u.sr)).to(_unit)
 
     fig, ax = plt.subplots(
         figsize=(aastex.column_width_inches, _height),
