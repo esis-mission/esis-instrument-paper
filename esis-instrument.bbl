@@ -735,8 +735,8 @@ Smart, R.~T. 2026{\natexlab{a}}, {aastex}, v0.9.1 Zenodo,
 
 % type=
 \bibitem[{R.~T. Smart(2026{\natexlab{b}})Smart}]{utu}
-Smart, R.~T. 2026{\natexlab{b}}, {utu}, v0.6.1 Zenodo,
-  \dodoi{10.5281/zenodo.24177848}
+Smart, R.~T. 2026{\natexlab{b}}, {utu}, v0.7.0 Zenodo,
+  \dodoi{10.5281/zenodo.24199108}
 
 % type=
 \bibitem[{R.~T. Smart \& J.~D. Parker(2026{\natexlab{a}})Smart \&
@@ -754,13 +754,13 @@ Smart, R.~T., \& Parker, J.~D. 2026{\natexlab{b}}, {named{-}arrays}, v2.20.0
 \bibitem[{R.~T. Smart {et~al.}(2026{\natexlab{a}})Smart, Parker, \&
   Kankelborg}]{esis}
 Smart, R.~T., Parker, J.~D., \& Kankelborg, C.~C. 2026{\natexlab{a}}, {esis},
-  v1.13.0 Zenodo, \dodoi{10.5281/zenodo.24181182}
+  v1.14.0 Zenodo, \dodoi{10.5281/zenodo.24225378}
 
 % type=
 \bibitem[{R.~T. Smart {et~al.}(2026{\natexlab{b}})Smart, Parker, \&
   Kankelborg}]{optika}
 Smart, R.~T., Parker, J.~D., \& Kankelborg, C.~C. 2026{\natexlab{b}}, {optika},
-  v3.9.0 Zenodo, \dodoi{10.5281/zenodo.24056394}
+  v3.10.0 Zenodo, \dodoi{10.5281/zenodo.24223871}
 
 % type= article
 \bibitem[{ {SPICE Consortium} {et~al.}(2020){SPICE Consortium}, {Anderson},
@@ -824,10 +824,10 @@ Smart, R.~T., Parker, J.~D., \& Kankelborg, C.~C. 2026{\natexlab{b}}, {optika},
 
 % type=
 \bibitem[{ {Will Barnes} {et~al.}(2026){Will Barnes}, {David Stansby}, {Nick
-  Murphy}, {Jeffrey Reep}, {Stuart Mumford}, {Nabil Freij}, \& {Laura
-  Hayes}}]{fiasco}
-{Will Barnes}, {David Stansby}, {Nick Murphy}, {et~al.} 2026, {fiasco}, v0.8.3
-  Zenodo, \dodoi{10.5281/zenodo.23820293}
+  Murphy}, {Jeffrey Reep}, {Stuart Mumford}, {Nabil Freij}, {Laura Hayes}, \&
+  {Jacob Parker}}]{fiasco}
+{Will Barnes}, {David Stansby}, {Nick Murphy}, {et~al.} 2026, {fiasco}, v0.9.0
+  Zenodo, \dodoi{10.5281/zenodo.24121214}
 
 % type= article
 \bibitem[{A.~R. {Winebarger} {et~al.}(2019){Winebarger}, {Weber}, {Bethge},
