@@ -11,6 +11,7 @@ import utu
 import esis_instrument_paper
 
 __all__ = [
+    "colormap_emission_lines",
     "field_stop_projections",
 ]
 
@@ -22,9 +23,11 @@ Its width is the width of a column, and the detector is twice as wide as it
 is tall, which leaves room beneath it for the legend.
 """
 
-_colormap = "turbo"
+colormap_emission_lines = "turbo"
 """
-The colormap the lines are colored from, in order of wavelength.
+The colormap the lines are colored from, in order of wavelength, here and
+in :func:`esis_instrument_paper.figures.contribution_function`, so that a
+line is the same color in both.
 
 The old draft colored them by hand from violet to red, shortest wavelength
 first. A colormap which runs the same way does that for any list of lines.
@@ -74,7 +77,7 @@ def field_stop_projections() -> aastex.Figure:
     image = sensor.pixels(rayfunction.outputs.position.xy)
 
     order = np.argsort(na.as_named_array(wavelength).ndarray.value)
-    colors = plt.get_cmap(_colormap)(np.linspace(0, 1, num))
+    colors = plt.get_cmap(colormap_emission_lines)(np.linspace(0, 1, num))
 
     fig, ax = plt.subplots(
         figsize=(aastex.column_width_inches, _height),

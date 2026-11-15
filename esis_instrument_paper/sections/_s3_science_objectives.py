@@ -164,6 +164,7 @@ To fulfill these goals, \ESIS\ will obtain simultaneous intensity, Doppler shift
 in the solar transition region (\temperatureOV) at rapid cadence.
 The bright, optically thin \OVion\ emission line is well isolated except for the two coronal \MgXion\ lines
 (Figure~\ref{fig:bunch}).
+Figure~\ref{fig:contributionFunction} shows the temperatures at which the lines of Figure~\ref{fig:bunch} form.
 These coronal lines can be viewed as contamination or as a bonus;
 we expect that with the \numChannelsWords\ \ESIS\ projections it is possible to separate the \OVion\ emission from
 that of \MgXion.
@@ -171,6 +172,9 @@ From the important temporal, spatial, and velocity scales referenced in Sections
 and \ref{subsec:EnergyTransfer} we define the instrument requirements in Table~\ref{table:scireq} that are needed to
 meet our science goals.""")
     subsection_requirements.append(esis_instrument_paper.figures.bunch())
+    subsection_requirements.append(
+        esis_instrument_paper.figures.contribution_function()
+    )
     subsection_requirements.append(esis_instrument_paper.tables.requirements())
     result.append(subsection_requirements)
 
