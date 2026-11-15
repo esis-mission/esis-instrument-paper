@@ -83,6 +83,20 @@ logarithm: a tenth of a decade.
 _axis = "temperature"
 """The name of the axis along the temperatures of the plasma."""
 
+_size_chunk = 20
+"""
+How many temperatures the levels of an ion are solved at together, in
+:func:`contribution_function`.
+
+They are solved in one matrix, which for the ions of the brightest lines
+takes about a seventh of a gigabyte per temperature: 54 GiB at the hundreds
+of temperatures the figure of the contribution functions draws, which no
+GitHub runner holds. Twenty at a time peaks at 3 GiB, and takes three and a
+half minutes rather than one and a half, since each chunk builds its ions
+again. Each temperature is solved on its own, so the size of the chunks
+changes nothing in the result.
+"""
+
 
 def temperature(step: float = step_temperature) -> na.AbstractScalar:
     """
@@ -240,6 +254,7 @@ def _contribution_function(
         temperature=t,
         density=pressure / t,
         axis_temperature=_axis,
+        size_chunk=_size_chunk,
         abundance=abundance,
     )
 
