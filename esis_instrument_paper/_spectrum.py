@@ -19,6 +19,7 @@ __all__ = [
     "num_grid",
     "pressure",
     "seed",
+    "step_temperature",
     "version",
 ]
 
@@ -73,14 +74,29 @@ Twenty-eight takes it a further tenth, and no further: what is left is the
 structure of the measured coatings rather than anything left to average away.
 """
 
+step_temperature = 0.1
+"""
+The spacing of the temperatures the spectrum is computed at, in their
+logarithm: a tenth of a decade.
+"""
+
 _axis = "temperature"
 """The name of the axis along the temperatures of the plasma."""
 
 
-def temperature() -> na.AbstractScalar:
-    """The temperatures the spectrum is computed at."""
+def temperature(step: float = step_temperature) -> na.AbstractScalar:
+    """
+    The temperatures from :math:`10^4` to :math:`10^8` K, evenly spaced in
+    their logarithm.
+
+    Parameters
+    ----------
+    step
+        The spacing of the temperatures, in their logarithm. The default is
+        the spacing the spectrum is computed at.
+    """
     return na.ScalarArray(
-        ndarray=10 ** np.arange(4, 8.1, 0.1) * u.K,
+        ndarray=10 ** np.arange(4, 8 + step / 2, step) * u.K,
         axes=(_axis,),
     )
 
@@ -119,7 +135,7 @@ def emission_measure() -> na.AbstractScalar:
 
     # the measure of each bin is the differential measure across it, the grid
     # being even in the logarithm
-    result = result * t.ndarray * np.log(10) * 0.1
+    result = result * t.ndarray * np.log(10) * step_temperature
 
     return na.ScalarArray(result, axes=(_axis,))
 
@@ -203,6 +219,7 @@ def _contribution_function(
     wavelength_min: u.Quantity,
     wavelength_max: u.Quantity,
     num: int,
+    step: float,
     chianti_version: str,
     fiasco_version: str,
     utu_version: str,
@@ -216,7 +233,7 @@ def _contribution_function(
     """
     brightest = lines(wavelength_min, wavelength_max)[{"line": slice(num)}]
 
-    t = temperature()
+    t = temperature(step)
     result = utu.spectrum.contribution_function_line(
         ion=brightest.inputs.components["ion"],
         wavelength=brightest.inputs.components["wavelength"],
@@ -236,6 +253,7 @@ def contribution_function(
     wavelength_min: u.Quantity,
     wavelength_max: u.Quantity,
     num: int,
+    step: float = step_temperature,
 ) -> na.FunctionArray:
     """
     The contribution functions of the brightest lines of :func:`lines`, at
@@ -253,11 +271,15 @@ def contribution_function(
         The longest wavelength to compute.
     num
         How many of the brightest lines to compute.
+    step
+        The spacing of the temperatures, in their logarithm. The default is
+        the spacing the intensities of the lines were summed at.
     """
     return _contribution_function(
         wavelength_min=wavelength_min,
         wavelength_max=wavelength_max,
         num=num,
+        step=step,
         chianti_version=version(),
         fiasco_version=importlib.metadata.version("fiasco"),
         utu_version=importlib.metadata.version("utu"),

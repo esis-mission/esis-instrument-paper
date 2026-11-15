@@ -23,6 +23,16 @@ _unit = u.erg * u.cm**3 / u.s / u.sr
 _range = 1e3
 """How many times smaller than the largest value the vertical axis reaches."""
 
+_step = 0.01
+"""
+The spacing of the temperatures the functions are drawn at, in their
+logarithm.
+
+A tenth of the spacing the spectrum is computed at, which draws each
+function as a smooth curve rather than as the few straight segments that
+grid gives it.
+"""
+
 
 def contribution_function() -> aastex.Figure:
     """
@@ -32,7 +42,9 @@ def contribution_function() -> aastex.Figure:
 
     The lines are the same ones, from the same cache, and their contribution
     functions are computed with the same abundances and pressure, so they
-    are the functions the radiances in that figure were summed from.
+    are the functions the radiances in that figure were summed from, drawn
+    at temperatures ten times closer together. Each line is the color it is
+    in :func:`esis_instrument_paper.figures.field_stop_projections`.
     """
     optics = esis.flights.f1.optics.design_single(num_distribution=0)
 
@@ -40,12 +52,14 @@ def contribution_function() -> aastex.Figure:
     # the same cache
     wavelength_min = optics.wavelength_min.to(u.AA).ndarray
     wavelength_max = optics.wavelength_max.to(u.AA).ndarray
+    num = esis_instrument_paper.figures.num_emission_lines
     g = esis_instrument_paper._spectrum.contribution_function(
         wavelength_min=wavelength_min,
         wavelength_max=wavelength_max,
-        num=esis_instrument_paper.figures.num_emission_lines,
+        num=num,
+        step=_step,
     )
-    temperature = esis_instrument_paper._spectrum.temperature()
+    temperature = esis_instrument_paper._spectrum.temperature(_step)
     axis = esis_instrument_paper._spectrum._axis
 
     wavelength = g.inputs.components["wavelength"]
@@ -54,6 +68,8 @@ def contribution_function() -> aastex.Figure:
         latex=True,
     )
     order = np.argsort(na.as_named_array(wavelength).ndarray.value)
+    colormap = plt.get_cmap(esis_instrument_paper.figures.colormap_emission_lines)
+    colors = colormap(np.linspace(0, 1, num))
     # the emission is isotropic, so each function is spread over the whole
     # sphere, the way the passband figure spreads the intensities into
     # radiances
@@ -64,12 +80,13 @@ def contribution_function() -> aastex.Figure:
         constrained_layout=True,
     )
 
-    for index in order:
+    for color, index in zip(colors, order):
         i = {"line": int(index)}
         w = na.as_named_array(wavelength[i]).ndarray.to_value(u.AA)
         ax.plot(
             temperature.ndarray.to_value(u.K),
             outputs[i].ndarray_aligned((axis,)).value,
+            color=color,
             label=rf"{names[i].ndarray} {w:.2f}\,\AA",
         )
 
