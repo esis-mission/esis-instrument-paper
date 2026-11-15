@@ -501,7 +501,8 @@ def _optics() -> list[aastex.Variable]:
 
     # The measured radius of each grating, quoted as the middle of their
     # range plus or minus half of it, as the old draft quoted them.
-    radius = np.abs(na.as_named_array(as_built.grating.sag.radius).ndarray)
+    # the measured figure of each grating sits on top of its spherical sag
+    radius = np.abs(na.as_named_array(as_built.grating.sag.base.radius).ndarray)
     radius_center = (radius.max() + radius.min()) / 2
     radius_spread = (radius.max() - radius.min()) / 2
 

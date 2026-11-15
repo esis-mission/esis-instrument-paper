@@ -13,6 +13,7 @@ from ._field_stop_projections import colormap_emission_lines, field_stop_project
 from ._focus_curve import focus_curve
 from ._grating_efficiency_vs_angle import grating_efficiency_vs_angle
 from ._grating_efficiency_vs_position import grating_efficiency_vs_position
+from ._grating_figure import grating_figure
 from ._grating_mount import grating_mount
 from ._grating_multilayer_schematic import grating_multilayer_schematic
 from ._layout import layout
@@ -36,6 +37,7 @@ __all__ = [
     "focus_curve",
     "grating_efficiency_vs_angle",
     "grating_efficiency_vs_position",
+    "grating_figure",
     "grating_mount",
     "grating_multilayer_schematic",
     "layout",
