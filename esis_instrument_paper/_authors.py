@@ -77,8 +77,13 @@ def authors() -> list[aastex.Author]:
             affiliation=msfc,
         ),
         aastex.Author(
+            name="Helen K. Creel",
+            affiliation=msfc,
+        ),
+        aastex.Author(
             name="James A. Duffy",
             affiliation=msfc,
+            altaffiliation="Deceased",
         ),
         aastex.Author(
             name="Eric Gullikson",
@@ -86,8 +91,16 @@ def authors() -> list[aastex.Author]:
             orcid="0000-0003-0337-7674",
         ),
         aastex.Author(
+            name="Harlan Haight",
+            affiliation=msfc,
+        ),
+        aastex.Author(
             name="Micah Johnson",
             affiliation=msu,
+        ),
+        aastex.Author(
+            name="Jonathan Pryor",
+            affiliation=msfc,
         ),
         aastex.Author(
             name="Laurel Rachmeler",
