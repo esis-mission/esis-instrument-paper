@@ -25,14 +25,18 @@ dependence the model knows, and can be checked against what was measured on the 
 The fit is reproducible from the \texttt{esis} package, whose documentation carries the full report, every
 table it commits, and the scripts that regenerate them.
 
-\paragraph{What one exposure determines}
-A single exposure of one channel determines eight combinations of that channel's parameters: a singular-value
-decomposition of the Jacobian of the sky-to-detector mapping with respect to the parameters has eight singular
-values above \SI{40}{pixels} of image motion per half-width of the parameter bounds, then a cliff.
-Nine terms span them: the yaw and pitch of the grating, the ruling spacing, the pitch and yaw of the pointing,
-and the sensor's distance along the beam and its three angles.
-The pointing and the grating angles are degenerate in the image of the sky, which only the field stop breaks:
-its octagonal image, the window of each line on the detector, does not follow the pointing.
+\paragraph{What is fit}
+The terms fit are chosen by what each does to the image on the detector.
+In each channel, the yaw and pitch of the grating translate the spectrum, and with it the window of every line;
+the ruling spacing sets the dispersion; the pitch and yaw of the pointing translate the Sun within the windows;
+the sensor's distance along the beam sets the plate scale; and its three angles rotate the image and tilt it in
+the two keystone senses.
+The other placements in the model repeat one of these motions or leave the image unchanged to first order, and
+are held at their as-built values: the sensor's position in its own plane moves the image as a grating tilt does,
+a displacement of the primary along its axis is undone by the sensor's distance, and a roll of the field stop
+moves only the edges of the windows.
+Among the nine, the pointing and the grating angles are degenerate in the image of the sky, which only the field
+stop breaks: its octagonal image, the window of each line on the detector, does not follow the pointing.
 
 \paragraph{Merit}
 Every candidate model is linearized at the three brightest lines of the passband, \HeIion, \MgXion\ and \OVion, into
@@ -47,11 +51,13 @@ One evaluation takes about a second.
 \begin{enumerate}
 \item \emph{Capture.} Each channel is fit alone against the exposure at the middle of the flight, a seeded
 differential evolution over the nine terms followed by a restarted Nelder--Mead polish.
-\item \emph{Edges.} An error-function step is fit where each window's predicted outline crosses the rows and
-columns of every exposure bright enough to show it; the median over the flight places the windows and the
-departure from it in each exposure is the drift of the windows.
-\item \emph{Outline.} Each channel's windows are placed on the median edges through the grating angles and the
-sensor roll, which move the windows without moving the sky inside them, and the sky terms are re-polished.
+\item \emph{Edges.} The sides of every window are measured in every exposure bright enough to show them, as
+described under \emph{The window edges} below: their median over the flight places the windows, and their
+motion from exposure to exposure is the drift of the windows.
+\item \emph{Outline.} Each channel's windows are placed on the median edges through the yaw and pitch of the
+grating and the roll of the field stop, which move the windows without moving the sky inside them, and the sky
+terms are re-polished.
+The field stop is the measured polygon described below, the same in every channel.
 \item \emph{Shared.} The pointing is set to one value for the four channels, and each channel's grating and
 sensor placement is polished again with it fixed.
 The displacement of the primary is held at nominal, since a scan of it does not discriminate on the flight data.
@@ -85,6 +91,60 @@ The parameters differ more, along the near-null directions of the problem, with 
 optimum, a correlation of 0.65 where the others reached 0.79 to 0.85, from which the later stages could not
 continue; that seed was not repeated and another stands in for it, and all twenty captures of this set reach 0.79
 to 0.85. On the cluster's GPUs a seed repeats the fit only to about 0.0005 in correlation, not exactly.
+
+\paragraph{The window edges}
+The edges of the windows are the image of the field stop, which sits at the prime focus ahead of the gratings,
+so they carry the grating and the sensor but not the pointing, and they are the only part of the image that does.
+Each side of a window is fit as one straight edge: across the side, the profile of every row or column it
+crosses is modelled as a constant, plus a step, plus a ramp that rises from the step into the window, each
+blurred by a Gaussian, with a linear least-squares solve for the three amplitudes of each profile inside a
+non-linear fit for the side's position, slope and blur, which all the profiles share; rows whose residual is more
+than three times the side's median are left out and the side refit.
+A side that runs at forty-five degrees to the rows and columns, a diagonal of the octagon, is first resampled
+on a grid one pixel apart along it and across it and then fit the same way, so all eight sides are measured
+alike.
+The windows are placed by the median of these fits over the exposures of the flight, in which the same edge is
+seen against a different solar backdrop each time.
+The straight-edge fit places a side well but follows its motion poorly: solar structure crossing a side as the
+pointing drifts moves the fitted edge by a few tenths of a pixel from one exposure to the next, and the two
+sides of one window, which cannot move apart, do so by 0.25 to 0.35~pixels rms through the flight.
+The drift of the windows is therefore taken from a second fit, an error-function step in each row and column on
+its own against its own median over the flight, which holds the two sides together to 0.13 to 0.19~pixels;
+the drift of a side in an exposure is the median of its rows' departures, and the drift of a window, carried as
+a grating offset, is smoothed by a cubic in the exposure index.
+The distinction matters: the focus of each sector, below, moves a channel's image along its dispersion, so an
+error in the drift is absorbed by the focus rather than seen, and with the straight-edge drift the registration
+of the channels was worse by half.
+% TODO numbers: deploy9 acceptance O V 0.131 vs 0.078/0.082 px rms -> macros from the committed tables
+
+\paragraph{The shape of the field stop}
+The field stop is modelled as a regular octagon, but the four channels, each of which images it through its own
+grating and sensor, say otherwise, and say it alike.
+In each channel the median edges of the \OVion\ window, the brightest and the only one whole on every
+detector, are carried back to the plane of the field stop by a chief-ray map of the fitted model, and each side
+gives its offset from the side of the octagon and its tilt against it.
+What the channel's own placement can do to its image of the stop, a rotation, a translation and a scale, is fit
+for every channel together with one shape common to all.
+That shape tilts the sides by up to a degree against the regular octagon, \SI{0.48}{\degree} rms, and moves
+them by \SI{1.2}{\micro\meter} rms, while the channels depart from it by \SI{0.027}{\degree} and
+\SI{0.43}{\micro\meter} rms, or a tenth of a pixel; the opposite sides of the stop are not parallel, which no
+rotation or shear of a regular octagon can produce.
+% TODO: these from field_stop.ecsv metadata of the final run, as macros
+The model's field stop is that polygon, grown by the channels' common scale, \SI{-0.3}{\percent}, and the
+outline stage fits its roll.
+With it the edges sit on the model to %TODO X4 edge rms
+where the regular octagon left one to two pixels, and the merit of every channel rises.
+Measured this way, the field stop is rolled \SI{0.37}{\degree} clockwise on the sky and the four channels agree
+on that to \SI{0.01}{\degree}.
+The roll of the payload, freed in every exposure, changes by less than \SI{0.001}{\degree} through the flight.
+\citet{Parker2022} reported a roll of about \SI{0.85}{\degree} clockwise from the alignment of one camera's
+image with \AIA, which is that camera's whole rotation from the sky to the detector, its own mounting included.
+The fit finds the same rotations, \SI{0.38}{\degree} to \SI{1.1}{\degree} across the four channels, in the
+same pattern as the alignment of \citet{Parker2022} gives for each camera to within \SI{0.05}{\degree}; the
+model carries them as the roll of each camera, since a roll of the payload that does not change cannot be told
+from a roll common to the cameras, and the corners of the octagon picked by hand for that paper's pointing figure
+give \SI{0.46}{\degree}, the roll of the field stop measured above.
+% TODO confirm the 0.85 deg source with Jake (camera 0 affine rot_angle in ov_Level3_transform.pickle = +0.87)
 
 \paragraph{The focus of each sector}
 With the pointing and the drift applied and the focus held at its value at the reference exposure, each
