@@ -115,7 +115,11 @@ Table~\ref{table:error} also compares these requirements with the metrology of t
 The gratings meet all of their requirements, as do the roughness and micro\-roughness of the primary mirror, but the
 slope error of the primary mirror exceeds its requirement.
 Figure~\ref{fig:primaryFigure} shows the measured figure of the primary mirror, from which its slope error was
-computed, and Figure~\ref{fig:gratingFigure} shows the same for the four gratings.""")
+computed, and Figure~\ref{fig:gratingFigure} shows the same for the four gratings.
+\roy{The measured slope error of the primary in Table~\ref{table:error} comes from our own interferometer
+measurement instead of the vendor's.
+Double check that we measured the primary in its flight mount, and that it was not remounted
+before flight.}""")
     subsection_optimization.append(esis_instrument_paper.tables.surface_error())
     subsection_optimization.append(esis_instrument_paper.figures.primary_figure())
     subsection_optimization.append(esis_instrument_paper.figures.grating_figure())
