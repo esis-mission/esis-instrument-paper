@@ -143,7 +143,7 @@ The fit finds the same rotations, \SI{0.38}{\degree} to \SI{1.1}{\degree} across
 same pattern as the alignment of \citet{Parker2022} gives for each camera to within \SI{0.05}{\degree}; the
 model carries them as the roll of each camera, since a roll of the payload that does not change cannot be told
 from a roll common to the cameras, and the corners of the octagon picked by hand for that paper's pointing figure
-give \SI{0.46}{\degree}, the roll of the field stop measured above.
+give \SI{0.46}{\degree}, close to the roll of the field stop measured above.
 % TODO confirm the 0.85 deg source with Jake (camera 0 affine rot_angle in ov_Level3_transform.pickle = +0.87)
 
 \paragraph{The focus of each sector}
