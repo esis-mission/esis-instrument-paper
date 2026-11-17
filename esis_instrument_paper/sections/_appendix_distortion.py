@@ -132,8 +132,12 @@ rotation or shear of a regular octagon can produce.
 % TODO: these from field_stop.ecsv metadata of the final run, as macros
 The model's field stop is that polygon, grown by the channels' common scale, \SI{-0.3}{\percent}, and the
 outline stage fits its roll.
-With it the edges sit on the model to %TODO X4 edge rms
-where the regular octagon left one to two pixels, and the merit of every channel rises.
+With it the edges sit on the model to 0.7 to 1.2~pixels rms in the four channels, where the regular octagon,
+with its roll fit the same way, left 1.0 to 2.3, and the merit of every channel rises.
+Measured again through the fit made with it, the shape changes by \SI{0.021}{\degree} rms, less than the
+channels scatter about it, so the measurement is not iterated further; only the common scale moves again, by
+\SI{-0.09}{\percent}, which the fit trades against the distance of the sensors.
+% TODO macros: X4 outline residuals 1.20/0.75/0.71/1.02 against X2 2.27/2.10/1.02/1.50 px
 Measured this way, the field stop is rolled \SI{0.37}{\degree} clockwise on the sky and the four channels agree
 on that to \SI{0.01}{\degree}.
 The roll of the payload, freed in every exposure, changes by less than \SI{0.001}{\degree} through the flight.
