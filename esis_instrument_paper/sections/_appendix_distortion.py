@@ -130,25 +130,36 @@ them by \SI{1.2}{\micro\meter} rms, while the channels depart from it by \SI{0.0
 \SI{0.43}{\micro\meter} rms, or a tenth of a pixel; the opposite sides of the stop are not parallel, which no
 rotation or shear of a regular octagon can produce.
 % TODO: these from field_stop.ecsv metadata of the final run, as macros
-The model's field stop is that polygon, grown by the channels' common scale, \SI{-0.3}{\percent}, and the
+The model's field stop is that polygon, which is smaller than the design by \SI{0.4}{\percent}, and the
 outline stage fits its roll.
-With it the edges sit on the model to 0.7 to 1.2~pixels rms in the four channels, where the regular octagon,
+The measurement was made first through a fit with the regular octagon, and again through a fit with the
+polygon it gave; the second moved the sides by \SI{0.021}{\degree} rms, less than the channels scatter about
+the shape, and is the polygon the model carries.
+Measured a third time through the final fit, the shape moves by \SI{0.007}{\degree} and
+\SI{0.08}{\micro\meter} rms and its scale by less than \SI{0.05}{\percent}, so the measurement has converged.
+With it the edges sit on the model to 0.2 to 0.8~pixels rms in the four channels, where the regular octagon,
 with its roll fit the same way, left 1.0 to 2.3, and the merit of every channel rises.
-Measured again through the fit made with it, the shape changes by \SI{0.021}{\degree} rms, less than the
-channels scatter about it, so the measurement is not iterated further; only the common scale moves again, by
-\SI{-0.09}{\percent}, which the fit trades against the distance of the sensors.
-% TODO macros: X4 outline residuals 1.20/0.75/0.71/1.02 against X2 2.27/2.10/1.02/1.50 px
-Measured this way, the field stop is rolled \SI{0.37}{\degree} clockwise on the sky and the four channels agree
-on that to \SI{0.01}{\degree}.
-The roll of the payload, freed in every exposure, changes by less than \SI{0.001}{\degree} through the flight.
-\citet{Parker2022} reported a roll of about \SI{0.85}{\degree} clockwise from the alignment of one camera's
-image with \AIA, which is that camera's whole rotation from the sky to the detector, its own mounting included.
-The fit finds the same rotations, \SI{0.38}{\degree} to \SI{1.1}{\degree} across the four channels, in the
-same pattern as the alignment of \citet{Parker2022} gives for each camera to within \SI{0.05}{\degree}; the
-model carries them as the roll of each camera, since a roll of the payload that does not change cannot be told
-from a roll common to the cameras, and the corners of the octagon picked by hand for that paper's pointing figure
-give \SI{0.46}{\degree}, close to the roll of the field stop measured above.
+% TODO macros: final outline residuals 0.24/0.48/0.82/0.36 against the regular octagon 2.27/2.10/1.02/1.50 px
+
+\paragraph{The clocking of the field stop}
+One corner of the octagon was meant to point to solar north, so the clocking of the instrument is the position
+angle of that corner about the centre of the field stop.
+Carried to the sky through the fit at \OVion, it is \SI{0.46}{\degree} clockwise, from \SI{0.40}{\degree} to
+\SI{0.52}{\degree} in the four channels, which see the stop through different sectors of the primary.
+The eight corners together are turned by \SI{0.38}{\degree}, the fitted roll of the stop; the north corner
+departs from that because the stop is irregular.
+The clocking does not change through the flight: freed in every exposure, the roll of the payload changes by
+less than \SI{0.001}{\degree}.
+The model holds the roll of the payload fixed and carries the clocking as the roll of the field stop, since the
+two cannot be told apart from the images and the clocking is what the pointing needs.
+The corners of the octagon picked by hand for the pointing figure of \citet{Parker2022} give the same
+\SI{0.46}{\degree}.
+The \SI{0.85}{\degree} that paper reports is not the clocking but the rotation of one camera's image against \AIA,
+from the sky to the detector, its own mounting included; the fit finds those rotations from \SI{0.38}{\degree}
+to \SI{1.1}{\degree} across the four channels, in the same pattern as that alignment gives for each camera to
+within \SI{0.05}{\degree}.
 % TODO confirm the 0.85 deg source with Jake (camera 0 affine rot_angle in ov_Level3_transform.pickle = +0.87)
+% TODO the clocking numbers (clocking5.py on x5) belong in a committed table or the field_stop.ecsv metadata
 
 \paragraph{The focus of each sector}
 With the pointing and the drift applied and the focus held at its value at the reference exposure, each
