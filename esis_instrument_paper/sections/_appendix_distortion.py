@@ -130,12 +130,14 @@ rms, and moves them by \fieldStopShapeOffset\ rms, while the channels depart fro
 regular octagon can produce.
 The model's field stop is that polygon, which is smaller than the design by \fieldStopScale, and the outline
 stage fits its roll.
-The measurement was made first through a fit with the regular octagon, and again through a fit with the
-polygon it gave; the second moved the sides by \fieldStopSecondChange\ rms, less than the channels scatter
-about the shape, and is the polygon the model carries.
-Measured a third time through the final fit, the shape moves by \fieldStopThirdTilt\ and
-\fieldStopThirdOffset\ rms, each channel's image of it turns by at most \fieldStopThirdRotation\ and its scale
-changes by at most \fieldStopThirdScale, so the measurement has converged.
+The measurement was made first through a fit with the regular octagon, and then through a fit with the
+polygon each measurement gave, until one moved the sides by less than \fieldStopToleranceTilt\ and
+\fieldStopToleranceOffset\ rms.
+The second moved them by \fieldStopSecondChange\ rms, less than the channels scatter about the shape; the
+\fieldStopNumPassesOrdinal, through the final fit, by \fieldStopLastTilt\ and \fieldStopLastOffset\ rms, with
+each channel's image of the stop turned by at most \fieldStopLastRotation\ and its scale changed by at most
+\fieldStopLastScale, so the measurement has converged, and the polygon the model carries is the one the final
+fit was made with.
 With it the edges sit on the model to \outlineEdgesMin\ to \outlineEdgesMax\ rms in the four channels, where
 the regular octagon, with its roll fit the same way, left \outlineRegularMin\ to \outlineRegularMax, and the
 merit of every channel rises.

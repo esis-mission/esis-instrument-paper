@@ -1399,8 +1399,11 @@ def _field_stop() -> list[aastex.Variable]:
     reference = esis.flights.f1.optics.distortion_fit_table("reference")
     drift = esis.flights.f1.optics.distortion_fit_table("window_drift")
     clocking = table.meta["clocking"]
-    hand = clocking["hand_picked"]
-    history = table.meta["history"]["measurements"]
+    hand = table.meta["parker2022"]
+    iteration = table.meta["history"]
+    history = iteration["passes"]
+    tolerance = iteration["tolerance"]
+    last = history[-1]
 
     def sides(x, y):
         """The direction of each side and its distance from the centre."""
@@ -1430,7 +1433,7 @@ def _field_stop() -> list[aastex.Variable]:
         return float(np.sqrt(np.mean(np.square(a))))
 
     edges = np.asarray(reference.meta["stages"]["outline"]["edges"], float)
-    edges_regular = np.asarray(table.meta["outline_regular"]["edges_px"], float)
+    edges_regular = np.asarray(history[0]["outline_edges_px"], float)
 
     north = -np.asarray(clocking["north_deg"], float)
     corners_fit = np.asarray(clocking["corners_deg"], float).mean(axis=0)
@@ -1442,7 +1445,7 @@ def _field_stop() -> list[aastex.Variable]:
     # image in the earlier co-alignment, which is measured against the pixel
     # grid of AIA; their common part differs with the frame and is set aside
     roll_sensor = reference["roll_sensor"].to_value(u.deg)
-    level3 = np.asarray(clocking["level3_rotation_deg"], float)
+    level3 = np.asarray(hand["level3_rotation_deg"], float)
     common = float(np.mean(level3 + roll_sensor))
     pattern = float(np.abs(level3 + roll_sensor - common).max())
 
@@ -1475,19 +1478,28 @@ def _field_stop() -> list[aastex.Variable]:
             name="fieldStopSecondChange", value=deg(history[1]["shape_tilt_deg"], 3)
         ),
         aastex.Variable(
-            name="fieldStopThirdTilt", value=deg(history[2]["shape_tilt_deg"], 3)
+            name="fieldStopNumPassesOrdinal",
+            value=aastex.NoEscape(num2words.num2words(len(history), to="ordinal")),
         ),
         aastex.Variable(
-            name="fieldStopThirdOffset",
-            value=fixed(float(history[2]["shape_offset_um"]), u.um, 2),
+            name="fieldStopToleranceTilt", value=deg(tolerance["tilt_deg"], 2)
         ),
         aastex.Variable(
-            name="fieldStopThirdScale",
-            value=fixed(100 * float(np.abs(history[2]["scale"]).max()), u.percent, 2),
+            name="fieldStopToleranceOffset",
+            value=fixed(float(tolerance["offset_um"]), u.um, 2),
+        ),
+        aastex.Variable(name="fieldStopLastTilt", value=deg(last["shape_tilt_deg"], 3)),
+        aastex.Variable(
+            name="fieldStopLastOffset",
+            value=fixed(float(last["shape_offset_um"]), u.um, 2),
         ),
         aastex.Variable(
-            name="fieldStopThirdRotation",
-            value=deg(np.abs(history[2]["rotation_deg"]).max(), 3),
+            name="fieldStopLastScale",
+            value=fixed(100 * float(np.abs(last["scale"]).max()), u.percent, 2),
+        ),
+        aastex.Variable(
+            name="fieldStopLastRotation",
+            value=deg(np.abs(last["rotation_deg"]).max(), 3),
         ),
         aastex.Variable(name="outlineEdgesMin", value=fixed(edges.min(), u.pix, 1)),
         aastex.Variable(name="outlineEdgesMax", value=fixed(edges.max(), u.pix, 1)),
