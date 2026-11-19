@@ -152,14 +152,20 @@ The clocking does not change through the flight: freed in every exposure, the ro
 less than \SI{0.001}{\degree}.
 The model holds the roll of the payload fixed and carries the clocking as the roll of the field stop, since the
 two cannot be told apart from the images and the clocking is what the pointing needs.
-The corners of the octagon picked by hand for the pointing figure of \citet{Parker2022} give the same
+The corners of the octagon picked by hand for the pointing figure of \citet{Parker2022} agree with the fit.
+Together they are turned by \SI{0.59}{\degree} clockwise on the sky, against the fit's \SI{0.38}{\degree}, and
+single corners depart from the fit's by \SI{0.36}{\degree} rms, about three pixels, which is what corners picked
+by eye on blurred edges allow; the mean of eight such corners is uncertain by \SI{0.13}{\degree}.
+The images of that paper were registered to the pixel grid of \AIA, whose axes are turned by
+\SI{0.13}{\degree} from solar north, and their coordinates leave that turn out; without it the corners give
 \SI{0.46}{\degree}.
-The \SI{0.85}{\degree} that paper reports is not the clocking but the rotation of one camera's image against \AIA,
-from the sky to the detector, its own mounting included; the fit finds those rotations from \SI{0.38}{\degree}
-to \SI{1.1}{\degree} across the four channels, in the same pattern as that alignment gives for each camera to
+The \SI{0.85}{\degree} that paper reports as the roll is not the clocking of the field stop.
+It is the rotation of one camera's image against \AIA, which adds that camera's rotation on its detector to
+the roll of the field; the fit separates the two, and finds those image rotations from \SI{0.38}{\degree} to
+\SI{1.1}{\degree} across the four channels, in the same pattern as that alignment gives for each camera to
 within \SI{0.05}{\degree}.
-% TODO confirm the 0.85 deg source with Jake (camera 0 affine rot_angle in ov_Level3_transform.pickle = +0.87)
-% TODO the clocking numbers (clocking5.py on x5) belong in a committed table or the field_stop.ecsv metadata
+% TODO the clocking numbers (clocking5.py / clocking_v.py on x5, hand-picked corners vs fit) belong in a
+% committed table or the field_stop.ecsv metadata, as macros
 
 \paragraph{The focus of each sector}
 With the pointing and the drift applied and the focus held at its value at the reference exposure, each
