@@ -146,6 +146,8 @@ One corner of the octagon was meant to point to solar north, so the clocking of 
 angle of that corner about the centre of the field stop.
 Carried to the sky through the fit at \OVion, it is \SI{0.46}{\degree} clockwise, from \SI{0.40}{\degree} to
 \SI{0.52}{\degree} in the four channels, which see the stop through different sectors of the primary.
+Here and below, angles on the sky are measured from solar north: the \AIA\ images the fit compares against
+are turned by \SI{0.13}{\degree} on their detector, and the fit places them on the sky with that turn.
 The eight corners together are turned by \SI{0.38}{\degree}, the fitted roll of the stop; the north corner
 departs from that because the stop is irregular.
 The clocking does not change through the flight: freed in every exposure, the roll of the payload changes by
@@ -160,10 +162,12 @@ The images of that paper were registered to the pixel grid of \AIA, whose axes a
 \SI{0.13}{\degree} from solar north, and their coordinates leave that turn out; without it the corners give
 \SI{0.46}{\degree}.
 The \SI{0.85}{\degree} that paper reports as the roll is not the clocking of the field stop.
-It is the rotation of one camera's image against \AIA, which adds that camera's rotation on its detector to
-the roll of the field; the fit separates the two, and finds those image rotations from \SI{0.38}{\degree} to
-\SI{1.1}{\degree} across the four channels, in the same pattern as that alignment gives for each camera to
-within \SI{0.05}{\degree}.
+It is the rotation of one camera's image against the pixel grid of \AIA, which adds that camera's rotation on
+its detector to the roll of the field; the fit separates the two.
+It finds the cameras rolled on their detectors by \SI{0.38}{\degree} to \SI{1.1}{\degree}, and these follow
+the rotations that alignment gives for each camera to within \SI{0.02}{\degree}, once a common
+\SI{0.05}{\degree} is taken out; the common part, which differs in the two frames of reference, is not
+compared.
 % TODO the clocking numbers (clocking5.py / clocking_v.py on x5, hand-picked corners vs fit) belong in a
 % committed table or the field_stop.ecsv metadata, as macros
 
