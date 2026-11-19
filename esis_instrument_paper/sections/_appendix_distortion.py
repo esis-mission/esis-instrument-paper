@@ -114,8 +114,7 @@ the drift of a side in an exposure is the median of its rows' departures, and th
 a grating offset, is smoothed by a cubic in the exposure index.
 The distinction matters: the focus of each sector, below, moves a channel's image along its dispersion, so an
 error in the drift is absorbed by the focus rather than seen, and with the straight-edge drift the registration
-of the channels was worse by half.
-% TODO numbers: deploy9 acceptance O V 0.131 vs 0.078/0.082 px rms -> macros from the committed tables
+of the channels at \OVion\ was \registrationStraightEdgeOV\ rms, against \coalignmentAfterOV.
 
 \paragraph{The shape of the field stop}
 The field stop is modelled as a regular octagon, but the four channels, each of which images it through its own
@@ -125,51 +124,48 @@ detector, are carried back to the plane of the field stop by a chief-ray map of 
 gives its offset from the side of the octagon and its tilt against it.
 What the channel's own placement can do to its image of the stop, a rotation, a translation and a scale, is fit
 for every channel together with one shape common to all.
-That shape tilts the sides by up to a degree against the regular octagon, \SI{0.48}{\degree} rms, and moves
-them by \SI{1.2}{\micro\meter} rms, while the channels depart from it by \SI{0.027}{\degree} and
-\SI{0.43}{\micro\meter} rms, or a tenth of a pixel; the opposite sides of the stop are not parallel, which no
-rotation or shear of a regular octagon can produce.
-% TODO: these from field_stop.ecsv metadata of the final run, as macros
-The model's field stop is that polygon, which is smaller than the design by \SI{0.4}{\percent}, and the
-outline stage fits its roll.
+That shape tilts the sides by up to \fieldStopShapeTiltMax\ against the regular octagon, \fieldStopShapeTilt\
+rms, and moves them by \fieldStopShapeOffset\ rms, while the channels depart from it by \fieldStopSpreadTilt\ and
+\fieldStopSpreadOffset\ rms; the opposite sides of the stop are not parallel, which no rotation or shear of a
+regular octagon can produce.
+The model's field stop is that polygon, which is smaller than the design by \fieldStopScale, and the outline
+stage fits its roll.
 The measurement was made first through a fit with the regular octagon, and again through a fit with the
-polygon it gave; the second moved the sides by \SI{0.021}{\degree} rms, less than the channels scatter about
-the shape, and is the polygon the model carries.
-Measured a third time through the final fit, the shape moves by \SI{0.007}{\degree} and
-\SI{0.08}{\micro\meter} rms and its scale by less than \SI{0.05}{\percent}, so the measurement has converged.
-With it the edges sit on the model to 0.2 to 0.8~pixels rms in the four channels, where the regular octagon,
-with its roll fit the same way, left 1.0 to 2.3, and the merit of every channel rises.
-% TODO macros: final outline residuals 0.24/0.48/0.82/0.36 against the regular octagon 2.27/2.10/1.02/1.50 px
+polygon it gave; the second moved the sides by \fieldStopSecondChange\ rms, less than the channels scatter
+about the shape, and is the polygon the model carries.
+Measured a third time through the final fit, the shape moves by \fieldStopThirdTilt\ and
+\fieldStopThirdOffset\ rms, each channel's image of it turns by at most \fieldStopThirdRotation\ and its scale
+changes by at most \fieldStopThirdScale, so the measurement has converged.
+With it the edges sit on the model to \outlineEdgesMin\ to \outlineEdgesMax\ rms in the four channels, where
+the regular octagon, with its roll fit the same way, left \outlineRegularMin\ to \outlineRegularMax, and the
+merit of every channel rises.
 
 \paragraph{The clocking of the field stop}
 One corner of the octagon was meant to point to solar north, so the clocking of the instrument is the position
 angle of that corner about the centre of the field stop.
-Carried to the sky through the fit at \OVion, it is \SI{0.46}{\degree} clockwise, from \SI{0.40}{\degree} to
-\SI{0.52}{\degree} in the four channels, which see the stop through different sectors of the primary.
+Carried to the sky through the fit at \OVion, it is \clockingNorth\ clockwise, from \clockingNorthMin\ to
+\clockingNorthMax\ in the four channels, which see the stop through different sectors of the primary.
 Here and below, angles on the sky are measured from solar north: the \AIA\ images the fit compares against
-are turned by \SI{0.13}{\degree} on their detector, and the fit places them on the sky with that turn.
-The eight corners together are turned by \SI{0.38}{\degree}, the fitted roll of the stop; the north corner
+are turned by \aiaRoll\ on their detector, and the fit places them on the sky with that turn.
+The eight corners together are turned by \clockingRotation, the fitted roll of the stop; the north corner
 departs from that because the stop is irregular.
 The clocking does not change through the flight: freed in every exposure, the roll of the payload changes by
 less than \SI{0.001}{\degree}.
 The model holds the roll of the payload fixed and carries the clocking as the roll of the field stop, since the
 two cannot be told apart from the images and the clocking is what the pointing needs.
 The corners of the octagon picked by hand for the pointing figure of \citet{Parker2022} agree with the fit.
-Together they are turned by \SI{0.59}{\degree} clockwise on the sky, against the fit's \SI{0.38}{\degree}, and
-single corners depart from the fit's by \SI{0.36}{\degree} rms, about three pixels, which is what corners picked
-by eye on blurred edges allow; the mean of eight such corners is uncertain by \SI{0.13}{\degree}.
-The images of that paper were registered to the pixel grid of \AIA, whose axes are turned by
-\SI{0.13}{\degree} from solar north, and their coordinates leave that turn out; without it the corners give
-\SI{0.46}{\degree}.
+Together they are turned by \handPickedRotation\ clockwise on the sky, against the fit's \clockingRotation, and
+single corners depart from the fit's by \handPickedScatter\ rms, about three pixels, which is what corners
+picked by eye on blurred edges allow; the mean of eight such corners is uncertain by \handPickedUncertainty.
+The images of that paper were registered to the pixel grid of \AIA, whose axes are turned by \aiaRoll\ from
+solar north, and their coordinates leave that turn out; without it the corners give \handPickedRotationGrid.
 The \SI{0.85}{\degree} that paper reports as the roll is not the clocking of the field stop.
 It is the rotation of one camera's image against the pixel grid of \AIA, which adds that camera's rotation on
 its detector to the roll of the field; the fit separates the two.
-It finds the cameras rolled on their detectors by \SI{0.38}{\degree} to \SI{1.1}{\degree}, and these follow
-the rotations that alignment gives for each camera to within \SI{0.02}{\degree}, once a common
-\SI{0.05}{\degree} is taken out; the common part, which differs in the two frames of reference, is not
+It finds the cameras rolled on their detectors by \cameraRollMin\ to \cameraRollMax, and these follow the
+rotations that alignment gives for each camera to within \cameraRollPattern, once a common \cameraRollCommon\
+is taken out; the common part, which differs in the two frames of reference, is not
 compared.
-% TODO the clocking numbers (clocking5.py / clocking_v.py on x5, hand-picked corners vs fit) belong in a
-% committed table or the field_stop.ecsv metadata, as macros
 
 \paragraph{The focus of each sector}
 With the pointing and the drift applied and the focus held at its value at the reference exposure, each

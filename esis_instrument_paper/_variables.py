@@ -276,6 +276,7 @@ def variables() -> list[aastex.Variable]:
         *_mission_profile(),
         *_conclusions(),
         *_measured_distortion(),
+        *_field_stop(),
     ]
 
 
@@ -445,7 +446,11 @@ def _optics() -> list[aastex.Variable]:
 
     # The measured radius of each grating, quoted as the middle of their
     # range plus or minus half of it, as the old draft quoted them.
-    radius = np.abs(na.as_named_array(as_built.grating.sag.radius).ndarray)
+    # The as-built sag carries the measured figure error on top of the
+    # sphere, whose radius is that of its base.
+    sag = as_built.grating.sag
+    sag = getattr(sag, "base", sag)
+    radius = np.abs(na.as_named_array(sag.radius).ndarray)
     radius_center = (radius.max() + radius.min()) / 2
     radius_spread = (radius.max() - radius.min()) / 2
 
@@ -1373,3 +1378,148 @@ def _measured_distortion() -> list[aastex.Variable]:
             ),
         ]
     return result
+
+
+def _field_stop() -> list[aastex.Variable]:
+    """
+    The numbers the measured field stop is described by.
+
+    The shape is computed from the committed vertices against the regular
+    octagon of the as-built model; the history of the measurement, the
+    outline residuals of the regular octagon, the clocking on the sky and
+    the hand-picked corners of the earlier paper are read from the metadata
+    of the same table, and the outline residuals of the committed fit from
+    the metadata of the reference table.  Angles on the sky are measured from
+    solar north and given as clockwise magnitudes, the sense in which every
+    one of them turns.
+    """
+    import numpy as np
+
+    table = esis.flights.f1.optics.distortion_fit_table("field_stop")
+    reference = esis.flights.f1.optics.distortion_fit_table("reference")
+    drift = esis.flights.f1.optics.distortion_fit_table("window_drift")
+    clocking = table.meta["clocking"]
+    hand = clocking["hand_picked"]
+    history = table.meta["history"]["measurements"]
+
+    def sides(x, y):
+        """The direction of each side and its distance from the centre."""
+        x2, y2 = np.roll(x, -1), np.roll(y, -1)
+        angle = np.degrees(np.arctan2(y2 - y, x2 - x))
+        nx, ny = y2 - y, x - x2
+        norm = np.hypot(nx, ny)
+        return angle, np.abs((x * nx + y * ny) / norm)
+
+    measured = esis.flights.f1.optics.field_stop_vertices()
+    design = esis.flights.f1.optics.as_built().field_stop.aperture.vertices
+
+    def xy(v):
+        return (
+            np.asarray(na.as_named_array(v.x).to(u.mm).ndarray, float).ravel(),
+            np.asarray(na.as_named_array(v.y).to(u.mm).ndarray, float).ravel(),
+        )
+
+    angle, apothem = sides(*xy(measured))
+    angle_design, apothem_design = sides(*xy(design))
+    tilt = (angle - angle_design + 180) % 360 - 180
+    tilt = tilt - tilt.mean()
+    offset = (apothem - apothem.mean()) * 1e3
+    scale = apothem.mean() / apothem_design.mean() - 1
+
+    def rms(a):
+        return float(np.sqrt(np.mean(np.square(a))))
+
+    edges = np.asarray(reference.meta["stages"]["outline"]["edges"], float)
+    edges_regular = np.asarray(table.meta["outline_regular"]["edges_px"], float)
+
+    north = -np.asarray(clocking["north_deg"], float)
+    corners_fit = np.asarray(clocking["corners_deg"], float).mean(axis=0)
+    corners_hand = np.asarray(hand["corners_deg"], float)
+    difference = corners_hand - corners_fit
+    num_corners = len(corners_hand)
+
+    # the roll of each camera on its detector against the rotation of its
+    # image in the earlier co-alignment, which is measured against the pixel
+    # grid of AIA; their common part differs with the frame and is set aside
+    roll_sensor = reference["roll_sensor"].to_value(u.deg)
+    level3 = np.asarray(clocking["level3_rotation_deg"], float)
+    common = float(np.mean(level3 + roll_sensor))
+    pattern = float(np.abs(level3 + roll_sensor - common).max())
+
+    def fixed(value, unit, decimals):
+        """The value to a fixed number of decimals, trailing zeros kept."""
+        tail = f"{(1 * unit):latex_inline}"[2:-1]
+        return aastex.NoEscape(rf"\ensuremath{{{float(value):.{decimals}f}{tail}}}")
+
+    def deg(value, decimals=2):
+        return fixed(value, u.deg, decimals)
+
+    straight = drift.meta["straight_edge_drift"]["acceptance_rms_px"]
+
+    return [
+        aastex.Variable(name="fieldStopShapeTilt", value=deg(rms(tilt))),
+        aastex.Variable(name="fieldStopShapeTiltMax", value=deg(np.abs(tilt).max(), 1)),
+        aastex.Variable(name="fieldStopShapeOffset", value=fixed(rms(offset), u.um, 1)),
+        aastex.Variable(
+            name="fieldStopSpreadTilt", value=deg(table.meta["spread_tilt_deg"], 3)
+        ),
+        aastex.Variable(
+            name="fieldStopSpreadOffset",
+            value=fixed(float(table.meta["spread_offset_um"]), u.um, 2),
+        ),
+        aastex.Variable(
+            name="fieldStopScale",
+            value=fixed(-100 * float(scale), u.percent, 1),
+        ),
+        aastex.Variable(
+            name="fieldStopSecondChange", value=deg(history[1]["shape_tilt_deg"], 3)
+        ),
+        aastex.Variable(
+            name="fieldStopThirdTilt", value=deg(history[2]["shape_tilt_deg"], 3)
+        ),
+        aastex.Variable(
+            name="fieldStopThirdOffset",
+            value=fixed(float(history[2]["shape_offset_um"]), u.um, 2),
+        ),
+        aastex.Variable(
+            name="fieldStopThirdScale",
+            value=fixed(100 * float(np.abs(history[2]["scale"]).max()), u.percent, 2),
+        ),
+        aastex.Variable(
+            name="fieldStopThirdRotation",
+            value=deg(np.abs(history[2]["rotation_deg"]).max(), 3),
+        ),
+        aastex.Variable(name="outlineEdgesMin", value=fixed(edges.min(), u.pix, 1)),
+        aastex.Variable(name="outlineEdgesMax", value=fixed(edges.max(), u.pix, 1)),
+        aastex.Variable(
+            name="outlineRegularMin", value=fixed(edges_regular.min(), u.pix, 1)
+        ),
+        aastex.Variable(
+            name="outlineRegularMax", value=fixed(edges_regular.max(), u.pix, 1)
+        ),
+        aastex.Variable(name="clockingNorth", value=deg(north.mean())),
+        aastex.Variable(name="clockingNorthMin", value=deg(north.min())),
+        aastex.Variable(name="clockingNorthMax", value=deg(north.max())),
+        aastex.Variable(
+            name="clockingRotation", value=deg(-float(clocking["rotation_deg"]))
+        ),
+        aastex.Variable(name="handPickedRotation", value=deg(-corners_hand.mean())),
+        aastex.Variable(
+            name="handPickedRotationGrid",
+            value=deg(-np.mean(hand["corners_grid_deg"])),
+        ),
+        aastex.Variable(name="handPickedScatter", value=deg(rms(difference))),
+        aastex.Variable(
+            name="handPickedUncertainty",
+            value=deg(rms(difference) / np.sqrt(num_corners)),
+        ),
+        aastex.Variable(name="aiaRoll", value=deg(-float(hand["crota2_deg"]))),
+        aastex.Variable(name="cameraRollMin", value=deg(np.abs(roll_sensor).min())),
+        aastex.Variable(name="cameraRollMax", value=deg(np.abs(roll_sensor).max(), 1)),
+        aastex.Variable(name="cameraRollCommon", value=deg(abs(common))),
+        aastex.Variable(name="cameraRollPattern", value=deg(pattern)),
+        aastex.Variable(
+            name="registrationStraightEdgeOV",
+            value=fixed(float(straight["O V"]), u.pix, 2),
+        ),
+    ]
