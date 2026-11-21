@@ -6,6 +6,7 @@ import matplotlib.colors
 import matplotlib.patches
 import matplotlib.pyplot as plt
 import named_arrays as na
+import num2words
 
 from esis_instrument_paper import _diffraction
 
@@ -97,13 +98,14 @@ def psf_diffraction() -> aastex.Figure:
     x = na.value(angle.x).ndarray
     y = na.value(angle.y).ndarray
     num_pupil = _diffraction.num_pupil
+    fraction = num2words.num2words(round(_diffraction.fraction_field * 10))
 
     result = aastex.Figure("fig:psfDiffraction", position="!htb")
     result.add_fig(fig, width=None, dpi=_dpi)
     result.add_caption(aastex.NoEscape(rf"""
 \PSFs\ of channel~1 at \OV, including diffraction, as designed (top) and as built (bottom), at the center of the
-\FOV\ (left) and at $({x:.1f}', {y:.1f}')$ (right), the point of the \FOV\ where the \MTF\ of the channel as built is
-lowest at the resolution requirement.
+\FOV\ (left) and at $({x:.1f}', {y:.1f}')$ (right), {fraction} tenths of the way from the center of the \FOV\ to the
+corner toward which the \MTF\ of the channel as built at the resolution requirement is lowest.
 Each \PSF\ was computed by tracing a regular grid of ${num_pupil} \times {num_pupil}$ rays across the beam, keeping
 track of the optical path of each ray, and propagating the wavefield on the last surface before the \CCD\ to the \CCD\
 with the Rayleigh-Sommerfeld diffraction integral.
