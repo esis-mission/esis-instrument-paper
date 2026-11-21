@@ -14,6 +14,19 @@ def test_channel() -> None:
 
 
 @pytest.mark.parametrize("as_built", [False, True])
+def test_field(as_built: bool) -> None:
+    """
+    The chief ray of each field angle lands on the field stop where it should,
+    in either model, and the point off axis is the one toward the corner.
+    """
+    angle = _diffraction.field(as_built=as_built)
+    position = _diffraction._position(as_built, angle).to(u.mm)
+    expected = _diffraction.position_field_stop().to(u.mm)
+    assert np.allclose(position.x.ndarray.value, expected.x.ndarray.value, atol=1e-5)
+    assert np.allclose(position.y.ndarray.value, expected.y.ndarray.value, atol=1e-5)
+
+
+@pytest.mark.parametrize("as_built", [False, True])
 def test_psf(as_built: bool) -> None:
     """The intensity of each point-spread function sums to one over its grid."""
     psf = _diffraction.psf(as_built=as_built)

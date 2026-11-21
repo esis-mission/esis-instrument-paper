@@ -39,7 +39,7 @@ def mtf() -> aastex.Figure:
     """
     axis_field = _diffraction.axis_field
     axis = _diffraction.axis
-    num_field = _diffraction.field.x.shape[axis_field]
+    num_field = _diffraction.position_field_stop().x.shape[axis_field]
     frequency_requirement = _error_budget.frequency()
 
     fig, axs = plt.subplots(
@@ -91,9 +91,25 @@ def mtf() -> aastex.Figure:
     axs[-1].set_xlabel("spatial frequency (cycles arcsec$^{-1}$)")
     axs[0].legend(fontsize="x-small", loc="upper right")
 
+    angle = _diffraction.field(as_built=False)[{axis_field: 1}]
+    x = na.value(angle.x).ndarray
+    y = na.value(angle.y).ndarray
+    width = _diffraction.width_mtf.to_value(u.um)
+
     result = aastex.Figure("fig:mtf", position="!htb")
     result.add_fig(fig, width=None)
-    # the caption is left for the authors to write; it carries the label
-    result.add_caption(aastex.NoEscape(""))
+    result.add_caption(
+        aastex.NoEscape(
+            rf"""
+\MTF\ of each of the \PSFs\ of Figure~\ref{{fig:psfDiffraction}}, along (top) and across (bottom) the dispersion,
+against spatial frequency on the sky, as designed (black) and as built (red), at the center of the \FOV\ (solid) and
+at $({x:.1f}', {y:.1f}')$ (dashed).
+Each was computed from the \PSF\ on a grid \SI{{{width:.0f}}}{{\micro\meter}} wide on the \CCD, normalized to the
+power of the whole beam, so that the light which the measured figures scatter beyond the grid lowers the \MTF.
+The dotted line marks \mtfFrequency, the spatial frequency of the \angularResolutionRequirement\ resolution
+requirement.
+Only the optics are included: the pixels of the \CCD\ and the diffusion of charge within it are not."""
+        )
+    )
 
     return result

@@ -21,15 +21,18 @@ import numpy as np
 import optika
 
 __all__ = [
+    "angle_corner",
     "axis",
     "axis_field",
     "channel",
     "field",
+    "fraction_field",
     "frequency_sky",
     "mtf",
     "num_image",
     "num_mtf",
     "num_pupil",
+    "position_field_stop",
     "psf",
     "system",
     "wavelength",
@@ -49,15 +52,23 @@ The channel whose optics as built are modeled, the same channel that
 axis_field = "field_psf"
 """The logical axis of the field angles of the point-spread functions."""
 
-field = na.Cartesian2dVectorArray(
-    x=na.ScalarArray(np.array([0, 0]), axes=axis_field),
-    y=na.ScalarArray(np.array([0, 0.9]), axes=axis_field),
-)
+fraction_field = 0.9
 """
-The field angles of the point-spread functions, in normalized coordinates:
-the center of the field of view, and a point off axis, nine tenths of the way
-from the center to the edge of the field of view, perpendicular to the
-dispersion.
+How far the point off axis is from the center of the field stop to one of its
+corners, as a fraction of the way.
+
+The Huygens point-spread function leaves out diffraction by the field stop,
+which is accurate away from its edges.
+"""
+
+angle_corner = -90 * u.deg
+"""
+The direction of the corner of the octagonal field stop toward which the
+point off axis lies, in the frame of the field stop.
+
+Of the points :data:`fraction_field` of the way out around the field of view,
+the MTF of the channel as built at the spatial frequency of the resolution
+requirement is lowest toward this corner.
 """
 
 axis = ("psf_x", "psf_y")
@@ -121,7 +132,7 @@ def system(as_built: bool) -> optika.systems.SequentialSystem:
 def psf(as_built: bool) -> na.FunctionArray:
     """
     The point-spread function of :data:`channel` at each of the field angles
-    :data:`field`, on a grid of positions on the detector :data:`width_image`
+    :func:`field`, on a grid of positions on the detector :data:`width_image`
     wide, centered on the image of each field angle.
 
     The intensity sums to one over the grid.
@@ -134,7 +145,8 @@ def psf(as_built: bool) -> na.FunctionArray:
     """
     return system(as_built).psf(
         wavelength=wavelength,
-        field=field,
+        field=field(as_built),
+        normalized_field=False,
         width_sensor=width_image,
         num_sensor=num_image,
         num_pupil=num_pupil,
@@ -145,7 +157,7 @@ def psf(as_built: bool) -> na.FunctionArray:
 @functools.cache
 def mtf(as_built: bool) -> na.FunctionArray:
     """
-    The MTF of :data:`channel` at each of the field angles :data:`field`,
+    The MTF of :data:`channel` at each of the field angles :func:`field`,
     from its point-spread function on a grid of positions on the detector
     :data:`width_mtf` wide.
 
@@ -160,7 +172,8 @@ def mtf(as_built: bool) -> na.FunctionArray:
     """
     psf = system(as_built).psf(
         wavelength=wavelength,
-        field=field,
+        field=field(as_built),
+        normalized_field=False,
         width_sensor=width_mtf,
         num_sensor=num_mtf,
         num_pupil=num_pupil,
@@ -170,6 +183,105 @@ def mtf(as_built: bool) -> na.FunctionArray:
         intensity=psf.outputs,
         position=psf.inputs.position,
         axis=axis,
+    )
+
+
+def position_field_stop() -> na.Cartesian2dVectorArray:
+    """
+    The positions on the field stop, in its own frame, of the points whose
+    point-spread functions are computed: its center, and the point
+    :data:`fraction_field` of the way to its corner :data:`angle_corner`.
+    """
+    stop = system(as_built=False).surfaces_all[_index_field_stop(as_built=False)]
+    radius = stop.aperture.radius
+    r = na.ScalarArray(np.array([0, fraction_field]), axes=axis_field) * radius
+    return na.Cartesian2dVectorArray(
+        x=r * np.cos(angle_corner),
+        y=r * np.sin(angle_corner),
+    )
+
+
+def _index_field_stop(as_built: bool) -> int:
+    """
+    The index of the field stop among all the surfaces of :func:`system`,
+    the object included.
+
+    Parameters
+    ----------
+    as_built
+        Whether to use the channel as built instead of as designed.
+    """
+    surfaces = system(as_built).surfaces_all
+    return next(i for i, s in enumerate(surfaces) if s.is_field_stop)
+
+
+def _position(
+    as_built: bool,
+    angle: na.AbstractCartesian2dVectorArray,
+) -> na.Cartesian2dVectorArray:
+    """
+    Where the chief ray of each field angle lands on the field stop, in its
+    own frame.
+
+    Parameters
+    ----------
+    as_built
+        Whether to use the channel as built instead of as designed.
+    angle
+        The field angles on the sky.
+    """
+    index = _index_field_stop(as_built)
+    axis_surface = "_surface"
+    raytrace = system(as_built).raytrace(
+        wavelength=wavelength,
+        field=angle,
+        pupil=na.Cartesian2dVectorArray(0, 0),
+        axis=axis_surface,
+        normalized_field=False,
+    )
+    rays = raytrace.outputs[{axis_surface: index}]
+    stop = system(as_built).surfaces_all[index]
+    if stop.transformation is not None:
+        rays = stop.transformation.inverse(rays)
+    return rays.position.xy
+
+
+@functools.cache
+def field(as_built: bool) -> na.Cartesian2dVectorArray:
+    """
+    The field angles on the sky whose chief rays land on the field stop at
+    :func:`position_field_stop`, for the channel as designed or as built.
+
+    The two models do not share a frame on the sky: the design is turned
+    about the optic axis so that the channel disperses along :math:`x`, and
+    the channel as built is not, so the same angle on the sky lands at
+    different places on the field stop. Each angle is found by Newton's
+    method, from where nearby angles land.
+
+    Parameters
+    ----------
+    as_built
+        Whether to use the channel as built instead of as designed.
+    """
+    target = position_field_stop()
+    step = 0.01 * u.deg
+    zero = 0 * u.deg
+    angle = na.Cartesian2dVectorArray(zero, zero)
+    for _ in range(3):
+        position = _position(as_built, angle)
+        dx = _position(as_built, angle + na.Cartesian2dVectorArray(step, zero))
+        dy = _position(as_built, angle + na.Cartesian2dVectorArray(zero, step))
+        dx = (dx - position) / step
+        dy = (dy - position) / step
+        residual = target - position
+        determinant = dx.x * dy.y - dy.x * dx.y
+        angle = angle + na.Cartesian2dVectorArray(
+            x=(dy.y * residual.x - dy.x * residual.y) / determinant,
+            y=(dx.x * residual.y - dx.y * residual.x) / determinant,
+        )
+    return na.Cartesian2dVectorArray(
+        x=angle.x.to(u.arcmin),
+        y=angle.y.to(u.arcmin),
     )
 
 

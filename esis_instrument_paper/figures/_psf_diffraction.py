@@ -38,7 +38,7 @@ def psf_diffraction() -> aastex.Figure:
     """
     axis_field = _diffraction.axis_field
     axis = _diffraction.axis
-    num_field = _diffraction.field.x.shape[axis_field]
+    num_field = _diffraction.position_field_stop().x.shape[axis_field]
     pixel = _diffraction.system(as_built=False).sensor.width_pixel.to_value(u.um)
     half_width = _half_width.to_value(u.um)
     norm = matplotlib.colors.LogNorm(vmin=_floor, vmax=1)
@@ -93,9 +93,23 @@ def psf_diffraction() -> aastex.Figure:
 
     fig.colorbar(mappable, ax=axs, label="relative intensity")
 
+    angle = _diffraction.field(as_built=False)[{axis_field: 1}]
+    x = na.value(angle.x).ndarray
+    y = na.value(angle.y).ndarray
+    num_pupil = _diffraction.num_pupil
+
     result = aastex.Figure("fig:psfDiffraction", position="!htb")
     result.add_fig(fig, width=None, dpi=_dpi)
-    # the caption is left for the authors to write; it carries the label
-    result.add_caption(aastex.NoEscape(""))
+    result.add_caption(aastex.NoEscape(rf"""
+\PSFs\ of channel~1 at \OV, including diffraction, as designed (top) and as built (bottom), at the center of the
+\FOV\ (left) and at $({x:.1f}', {y:.1f}')$ (right), the point of the \FOV\ where the \MTF\ of the channel as built is
+lowest at the resolution requirement.
+Each \PSF\ was computed by tracing a regular grid of ${num_pupil} \times {num_pupil}$ rays across the beam, keeping
+track of the optical path of each ray, and propagating the wavefield on the last surface before the \CCD\ to the \CCD\
+with the Rayleigh-Sommerfeld diffraction integral.
+The model as built carries the measured figures of its primary mirror and grating
+(Figures~\ref{{fig:primaryFigure}} and~\ref{{fig:gratingFigure}}) in the optical path of its rays.
+Each panel is centered on the centroid of its image and normalized to its own peak, on a logarithmic scale, and the
+red box represents a single pixel on the detector."""))
 
     return result
