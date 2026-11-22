@@ -278,6 +278,9 @@ def variables() -> list[aastex.Variable]:
         *_cameras(),
         *_mission_profile(),
         *_conclusions(),
+        *_measured_distortion(),
+        *_field_stop(),
+        *_straight_edges(),
     ]
 
 
@@ -1209,4 +1212,401 @@ def _conclusions() -> list[aastex.Variable]:
             name="SiXIIion",
             value=aastex.NoEscape(r"Si\,\textsc{xii}"),
         ),
+    ]
+
+
+def _measured_distortion() -> list[aastex.Variable]:
+    """
+    The numbers the measured distortion is described by, from the fit's tables.
+
+    Every one is read from the tables the fit committed in the ``esis``
+    package: the pointing table for the ranges of the time-dependent terms,
+    the focus and acceptance tables for how well the channels are
+    registered, with one focus for the whole primary and with one per
+    sector, and the co-registration table, which a check of the fit writes
+    beside it, for the empirical offsets the model does not apply and what
+    they would leave.  The coalignment is quoted over the exposures bright enough
+    for their window edges to be measured, which excludes the dark ones
+    that close the flight.
+    """
+    import numpy as np
+
+    pointing = esis.flights.f1.optics.distortion_fit_table("pointing")
+    acceptance = esis.flights.f1.optics.distortion_fit_table("acceptance")
+    defocus = esis.flights.f1.optics.distortion_fit_table("defocus")
+    drift = esis.flights.f1.optics.distortion_fit_table("window_drift")
+    coregistration = esis.flights.f1.optics.distortion_fit_table("coregistration")
+
+    anchor = int(acceptance.meta["anchor"])
+    frame_reference = int(defocus.meta["frame_reference"])
+    last = max(int(t) for t in drift["frame"])
+    num_measured = last + 1
+    num_frames = len(pointing)
+    lines = {"HeI": "He_I", "OV": "O_V"}
+    velocity = {
+        "HeI": acceptance.meta["coalignment"]["He I"]["km_per_s_per_pixel"],
+        "OV": acceptance.meta["coalignment"]["O V"]["km_per_s_per_pixel"],
+    }
+
+    # before: the length of the median tile shift of each channel against
+    # the anchor, both lines together, as the focus stage measured it with
+    # the windows placed and no focus applied
+    frames = np.asarray(defocus["frame"])
+    others = [c for c in range(defocus["shift_x"].shape[1]) if c != anchor]
+    before = np.hypot(
+        defocus["shift_x"].to_value(u.pix),
+        defocus["shift_y"].to_value(u.pix),
+    )[frames <= last][:, others]
+
+    # the focus of each sector of the primary, applied: its mean over the
+    # sectors is the defocus of the primary, the rest is sector against sector
+    z = pointing["z_primary"].to_value(u.um)
+    z_mean = z.mean(axis=1)
+    z_sector = z - z_mean[:, None]
+
+    # after: the same from the acceptance, line by line, with the component
+    # along the dispersion as a velocity
+    rows = acceptance[
+        (np.asarray(acceptance["frame"]) <= last)
+        & (np.asarray(acceptance["channel"]) != anchor)
+    ]
+    after = {k: rows[f"shift_{v}"].to_value(u.pix) for k, v in lines.items()}
+    along = {k: rows[f"along_{v}"].to_value(u.pix) for k, v in lines.items()}
+
+    def rms(a):
+        return float(np.sqrt(np.nanmean(np.square(a))))
+
+    # the empirical offsets the model does not apply: what the sector focus leaves, as the
+    # registration measurement sees it (one median shift per channel and
+    # exposure), what the offsets leave, and how large they are
+    bright = np.asarray(coregistration["frame"]) <= last
+    others_c = [c for c in range(coregistration["shift_x"].shape[1]) if c != anchor]
+    left = np.hypot(
+        coregistration["shift_x"].to_value(u.pix),
+        coregistration["shift_y"].to_value(u.pix),
+    )[bright][:, others_c]
+    left_after = np.hypot(
+        coregistration["residual_x"].to_value(u.pix),
+        coregistration["residual_y"].to_value(u.pix),
+    )[bright][:, others_c]
+    offsets = np.hypot(
+        coregistration["pitch_channel"].to_value(u.arcsec),
+        coregistration["yaw_channel"].to_value(u.arcsec),
+    )
+    # the pattern is the sky shift per arcsecond of a channel's own pointing
+    pixels_per_arcsec = float(np.abs(np.asarray(coregistration.meta["pattern"])).max())
+
+    result = [
+        aastex.Variable(name="distortionNumFrames", value=num_frames),
+        aastex.Variable(name="distortionNumFramesMeasured", value=num_measured),
+        aastex.Variable(name="distortionReferenceFrame", value=frame_reference),
+        aastex.Variable(
+            name="coalignmentThreshold",
+            value=0.1 * u.pix,
+        ),
+        # the scatter of the registration between runs of the chain from
+        # different seeds; the committed tables hold one run, so these are the
+        # rms over every channel, line and axis of the departure of each run's
+        # median tile shift from the mean of the runs, measured on seeds 0, 1,
+        # 2, 4 and 5, over the first 29 exposures and in the last and faintest
+        aastex.Variable(
+            name="seedScatter",
+            value=0.02 * u.pix,
+        ),
+        aastex.Variable(
+            name="seedScatterLast",
+            value=0.08 * u.pix,
+        ),
+        aastex.Variable(
+            name="coalignmentBefore",
+            value=round(rms(before), 2) * u.pix,
+        ),
+        aastex.Variable(
+            name="coalignmentBeforeMax",
+            value=round(float(np.nanmax(before)), 2) * u.pix,
+        ),
+        aastex.Variable(
+            name="pointingYawRange",
+            value=round(float(np.ptp(pointing["yaw"].to_value(u.arcsec))), 1)
+            * u.arcsec,
+        ),
+        aastex.Variable(
+            name="pointingPitchRange",
+            value=round(float(np.ptp(pointing["pitch"].to_value(u.arcsec))), 1)
+            * u.arcsec,
+        ),
+        aastex.Variable(
+            name="windowDriftMax",
+            value=round(
+                float(
+                    np.nanmax(
+                        np.hypot(
+                            pointing["drift_x"].to_value(u.pix),
+                            pointing["drift_y"].to_value(u.pix),
+                        )
+                    )
+                ),
+                1,
+            )
+            * u.pix,
+        ),
+        aastex.Variable(
+            name="windowDriftGratingMax",
+            value=round(
+                float(
+                    np.nanmax(
+                        np.hypot(
+                            pointing["yaw_grating"].to_value(u.arcsec),
+                            pointing["pitch_grating"].to_value(u.arcsec),
+                        )
+                    )
+                ),
+                1,
+            )
+            * u.arcsec,
+        ),
+        aastex.Variable(
+            name="defocusRange",
+            value=round(float(np.ptp(z_mean))) * u.um,
+        ),
+        aastex.Variable(
+            name="sectorFocusRangeMin",
+            value=round(float(np.ptp(z, axis=0).min())) * u.um,
+        ),
+        aastex.Variable(
+            name="sectorFocusRangeMax",
+            value=round(float(np.ptp(z, axis=0).max())) * u.um,
+        ),
+        aastex.Variable(
+            name="sectorFocusSpread",
+            value=round(float(np.abs(z_sector).max())) * u.um,
+        ),
+    ]
+    result += [
+        aastex.Variable(
+            name="registrationLeftBySectors",
+            value=round(rms(left), 2) * u.pix,
+        ),
+        aastex.Variable(
+            name="registrationLeftByOffsets",
+            value=round(rms(left_after), 2) * u.pix,
+        ),
+        aastex.Variable(
+            name="channelOffsetMax",
+            value=round(float(offsets.max()), 2) * u.arcsec,
+        ),
+        aastex.Variable(
+            name="channelOffsetMaxPixels",
+            value=round(float(offsets.max()) * pixels_per_arcsec, 2) * u.pix,
+        ),
+    ]
+    result.append(
+        aastex.Variable(
+            name="coalignmentLastMaxHeI",
+            value=round(float(np.nanmax(acceptance["shift_He_I"].to_value(u.pix))), 1)
+            * u.pix,
+        )
+    )
+    for k in lines:
+        result += [
+            aastex.Variable(
+                name=f"coalignmentAfter{k}",
+                value=round(rms(after[k]), 2) * u.pix,
+            ),
+            aastex.Variable(
+                name=f"coalignmentAfterMax{k}",
+                value=round(float(np.nanmax(after[k])), 2) * u.pix,
+            ),
+            aastex.Variable(
+                name=f"coalignmentVelocity{k}",
+                value=round(rms(along[k]) * velocity[k], 1) * u.km / u.s,
+            ),
+            aastex.Variable(
+                name=f"coalignmentVelocityMax{k}",
+                value=round(float(np.nanmax(np.abs(along[k]))) * velocity[k], 1)
+                * u.km
+                / u.s,
+            ),
+            aastex.Variable(
+                name=f"dispersionVelocity{k}",
+                value=round(velocity[k], 1) * u.km / u.s,
+                unit=(u.km, u.s**-1),
+            ),
+        ]
+    return result
+
+
+def _field_stop() -> list[aastex.Variable]:
+    """
+    The numbers the measured field stop is described by.
+
+    The shape is computed from the committed vertices against the regular
+    octagon of the as-built model; the history of the measurement, the
+    outline residuals of the regular octagon, the clocking on the sky and
+    the hand-picked corners of the earlier paper are read from the metadata
+    of the same table, and the outline residuals of the committed fit from
+    the metadata of the reference table.  Angles on the sky are measured from
+    solar north and given as clockwise magnitudes, the sense in which every
+    one of them turns.
+    """
+    import numpy as np
+
+    table = esis.flights.f1.optics.distortion_fit_table("field_stop")
+    reference = esis.flights.f1.optics.distortion_fit_table("reference")
+    clocking = table.meta["clocking"]
+    hand = table.meta["parker2022"]
+    iteration = table.meta["history"]
+    history = iteration["passes"]
+    last = history[-1]
+
+    def sides(x, y):
+        """The direction of each side and its distance from the centre."""
+        x2, y2 = np.roll(x, -1), np.roll(y, -1)
+        angle = np.degrees(np.arctan2(y2 - y, x2 - x))
+        nx, ny = y2 - y, x - x2
+        norm = np.hypot(nx, ny)
+        return angle, np.abs((x * nx + y * ny) / norm)
+
+    measured = esis.flights.f1.optics.field_stop_vertices()
+    design = esis.flights.f1.optics.as_built().field_stop.aperture.vertices
+
+    def xy(v):
+        return (
+            np.asarray(na.as_named_array(v.x).to(u.mm).ndarray, float).ravel(),
+            np.asarray(na.as_named_array(v.y).to(u.mm).ndarray, float).ravel(),
+        )
+
+    angle, apothem = sides(*xy(measured))
+    angle_design, apothem_design = sides(*xy(design))
+    tilt = (angle - angle_design + 180) % 360 - 180
+    tilt = tilt - tilt.mean()
+    offset = (apothem - apothem.mean()) * 1e3
+    scale = apothem.mean() / apothem_design.mean() - 1
+
+    def rms(a):
+        return float(np.sqrt(np.mean(np.square(a))))
+
+    edges = np.asarray(reference.meta["stages"]["outline"]["edges"], float)
+    edges_regular = np.asarray(history[0]["outline_edges_px"], float)
+
+    north = -np.asarray(clocking["north_deg"], float)
+    corners_fit = np.asarray(clocking["corners_deg"], float).mean(axis=0)
+    corners_hand = np.asarray(hand["corners_deg"], float)
+    difference = corners_hand - corners_fit
+    num_corners = len(corners_hand)
+
+    # the roll of each camera on its detector against the rotation of its
+    # image in the earlier co-alignment, which is measured against the pixel
+    # grid of AIA; their common part differs with the frame and is set aside
+    roll_sensor = reference["roll_sensor"].to_value(u.deg)
+    level3 = np.asarray(hand["level3_rotation_deg"], float)
+    common = float(np.mean(level3 + roll_sensor))
+    pattern = float(np.abs(level3 + roll_sensor - common).max())
+
+    def fixed(value, unit, decimals):
+        """The value to a fixed number of decimals, trailing zeros kept."""
+        tail = f"{(1 * unit):latex_inline}"[2:-1]
+        return aastex.NoEscape(rf"\ensuremath{{{float(value):.{decimals}f}{tail}}}")
+
+    def deg(value, decimals=2):
+        return fixed(value, u.deg, decimals)
+
+    return [
+        aastex.Variable(name="fieldStopShapeTilt", value=deg(rms(tilt))),
+        aastex.Variable(name="fieldStopShapeTiltMax", value=deg(np.abs(tilt).max(), 1)),
+        aastex.Variable(name="fieldStopShapeOffset", value=fixed(rms(offset), u.um, 1)),
+        aastex.Variable(
+            name="fieldStopSpreadTilt", value=deg(table.meta["spread_tilt_deg"], 3)
+        ),
+        aastex.Variable(
+            name="fieldStopSpreadOffset",
+            value=fixed(float(table.meta["spread_offset_um"]), u.um, 2),
+        ),
+        aastex.Variable(
+            name="fieldStopScale",
+            value=fixed(-100 * float(scale), u.percent, 1),
+        ),
+        aastex.Variable(
+            name="fieldStopNumPassesOrdinal",
+            value=aastex.NoEscape(num2words.num2words(len(history), to="ordinal")),
+        ),
+        aastex.Variable(
+            name="fieldStopToleranceTilt",
+            value=deg(iteration["tolerance_tilt_deg"], 2),
+        ),
+        aastex.Variable(
+            name="fieldStopLastSpreadOffset",
+            value=fixed(float(last["spread_offset_um"]), u.um, 2),
+        ),
+        aastex.Variable(name="fieldStopLastTilt", value=deg(last["shape_tilt_deg"], 3)),
+        aastex.Variable(
+            name="fieldStopLastOffset",
+            value=fixed(float(last["shape_offset_um"]), u.um, 2),
+        ),
+        aastex.Variable(
+            name="fieldStopLastScale",
+            value=fixed(100 * float(np.abs(last["scale"]).max()), u.percent, 2),
+        ),
+        aastex.Variable(
+            name="fieldStopLastRotation",
+            value=deg(np.abs(last["rotation_deg"]).max(), 3),
+        ),
+        aastex.Variable(name="outlineEdgesMin", value=fixed(edges.min(), u.pix, 1)),
+        aastex.Variable(name="outlineEdgesMax", value=fixed(edges.max(), u.pix, 1)),
+        aastex.Variable(
+            name="outlineRegularMin", value=fixed(edges_regular.min(), u.pix, 1)
+        ),
+        aastex.Variable(
+            name="outlineRegularMax", value=fixed(edges_regular.max(), u.pix, 1)
+        ),
+        aastex.Variable(name="clockingNorth", value=deg(north.mean())),
+        aastex.Variable(name="clockingNorthMin", value=deg(north.min())),
+        aastex.Variable(name="clockingNorthMax", value=deg(north.max())),
+        aastex.Variable(
+            name="clockingRotation", value=deg(-float(clocking["rotation_deg"]))
+        ),
+        aastex.Variable(name="handPickedRotation", value=deg(-corners_hand.mean())),
+        aastex.Variable(
+            name="handPickedRotationGrid",
+            value=deg(-np.mean(hand["corners_grid_deg"])),
+        ),
+        aastex.Variable(name="handPickedScatter", value=deg(rms(difference))),
+        aastex.Variable(
+            name="handPickedUncertainty",
+            value=deg(rms(difference) / np.sqrt(num_corners)),
+        ),
+        aastex.Variable(name="aiaRoll", value=deg(-float(hand["crota2_deg"]))),
+        aastex.Variable(name="cameraRollMin", value=deg(np.abs(roll_sensor).min())),
+        aastex.Variable(name="cameraRollMax", value=deg(np.abs(roll_sensor).max(), 1)),
+        aastex.Variable(name="cameraRollCommon", value=deg(abs(common))),
+        aastex.Variable(name="cameraRollPattern", value=deg(pattern)),
+    ]
+
+
+def _straight_edges() -> list[aastex.Variable]:
+    """
+    The numbers of the check that reads the drift of the windows from their
+    straight edges instead of the steps of every row and column.
+
+    The check, ``docs/reports/distortion_fit/checks/straight_edges.py`` in
+    ``esis``, refits the committed pass with that drift; it is a study of a
+    choice the fit makes rather than part of the fit, so its outputs go to
+    the data release and not the package, and its numbers are quoted here as
+    the report of the fit quotes them.  They are the rms over the flight of
+    the distance between the two sides of each window, the least and the
+    greatest over the windows, with each drift, and the registration of the
+    channels the acceptance measures with the straight-edge drift.
+    """
+
+    def pixels(value: float) -> aastex.NoEscape:
+        """The value to two decimals, trailing zeros kept."""
+        return aastex.NoEscape(rf"\ensuremath{{{value:.2f} \; \mathrm{{pix}}}}")
+
+    return [
+        aastex.Variable(name="sidesApartStraightMin", value=pixels(0.14)),
+        aastex.Variable(name="sidesApartStraightMax", value=pixels(0.39)),
+        aastex.Variable(name="sidesApartStepsMin", value=pixels(0.06)),
+        aastex.Variable(name="sidesApartStepsMax", value=pixels(0.20)),
+        aastex.Variable(name="registrationStraightEdgeHeI", value=pixels(0.12)),
+        aastex.Variable(name="registrationStraightEdgeOV", value=pixels(0.11)),
     ]
