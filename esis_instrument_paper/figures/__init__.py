@@ -8,15 +8,18 @@ from ._bunch import bunch, num_emission_lines
 from ._cameras import cameras
 from ._coalignment_tiles import coalignment_tiles
 from ._component_efficiency_vs_wavelength import component_efficiency_vs_wavelength
+from ._contribution_function import contribution_function
 from ._distortion import distortion, distortion_residual
 from ._distortion_flight import distortion_flight
-from ._field_stop_projections import field_stop_projections
+from ._field_stop_projections import colormap_emission_lines, field_stop_projections
 from ._focus_curve import focus_curve
 from ._grating_efficiency_vs_angle import grating_efficiency_vs_angle
 from ._grating_efficiency_vs_position import grating_efficiency_vs_position
+from ._grating_figure import grating_figure
 from ._grating_mount import grating_mount
 from ._grating_multilayer_schematic import grating_multilayer_schematic
 from ._layout import layout
+from ._primary_figure import primary_figure
 from ._schematic import schematic
 from ._schematic_moses import schematic_moses
 from ._spot_diagrams import spot_diagrams
@@ -28,7 +31,9 @@ __all__ = [
     "bunch",
     "cameras",
     "coalignment_tiles",
+    "colormap_emission_lines",
     "component_efficiency_vs_wavelength",
+    "contribution_function",
     "distortion",
     "distortion_flight",
     "distortion_residual",
@@ -36,11 +41,13 @@ __all__ = [
     "focus_curve",
     "grating_efficiency_vs_angle",
     "grating_efficiency_vs_position",
+    "grating_figure",
     "grating_mount",
     "grating_multilayer_schematic",
     "layout",
     "num_emission_lines",
     "num_lines",
+    "primary_figure",
     "schematic",
     "schematic_moses",
     "spot_diagrams",

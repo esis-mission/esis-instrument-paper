@@ -127,7 +127,11 @@ def surface_error() -> pylatex.Table:
 Figure and surface roughness requirements compared to metrology for the \ESIS\ optics.
 Slope error (both the numerical estimates and the measurements) is worked out by first smoothing the surface with a
 boxcar as wide as the sample length, then dividing the difference in height across the integration length by that
-length."""))
+length.
+The measured slope errors are worked out from our own interferometric maps of the figures of the optics
+(Figures~\ref{fig:primaryFigure} and~\ref{fig:gratingFigure}), and the other measurements are those of the
+manufacturers of the optics.
+The measurements of the gratings are the means of the four which flew."""))
 
     with (
         result.create(pylatex.Center()) as centering,

@@ -12,12 +12,14 @@ import utu
 __all__ = [
     "abundance",
     "area_effective",
+    "contribution_function",
     "dem",
     "emission_measure",
     "lines",
     "num_grid",
     "pressure",
     "seed",
+    "step_temperature",
     "version",
 ]
 
@@ -72,14 +74,43 @@ Twenty-eight takes it a further tenth, and no further: what is left is the
 structure of the measured coatings rather than anything left to average away.
 """
 
+step_temperature = 0.1
+"""
+The spacing of the temperatures the spectrum is computed at, in their
+logarithm: a tenth of a decade.
+"""
+
 _axis = "temperature"
 """The name of the axis along the temperatures of the plasma."""
 
+_size_chunk = 20
+"""
+How many temperatures the levels of an ion are solved at together, in
+:func:`contribution_function`.
 
-def temperature() -> na.AbstractScalar:
-    """The temperatures the spectrum is computed at."""
+They are solved in one matrix, which for the ions of the brightest lines
+takes about a seventh of a gigabyte per temperature: 54 GiB at the hundreds
+of temperatures the figure of the contribution functions draws, which no
+GitHub runner holds. Twenty at a time peaks at 3 GiB, and takes three and a
+half minutes rather than one and a half, since each chunk builds its ions
+again. Each temperature is solved on its own, so the size of the chunks
+changes nothing in the result.
+"""
+
+
+def temperature(step: float = step_temperature) -> na.AbstractScalar:
+    """
+    The temperatures from :math:`10^4` to :math:`10^8` K, evenly spaced in
+    their logarithm.
+
+    Parameters
+    ----------
+    step
+        The spacing of the temperatures, in their logarithm. The default is
+        the spacing the spectrum is computed at.
+    """
     return na.ScalarArray(
-        ndarray=10 ** np.arange(4, 8.1, 0.1) * u.K,
+        ndarray=10 ** np.arange(4, 8 + step / 2, step) * u.K,
         axes=(_axis,),
     )
 
@@ -118,7 +149,7 @@ def emission_measure() -> na.AbstractScalar:
 
     # the measure of each bin is the differential measure across it, the grid
     # being even in the logarithm
-    result = result * t.ndarray * np.log(10) * 0.1
+    result = result * t.ndarray * np.log(10) * step_temperature
 
     return na.ScalarArray(result, axes=(_axis,))
 
@@ -136,16 +167,23 @@ def _lines(
     wavelength_min: u.Quantity,
     wavelength_max: u.Quantity,
     chianti_version: str,
+    fiasco_version: str,
+    utu_version: str,
 ) -> na.FunctionArray:
     """
     Compute the lines, and remember them, since it takes several minutes.
 
-    ``chianti_version`` is not read here. It is an argument so that it is part of
-    what the cache is keyed on, since the answer depends on it and nothing
-    else in the key does: :mod:`joblib` hashes the arguments and the source
-    of this function, neither of which knows which database is installed.
-    Without it, installing a new database would go on returning the numbers
-    computed from the old one, under a caption naming the new.
+    The versions are not read here. They are arguments so that they are part
+    of what the cache is keyed on, since the answer depends on them and
+    nothing else in the key does: :mod:`joblib` hashes the arguments and the
+    source of this function, neither of which knows which database is
+    installed, or which versions of :mod:`fiasco` and :mod:`utu` computed
+    from it. Without the first, installing a new database would go on
+    returning the numbers computed from the old one, under a caption naming
+    the new. Without the others, the lines computed by fiasco 0.8.3 and utu
+    0.6.1 went on being returned beside contribution functions computed by
+    fiasco 0.9.0 and utu 0.7.0, which differ from them by two parts in a
+    billion.
     """
     t = temperature()
     return utu.spectrum.lines(
@@ -181,7 +219,86 @@ def lines(
     wavelength_max
         The longest wavelength to compute.
     """
-    return _lines(wavelength_min, wavelength_max, version())
+    return _lines(
+        wavelength_min=wavelength_min,
+        wavelength_max=wavelength_max,
+        chianti_version=version(),
+        fiasco_version=importlib.metadata.version("fiasco"),
+        utu_version=importlib.metadata.version("utu"),
+    )
+
+
+@esis.memory.cache
+def _contribution_function(
+    wavelength_min: u.Quantity,
+    wavelength_max: u.Quantity,
+    num: int,
+    step: float,
+    chianti_version: str,
+    fiasco_version: str,
+    utu_version: str,
+) -> na.FunctionArray:
+    """
+    Compute the contribution functions, and remember them, since solving the
+    levels of each ion takes seconds.
+
+    The versions are not read here. They are arguments for the reasons given
+    in :func:`_lines`.
+    """
+    brightest = lines(wavelength_min, wavelength_max)[{"line": slice(num)}]
+
+    t = temperature(step)
+    result = utu.spectrum.contribution_function_line(
+        ion=brightest.inputs.components["ion"],
+        wavelength=brightest.inputs.components["wavelength"],
+        temperature=t,
+        density=pressure / t,
+        axis_temperature=_axis,
+        size_chunk=_size_chunk,
+        abundance=abundance,
+    )
+
+    return na.FunctionArray(
+        inputs=brightest.inputs,
+        outputs=result.outputs,
+    )
+
+
+def contribution_function(
+    wavelength_min: u.Quantity,
+    wavelength_max: u.Quantity,
+    num: int,
+    step: float = step_temperature,
+) -> na.FunctionArray:
+    """
+    The contribution functions of the brightest lines of :func:`lines`, at
+    each of :func:`temperature`.
+
+    They are computed with the same abundances and the same pressure as the
+    lines, so that they are the functions the intensities of the lines were
+    summed from.
+
+    Parameters
+    ----------
+    wavelength_min
+        The shortest wavelength to compute.
+    wavelength_max
+        The longest wavelength to compute.
+    num
+        How many of the brightest lines to compute.
+    step
+        The spacing of the temperatures, in their logarithm. The default is
+        the spacing the intensities of the lines were summed at.
+    """
+    return _contribution_function(
+        wavelength_min=wavelength_min,
+        wavelength_max=wavelength_max,
+        num=num,
+        step=step,
+        chianti_version=version(),
+        fiasco_version=importlib.metadata.version("fiasco"),
+        utu_version=importlib.metadata.version("utu"),
+    )
 
 
 @esis.memory.cache
