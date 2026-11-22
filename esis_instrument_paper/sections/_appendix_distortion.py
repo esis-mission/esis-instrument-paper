@@ -107,14 +107,17 @@ The windows are placed by the median of these fits over the exposures of the fli
 seen against a different solar backdrop each time.
 The straight-edge fit places a side well but follows its motion poorly: solar structure crossing a side as the
 pointing drifts moves the fitted edge by a few tenths of a pixel from one exposure to the next, and the two
-sides of one window, which cannot move apart, do so by 0.25 to 0.35~pixels rms through the flight.
+sides of one window, which cannot move apart, do so by \sidesApartStraightMin\ to \sidesApartStraightMax\ rms
+through the flight.
 The drift of the windows is therefore taken from a second fit, an error-function step in each row and column on
-its own against its own median over the flight, which holds the two sides together to 0.13 to 0.19~pixels;
+its own against its own median over the flight, which holds the two sides together to \sidesApartStepsMin\ to
+\sidesApartStepsMax;
 the drift of a side in an exposure is the median of its rows' departures, and the drift of a window, carried as
 a grating offset, is smoothed by a cubic in the exposure index.
 The distinction matters: the focus of each sector, below, moves a channel's image along its dispersion, so an
-error in the drift is absorbed by the focus rather than seen, and with the straight-edge drift the registration
-of the channels at \OVion\ was \registrationStraightEdgeOV\ rms, against \coalignmentAfterOV.
+error in the drift is absorbed by the focus rather than seen.
+Refit with the straight-edge drift, the channels register to \registrationStraightEdgeHeI\ rms at \HeIion\ and
+\registrationStraightEdgeOV\ at \OVion, against \coalignmentAfterHeI\ and \coalignmentAfterOV\ with the steps.
 
 \paragraph{The shape of the field stop}
 The field stop is modelled as a regular octagon, but the four channels, each of which images it through its own
@@ -131,13 +134,14 @@ regular octagon can produce.
 The model's field stop is that polygon, which is smaller than the design by \fieldStopScale, and the outline
 stage fits its roll.
 The measurement was made first through a fit with the regular octagon, and then through a fit with the
-polygon each measurement gave, until one moved the sides by less than \fieldStopToleranceTilt\ and
-\fieldStopToleranceOffset\ rms.
-The second moved them by \fieldStopSecondChange\ rms, less than the channels scatter about the shape; the
-\fieldStopNumPassesOrdinal, through the final fit, by \fieldStopLastTilt\ and \fieldStopLastOffset\ rms, with
-each channel's image of the stop turned by at most \fieldStopLastRotation\ and its scale changed by at most
-\fieldStopLastScale, so the measurement has converged, and the polygon the model carries is the one the final
-fit was made with.
+polygon each measurement gave, until one turned the sides by less than \fieldStopToleranceTilt\ rms.
+The rule is on the tilts alone: the offsets of the sides change from one fit to the next by about as much as the
+channels scatter about the shape, so they are recorded but do not decide when to stop.
+The \fieldStopNumPassesOrdinal\ of these fits, with the polygon the first measured, turned the sides by
+\fieldStopLastTilt\ and moved them by \fieldStopLastOffset\ rms, against a scatter of the channels of
+\fieldStopLastSpreadOffset, with each channel's image of the stop turned by at most \fieldStopLastRotation\ and
+its scale changed by at most \fieldStopLastScale, so the measurement has converged, and the polygon the model
+carries is the one the final fit was made with.
 With it the edges sit on the model to \outlineEdgesMin\ to \outlineEdgesMax\ rms in the four channels, where
 the regular octagon, with its roll fit the same way, left \outlineRegularMin\ to \outlineRegularMax, and the
 merit of every channel rises.
@@ -201,17 +205,18 @@ not decide between them; the model carries the first, the simpler physical accou
 sectors' histories so that a thermal model of the mirror, or the next flight's temperature sensors, can judge
 it.
 
-\paragraph{The optional channel offsets}
+\paragraph{The channel offsets}
 With the focus of each sector applied, the channels' skies still differ from channel 1's by
 \registrationLeftBySectors\ rms over the bright exposures, close to the \SI{0.05}{pixels} a single measurement
 resolves.
-The same measurement, repeated with the sector focus in place, fits what is left as an offset of each channel's
-own pitch and yaw, a quadratic in the exposure index that vanishes at the reference exposure and sums to zero
+A check of the fit repeats the same measurement with the sector focus in place and fits what is left as an
+offset of each channel's own pitch and yaw, a quadratic in the exposure index that vanishes at the reference exposure and sums to zero
 over the channels so that the payload's pointing stays where the scene put it: twelve numbers, at most
 \channelOffsetMax\ or \channelOffsetMaxPixels\ on the sensor, which leave \registrationLeftByOffsets\ rms.
-They are committed beside the fit and the flight model applies them only when asked, since they are empirical
-where the sector focus is a mechanism; an inversion can be run with and without them to see what a few
-hundredths of a pixel of registration do to the result.
+They are a measure of what the model leaves, not part of it: the table is committed beside the fit, but the
+flight model does not apply them, since they are empirical where the sector focus is a mechanism.
+A few hundredths of a pixel is the coalignment the model leaves between the channels, and an inversion can be
+run with and without these offsets to see what that does to the result.
 
 \paragraph{Lessons}
 The field stop's edge was the calibration source, and its weak point: a field stop imaged whole, with margin on

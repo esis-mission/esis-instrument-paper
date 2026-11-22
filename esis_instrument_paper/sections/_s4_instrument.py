@@ -265,8 +265,9 @@ With it, over the \distortionNumFramesMeasured\ exposures bright enough to measu
 \coalignmentAfterMaxOV.
 What the sector focus leaves, \registrationLeftBySectors\ rms in the registration measurement itself, is also
 fit as an empirical offset of each channel's pointing, of up to \channelOffsetMax\ (\channelOffsetMaxPixels), which
-reduces it to \registrationLeftByOffsets; the model carries these twelve numbers as an option, off by default,
-since no mechanism stands behind them (Appendix~\ref{sec:TheDistortionFit}).
+reduces it to \registrationLeftByOffsets; these twelve numbers are recorded beside the fit as a measure of the
+coalignment it leaves, but the model does not apply them, since no mechanism stands behind them
+(Appendix~\ref{sec:TheDistortionFit}).
 Only the component of a misregistration along a channel's dispersion is a velocity error, and a pixel along the
 dispersion is \dispersionVelocityHeI\ at \HeIion\ and \dispersionVelocityOV\ at \OVion: projected that way, the
 registration of the channels contributes \coalignmentVelocityHeI\ and \coalignmentVelocityOV\ rms to a measured

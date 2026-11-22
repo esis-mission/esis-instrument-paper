@@ -277,6 +277,7 @@ def variables() -> list[aastex.Variable]:
         *_conclusions(),
         *_measured_distortion(),
         *_field_stop(),
+        *_straight_edges(),
     ]
 
 
@@ -1168,8 +1169,9 @@ def _measured_distortion() -> list[aastex.Variable]:
     package: the pointing table for the ranges of the time-dependent terms,
     the focus and acceptance tables for how well the channels are
     registered, with one focus for the whole primary and with one per
-    sector, and the co-registration table for the optional empirical
-    offsets and what they leave.  The coalignment is quoted over the exposures bright enough
+    sector, and the co-registration table, which a check of the fit writes
+    beside it, for the empirical offsets the model does not apply and what
+    they would leave.  The coalignment is quoted over the exposures bright enough
     for their window edges to be measured, which excludes the dark ones
     that close the flight.
     """
@@ -1220,7 +1222,7 @@ def _measured_distortion() -> list[aastex.Variable]:
     def rms(a):
         return float(np.sqrt(np.nanmean(np.square(a))))
 
-    # the optional empirical offsets: what the sector focus leaves, as the
+    # the empirical offsets the model does not apply: what the sector focus leaves, as the
     # registration measurement sees it (one median shift per channel and
     # exposure), what the offsets leave, and how large they are
     bright = np.asarray(coregistration["frame"]) <= last
@@ -1397,12 +1399,10 @@ def _field_stop() -> list[aastex.Variable]:
 
     table = esis.flights.f1.optics.distortion_fit_table("field_stop")
     reference = esis.flights.f1.optics.distortion_fit_table("reference")
-    drift = esis.flights.f1.optics.distortion_fit_table("window_drift")
     clocking = table.meta["clocking"]
     hand = table.meta["parker2022"]
     iteration = table.meta["history"]
     history = iteration["passes"]
-    tolerance = iteration["tolerance"]
     last = history[-1]
 
     def sides(x, y):
@@ -1457,8 +1457,6 @@ def _field_stop() -> list[aastex.Variable]:
     def deg(value, decimals=2):
         return fixed(value, u.deg, decimals)
 
-    straight = drift.meta["straight_edge_drift"]["acceptance_rms_px"]
-
     return [
         aastex.Variable(name="fieldStopShapeTilt", value=deg(rms(tilt))),
         aastex.Variable(name="fieldStopShapeTiltMax", value=deg(np.abs(tilt).max(), 1)),
@@ -1475,18 +1473,16 @@ def _field_stop() -> list[aastex.Variable]:
             value=fixed(-100 * float(scale), u.percent, 1),
         ),
         aastex.Variable(
-            name="fieldStopSecondChange", value=deg(history[1]["shape_tilt_deg"], 3)
-        ),
-        aastex.Variable(
             name="fieldStopNumPassesOrdinal",
             value=aastex.NoEscape(num2words.num2words(len(history), to="ordinal")),
         ),
         aastex.Variable(
-            name="fieldStopToleranceTilt", value=deg(tolerance["tilt_deg"], 2)
+            name="fieldStopToleranceTilt",
+            value=deg(iteration["tolerance_tilt_deg"], 2),
         ),
         aastex.Variable(
-            name="fieldStopToleranceOffset",
-            value=fixed(float(tolerance["offset_um"]), u.um, 2),
+            name="fieldStopLastSpreadOffset",
+            value=fixed(float(last["spread_offset_um"]), u.um, 2),
         ),
         aastex.Variable(name="fieldStopLastTilt", value=deg(last["shape_tilt_deg"], 3)),
         aastex.Variable(
@@ -1530,8 +1526,33 @@ def _field_stop() -> list[aastex.Variable]:
         aastex.Variable(name="cameraRollMax", value=deg(np.abs(roll_sensor).max(), 1)),
         aastex.Variable(name="cameraRollCommon", value=deg(abs(common))),
         aastex.Variable(name="cameraRollPattern", value=deg(pattern)),
-        aastex.Variable(
-            name="registrationStraightEdgeOV",
-            value=fixed(float(straight["O V"]), u.pix, 2),
-        ),
+    ]
+
+
+def _straight_edges() -> list[aastex.Variable]:
+    """
+    The numbers of the check that reads the drift of the windows from their
+    straight edges instead of the steps of every row and column.
+
+    The check, ``docs/reports/distortion_fit/checks/straight_edges.py`` in
+    ``esis``, refits the committed pass with that drift; it is a study of a
+    choice the fit makes rather than part of the fit, so its outputs go to
+    the data release and not the package, and its numbers are quoted here as
+    the report of the fit quotes them.  They are the rms over the flight of
+    the distance between the two sides of each window, the least and the
+    greatest over the windows, with each drift, and the registration of the
+    channels the acceptance measures with the straight-edge drift.
+    """
+
+    def pixels(value: float) -> aastex.NoEscape:
+        """The value to two decimals, trailing zeros kept."""
+        return aastex.NoEscape(rf"\ensuremath{{{value:.2f} \; \mathrm{{pix}}}}")
+
+    return [
+        aastex.Variable(name="sidesApartStraightMin", value=pixels(0.14)),
+        aastex.Variable(name="sidesApartStraightMax", value=pixels(0.39)),
+        aastex.Variable(name="sidesApartStepsMin", value=pixels(0.06)),
+        aastex.Variable(name="sidesApartStepsMax", value=pixels(0.20)),
+        aastex.Variable(name="registrationStraightEdgeHeI", value=pixels(0.12)),
+        aastex.Variable(name="registrationStraightEdgeOV", value=pixels(0.11)),
     ]
