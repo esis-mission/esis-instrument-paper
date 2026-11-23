@@ -26,25 +26,40 @@ def test_field(as_built: bool) -> None:
     assert np.allclose(position.y.ndarray.value, expected.y.ndarray.value, atol=1e-5)
 
 
-@pytest.mark.parametrize("as_built", [False, True])
-def test_psf(as_built: bool) -> None:
-    """The intensity of each point-spread function sums to one over its grid."""
-    psf = _diffraction.psf(as_built=as_built)
-    total = psf.outputs.sum(_diffraction.axis)
-    expected = na.ScalarArray(np.ones(2), axes=_diffraction.axis_field)
-    assert np.allclose(total.ndarray, expected.ndarray)
+def test_psf() -> None:
+    """
+    The integral of each point-spread function over its grid is the fraction
+    of the power of the beam which lands on the grid: most of it as designed,
+    where the mesh of the filter diffracts the rest beyond the grid, and less
+    as built, whose measured figures scatter more light beyond it.
+    """
+    area = np.square(_diffraction.width_image / (_diffraction.num_image - 1))
+    total = {}
+    for as_built in (False, True):
+        psf = _diffraction.psf(as_built=as_built)
+        integral = psf.outputs.sum(_diffraction.axis) * area
+        total[as_built] = integral.to(u.dimensionless_unscaled).ndarray
+    assert np.all((0.75 < total[False]) & (total[False] < 0.9))
+    assert np.all((0.65 < total[True]) & (total[True] < total[False]))
 
 
-@pytest.mark.parametrize("as_built", [False, True])
-def test_mtf(as_built: bool) -> None:
-    """The MTF is one at zero frequency, at every field angle."""
-    mtf = _diffraction.mtf(as_built=as_built)
-    center = {a: mtf.shape[a] // 2 for a in _diffraction.axis}
-    zero = mtf.inputs[center]
-    assert np.all(zero.x.ndarray == 0)
-    assert np.all(zero.y.ndarray == 0)
-    expected = na.ScalarArray(np.ones(2), axes=_diffraction.axis_field)
-    assert np.allclose(mtf.outputs[center].ndarray, expected.ndarray)
+def test_mtf() -> None:
+    """
+    The MTF at zero frequency is the fraction of the power of the beam which
+    lands on its grid: nearly all of it as designed, where the mesh of the
+    filter diffracts the rest beyond the grid, and less as built, whose
+    measured figures scatter more light beyond it.
+    """
+    zero = {}
+    for as_built in (False, True):
+        mtf = _diffraction.mtf(as_built=as_built)
+        center = {a: mtf.shape[a] // 2 for a in _diffraction.axis}
+        frequency = mtf.inputs[center]
+        assert np.all(frequency.x.ndarray == 0)
+        assert np.all(frequency.y.ndarray == 0)
+        zero[as_built] = mtf.outputs[center].ndarray
+    assert np.all((0.95 < zero[False]) & (zero[False] < 1))
+    assert np.all((0.9 < zero[True]) & (zero[True] < zero[False]))
 
 
 def test_mtf_figure_error() -> None:

@@ -97,9 +97,9 @@ width_mtf = 600 * u.um
 """
 The width of the grid of positions from which the MTF is computed.
 
-The MTF is computed from the light which lands on this grid. The measured
-figures scatter some of the light of the channel as built beyond it, which
-the MTF leaves out.
+The MTF is normalized to the power of the whole beam, so the light which the
+mesh of the filter diffracts, and the measured figures of the channel as built
+scatter, beyond this grid lowers it.
 """
 
 num_mtf = 301
@@ -135,7 +135,10 @@ def psf(as_built: bool) -> na.FunctionArray:
     :func:`field`, on a grid of positions on the detector :data:`width_image`
     wide, centered on the image of each field angle.
 
-    The intensity sums to one over the grid.
+    It includes the diffraction by the mesh which supports the filter, which
+    adds copies of the image along the wires of the mesh. The intensity is
+    per unit area, normalized to the power of the beam, so its integral over
+    the grid is the fraction of the light which lands on it.
 
     Parameters
     ----------
@@ -162,7 +165,9 @@ def mtf(as_built: bool) -> na.FunctionArray:
     :data:`width_mtf` wide.
 
     The inputs are the spatial frequencies on the detector along its two
-    axes.
+    axes. It includes the diffraction by the mesh which supports the filter.
+    The MTF is normalized to the power of the whole beam, so at zero
+    frequency it is the fraction of the light which lands on the grid.
 
     Parameters
     ----------
@@ -183,6 +188,7 @@ def mtf(as_built: bool) -> na.FunctionArray:
         intensity=psf.outputs,
         position=psf.inputs.position,
         axis=axis,
+        normalize=False,
     )
 
 
