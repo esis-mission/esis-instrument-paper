@@ -179,6 +179,25 @@ This estimate takes the figure of the primary mirror to meet its requirement.
 Its measured slope error does not (Table~\ref{table:error}), so the \MTF\ of \ESIS\ as built is likely somewhat
 lower.""")
     subsection_optimization.append(esis_instrument_paper.tables.error_budget())
+    subsection_optimization.append(
+        r"""
+The error budget treats each term as a Gaussian blur.
+To check the optics without that approximation, we computed the \PSF\ of channel~1 at \OV\ including diffraction, as
+designed and as built with the measured figures of the primary mirror and grating (Figure~\ref{fig:psfDiffraction}).
+These \PSFs\ also include the diffraction by the mesh which supports the filter (Section~\ref{subsec:CoatingsandFilters}).
+The mesh acts as a crossed transmission grating: of the light which passes the filter, it diffracts
+\filterMeshDiffractedFraction\ out of the zeroth order, into faint copies of the image \filterMeshOrderSpacing\ apart
+along the wires of the mesh.
+Placing the filter far from the \CCD\ keeps the shadow of the mesh below photon statistics, but it does not remove these
+copies, which blur every image.
+Figure~\ref{fig:mtf} shows the \MTF\ of each \PSF.
+At \mtfFrequency, the \MTF\ is at least \mtfDiffractionDesign\ as designed and \mtfDiffractionAsBuilt\ as built, along
+and across the dispersion, at both points of the \FOV\ in Figure~\ref{fig:psfDiffraction}.
+The mesh alone lowers it by a factor of \mtfMesh.
+These values include only the optics, not the \CCD\ or the pointing terms of Table~\ref{table:errorBudget}."""
+    )
+    subsection_optimization.append(esis_instrument_paper.figures.psf_diffraction())
+    subsection_optimization.append(esis_instrument_paper.figures.mtf())
     result.append(subsection_optimization)
 
     subsection_vignetting = aastex.Subsection("Vignetting")

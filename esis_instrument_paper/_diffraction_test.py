@@ -79,6 +79,32 @@ def test_mtf_figure_error() -> None:
     assert np.all((result[True] < result[False]).ndarray)
 
 
+def test_mtf_requirement_mesh() -> None:
+    """
+    The mesh of the filter lowers the MTF of the channel as designed at the
+    resolution requirement by about the same factor along and across the
+    dispersion, at every field angle, since the factor depends only on the
+    mesh and the spatial frequency on the detector.
+    """
+    with_mesh = _diffraction.mtf_requirement(as_built=False)
+    without_mesh = _diffraction.mtf_requirement(as_built=False, mesh=False)
+    ratio = with_mesh / without_mesh
+    ratio = np.stack([ratio.x.ndarray, ratio.y.ndarray])
+    assert np.all((0.75 < ratio) & (ratio < 0.85))
+    assert np.ptp(ratio) < 0.01
+
+
+def test_mtf_requirement_figure_error() -> None:
+    """
+    The interpolated MTF at the resolution requirement is lower as built than
+    as designed, along and across the dispersion, at every field angle.
+    """
+    design = _diffraction.mtf_requirement(as_built=False)
+    as_built = _diffraction.mtf_requirement(as_built=True)
+    assert np.all((as_built.x < design.x).ndarray)
+    assert np.all((as_built.y < design.y).ndarray)
+
+
 def test_frequency_sky() -> None:
     """
     The spatial frequency of one cycle per pixel on the detector is one cycle

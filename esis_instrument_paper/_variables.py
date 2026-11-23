@@ -12,7 +12,7 @@ import optika
 import pylatex
 
 import esis_instrument_paper
-from esis_instrument_paper import _alignment, _error_budget
+from esis_instrument_paper import _alignment, _diffraction, _error_budget
 
 __all__ = [
     "variables",
@@ -381,6 +381,12 @@ def _significant(value: u.Quantity, digits: int) -> u.Quantity:
     """A quantity rounded to a number of significant digits."""
     exponent = int(np.floor(np.log10(np.abs(value.value))))
     return value.round(digits - 1 - exponent)
+
+
+def _floor(value: na.AbstractScalar) -> aastex.NoEscape:
+    """A number rounded down to two decimals, written with both."""
+    value = float(na.as_named_array(value).ndarray)
+    return aastex.NoEscape(f"{np.floor(value * 100) / 100:.2f}")
 
 
 def _percent(fraction: na.AbstractScalar, decimals: int = 0) -> u.Quantity:
@@ -958,8 +964,29 @@ def _optimization() -> list[aastex.Variable]:
     gratings, which a Fourier optics model of random figure errors turned into
     the specifications of the optics, and neither that model nor the
     allocations are part of the model of the instrument.
+
+    The MTF with diffraction is the least of the MTFs of
+    :func:`esis_instrument_paper._diffraction.mtf_requirement`, along and
+    across the dispersion and at either field angle, rounded down, so that
+    the prose can say "at least".
     """
     frequency = _error_budget.frequency()
+
+    mtf_design = _diffraction.mtf_requirement(as_built=False)
+    mtf_as_built = _diffraction.mtf_requirement(as_built=True)
+    mtf_unmeshed = _diffraction.mtf_requirement(as_built=False, mesh=False)
+    ratio_mesh = mtf_design / mtf_unmeshed
+    ratio_mesh = (ratio_mesh.x.mean() + ratio_mesh.y.mean()) / 2
+
+    # The mesh which supports the filter diffracts the light it passes into
+    # orders, which land on the detector as copies of the image the
+    # wavelength times the distance from the mesh over its period apart.
+    design = esis.flights.f1.optics.design_single(num_distribution=0)
+    mesh = design.filter.material.mesh
+    zero = mesh.efficiency_order(na.Cartesian2dVectorArray(0, 0))
+    distance = design.camera.sensor.translation.z - design.filter.translation.z
+    spacing = (_diffraction.wavelength * distance * mesh.pitch).to(u.um)
+
     return [
         aastex.Variable(
             # the degradation of the MTF at the resolution requirement
@@ -987,6 +1014,28 @@ def _optimization() -> list[aastex.Variable]:
         aastex.Variable(
             name="mtfRayleigh",
             value=round(_error_budget.mtf_rayleigh(), 2),
+        ),
+        aastex.Variable(
+            name="mtfDiffractionDesign",
+            value=_floor(np.minimum(mtf_design.x.min(), mtf_design.y.min())),
+        ),
+        aastex.Variable(
+            name="mtfDiffractionAsBuilt",
+            value=_floor(np.minimum(mtf_as_built.x.min(), mtf_as_built.y.min())),
+        ),
+        aastex.Variable(
+            # the factor by which the mesh lowers the MTF as designed
+            name="mtfMesh",
+            value=aastex.NoEscape(f"{float(ratio_mesh.ndarray):.2f}"),
+        ),
+        aastex.Variable(
+            # the light which passes the filter but leaves the zeroth order
+            name="filterMeshDiffractedFraction",
+            value=_percent(1 - zero / mesh.efficiency),
+        ),
+        aastex.Variable(
+            name="filterMeshOrderSpacing",
+            value=spacing.round(),
         ),
     ]
 

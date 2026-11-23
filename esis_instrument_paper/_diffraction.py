@@ -7,9 +7,10 @@ Both come from the Huygens point-spread function of
 :meth:`optika.systems.SequentialSystem.psf`, which traces a regular grid of
 rays through the channel, keeping track of the optical path of each ray, and
 propagates the wavefield on the last surface before the detector to the
-detector with the Rayleigh-Sommerfeld diffraction integral. The channel as
-built carries the measured figures of its primary mirror and grating in the
-optical path of its rays.
+detector with the Rayleigh-Sommerfeld diffraction integral, then spreads the
+image into the diffraction orders of the mesh which supports the filter. The
+channel as built carries the measured figures of its primary mirror and
+grating in the optical path of its rays.
 """
 
 import functools
@@ -20,6 +21,8 @@ import named_arrays as na
 import numpy as np
 import optika
 
+from esis_instrument_paper import _error_budget
+
 __all__ = [
     "angle_corner",
     "axis",
@@ -29,6 +32,7 @@ __all__ = [
     "fraction_field",
     "frequency_sky",
     "mtf",
+    "mtf_requirement",
     "num_image",
     "num_mtf",
     "num_pupil",
@@ -158,15 +162,14 @@ def psf(as_built: bool) -> na.FunctionArray:
 
 
 @functools.cache
-def mtf(as_built: bool) -> na.FunctionArray:
+def mtf(as_built: bool, mesh: bool = True) -> na.FunctionArray:
     """
     The MTF of :data:`channel` at each of the field angles :func:`field`,
     from its point-spread function on a grid of positions on the detector
     :data:`width_mtf` wide.
 
     The inputs are the spatial frequencies on the detector along its two
-    axes. It includes the diffraction by the mesh which supports the filter.
-    The MTF is normalized to the power of the whole beam, so at zero
+    axes. The MTF is normalized to the power of the whole beam, so at zero
     frequency it is the fraction of the light which lands on the grid.
 
     Parameters
@@ -174,6 +177,9 @@ def mtf(as_built: bool) -> na.FunctionArray:
     as_built
         Whether to model the channel as built, with the measured figures of
         its optics, instead of as designed.
+    mesh
+        Whether to include the diffraction by the mesh which supports the
+        filter.
     """
     psf = system(as_built).psf(
         wavelength=wavelength,
@@ -183,6 +189,7 @@ def mtf(as_built: bool) -> na.FunctionArray:
         num_sensor=num_mtf,
         num_pupil=num_pupil,
         axis=axis,
+        mesh=mesh,
     )
     return optika.wavefields.mtf(
         intensity=psf.outputs,
@@ -190,6 +197,40 @@ def mtf(as_built: bool) -> na.FunctionArray:
         axis=axis,
         normalize=False,
     )
+
+
+def mtf_requirement(as_built: bool, mesh: bool = True) -> na.Cartesian2dVectorArray:
+    """
+    The MTF of :func:`mtf` at the spatial frequency of the resolution
+    requirement on the sky, along (:math:`x`) and across (:math:`y`) the
+    dispersion, at each of the field angles :func:`field`.
+
+    Each component is interpolated along a cut through zero frequency along
+    the other axis of the detector.
+
+    Parameters
+    ----------
+    as_built
+        Whether to model the channel as built, with the measured figures of
+        its optics, instead of as designed.
+    mesh
+        Whether to include the diffraction by the mesh which supports the
+        filter.
+    """
+    result = mtf(as_built, mesh)
+    frequency = frequency_sky(result.inputs)
+    # in the units of `frequency_sky`, which counts no cycles
+    requirement = _error_budget.frequency().to_value(u.cycle / u.arcsec) / u.arcsec
+    components = {}
+    for component, a in zip(("x", "y"), axis):
+        cut = {b: result.shape[b] // 2 for b in axis if b != a}
+        components[component] = na.interp(
+            x=requirement,
+            xp=getattr(frequency, component)[cut].to(1 / u.arcsec),
+            fp=result.outputs[cut],
+            axis=a,
+        )
+    return na.Cartesian2dVectorArray(**components)
 
 
 def position_field_stop() -> na.Cartesian2dVectorArray:

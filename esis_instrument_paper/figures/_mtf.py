@@ -105,7 +105,10 @@ def mtf() -> aastex.Figure:
 against spatial frequency on the sky, as designed (black) and as built (red), at the center of the \FOV\ (solid) and
 at $({x:.1f}', {y:.1f}')$ (dashed).
 Each was computed from the \PSF\ on a grid \SI{{{width:.0f}}}{{\micro\meter}} wide on the \CCD, normalized to the
-power of the whole beam, so that the light which the measured figures scatter beyond the grid lowers the \MTF.
+power of the whole beam, so that the light which the mesh of the filter diffracts, and the measured figures scatter,
+beyond the grid lowers the \MTF.
+The mesh lowers the \MTF\ at the resolution requirement by a factor of \mtfMesh, and the small peaks at higher
+frequencies are where its copies of the image line up again.
 The dotted line marks \mtfFrequency, the spatial frequency of the \angularResolutionRequirement\ resolution
 requirement.
 Only the optics are included: the pixels of the \CCD\ and the diffusion of charge within it are not."""

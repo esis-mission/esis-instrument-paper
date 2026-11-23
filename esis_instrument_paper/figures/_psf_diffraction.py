@@ -111,6 +111,9 @@ track of the optical path of each ray, and propagating the wavefield on the last
 with the Rayleigh-Sommerfeld diffraction integral.
 The model as built carries the measured figures of its primary mirror and grating
 (Figures~\ref{{fig:primaryFigure}} and~\ref{{fig:gratingFigure}}) in the optical path of its rays.
+Both models include the diffraction by the mesh which supports the filter
+(Section~\ref{{subsec:OptimizationandTolerancing}}), which diffracts \filterMeshDiffractedFraction\ of the light into
+copies of the image \filterMeshOrderSpacing\ apart along the diagonals, at the corners of each panel and beyond.
 Each panel is centered on the centroid of its image and normalized to its own peak, on a logarithmic scale, and the
 red box represents a single pixel on the detector."""))
 
