@@ -968,15 +968,18 @@ def _optimization() -> list[aastex.Variable]:
     The MTF with diffraction is the least of the MTFs of
     :func:`esis_instrument_paper._diffraction.mtf_requirement`, along and
     across the dispersion and at either field angle, rounded down, so that
-    the prose can say "at least".
+    the prose can say "at least". The fraction of it which the channel as
+    built keeps spans the same four MTFs.
     """
     frequency = _error_budget.frequency()
 
     mtf_design = _diffraction.mtf_requirement(as_built=False)
     mtf_as_built = _diffraction.mtf_requirement(as_built=True)
-    mtf_unmeshed = _diffraction.mtf_requirement(as_built=False, mesh=False)
-    ratio_mesh = mtf_design / mtf_unmeshed
-    ratio_mesh = (ratio_mesh.x.mean() + ratio_mesh.y.mean()) / 2
+    ratio_as_built = mtf_as_built / mtf_design
+    ratio_as_built = np.stack([ratio_as_built.x.ndarray, ratio_as_built.y.ndarray])
+
+    # the rays of the point-spread function across the beam on the primary
+    spacing_rays = _error_budget.width_beam() / _diffraction.num_pupil
 
     # The mesh which supports the filter diffracts the light it passes into
     # orders, which land on the detector as copies of the image the
@@ -1009,7 +1012,7 @@ def _optimization() -> list[aastex.Variable]:
             # two decimals, as the old draft compared it with the Rayleigh
             # criterion
             name="mtfTotal",
-            value=round(_error_budget.mtf_total(), 2),
+            value=aastex.NoEscape(f"{_error_budget.mtf_total():.2f}"),
         ),
         aastex.Variable(
             name="mtfRayleigh",
@@ -1026,7 +1029,28 @@ def _optimization() -> list[aastex.Variable]:
         aastex.Variable(
             # the factor by which the mesh lowers the MTF as designed
             name="mtfMesh",
-            value=aastex.NoEscape(f"{float(ratio_mesh.ndarray):.2f}"),
+            value=aastex.NoEscape(f"{_diffraction.mtf_mesh():.2f}"),
+        ),
+        aastex.Variable(
+            # the fraction of the MTF as designed which the model as built
+            # keeps, least and most
+            name="mtfRatioAsBuiltMin",
+            value=aastex.NoEscape(f"{ratio_as_built.min():.2f}"),
+        ),
+        aastex.Variable(
+            name="mtfRatioAsBuiltMax",
+            value=aastex.NoEscape(f"{ratio_as_built.max():.2f}"),
+        ),
+        aastex.Variable(
+            # what the error budget allocates to the figures of both optics
+            name="mtfFigureAllocated",
+            value=aastex.NoEscape(
+                f"{_error_budget.mtf_figure_primary * _error_budget.mtf_figure_grating:.2f}"
+            ),
+        ),
+        aastex.Variable(
+            name="primaryRaySpacing",
+            value=_significant(spacing_rays.to(u.mm), 1),
         ),
         aastex.Variable(
             # the light which passes the filter but leaves the zeroth order

@@ -38,6 +38,7 @@ __all__ = [
     "fraction_field",
     "frequency_sky",
     "mtf",
+    "mtf_mesh",
     "mtf_requirement",
     "num_image",
     "num_mtf",
@@ -263,6 +264,21 @@ def mtf_requirement(as_built: bool, mesh: bool = True) -> na.Cartesian2dVectorAr
             axis=a,
         )
     return na.Cartesian2dVectorArray(**components)
+
+
+def mtf_mesh() -> float:
+    """
+    The factor by which the mesh which supports the filter lowers the MTF of
+    the channel as designed at the resolution requirement, along the
+    dispersion, averaged over the field angles :func:`field`.
+
+    The mesh adds copies of the image, so its factor depends only on the mesh
+    and on the spatial frequency on the detector, and not on the
+    point-spread function it multiplies.
+    """
+    with_mesh = mtf_requirement(as_built=False).x
+    without_mesh = mtf_requirement(as_built=False, mesh=False).x
+    return float((with_mesh / without_mesh).mean().ndarray)
 
 
 def position_field_stop() -> na.Cartesian2dVectorArray:

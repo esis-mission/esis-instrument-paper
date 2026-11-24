@@ -157,6 +157,8 @@ models, and kept the larger change of the two ends of each tolerance.
 The imaging error budget is displayed in Table~\ref{table:errorBudget}.
 For the primary mirror and grating surface figure contributions, we list the \MTF\ degradations calculated by the
 Fourier optics code.
+For the mesh which supports the filter, we list the factor by which it lowers the \MTF\ of the \PSF\ computed below
+(Figure~\ref{fig:mtf}).
 To quantify the remaining entries, we assume that each term can be represented by a Gaussian function, of RMS radius
 $\sigma$, that ``blurs'' the final image.
 For each tolerance, $\sigma^2 = r^2 - r_0^2$, where $r$ and $r_0$ are the RMS spot radii of the perturbed and optimized
@@ -175,14 +177,14 @@ From Table~\ref{table:errorBudget}, we estimate the total \MTF\ of \ESIS\ at its
 resolution to be \mtfTotal.
 By way of comparison, the widely used Rayleigh criterion~\citep{Rayleigh_1879} for diffraction from a circular aperture
 corresponds to an \MTF\ of \mtfRayleigh\ at the resolution limit.
-This estimate takes the figure of the primary mirror to meet its requirement.
-Its measured slope error does not (Table~\ref{table:error}), so the \MTF\ of \ESIS\ as built is likely somewhat
-lower.""")
+This estimate takes the figure of each optic to leave the \MTF\ allocated to it, although the measured slope error of
+the primary mirror exceeds its requirement (Table~\ref{table:error}).
+Below, we check this against a model of the instrument as built.""")
     subsection_optimization.append(esis_instrument_paper.tables.error_budget())
     subsection_optimization.append(
         r"""
-The error budget treats each term as a Gaussian blur.
-To check the optics without that approximation, we computed the \PSF\ of channel~1 at \OV\ including diffraction, as
+The error budget treats most terms as Gaussian blurs, and the figures of the optics as allocations.
+To check the optics without these approximations, we computed the \PSF\ of channel~1 at \OV\ including diffraction, as
 designed and as built with the measured figures of the primary mirror and grating (Figure~\ref{fig:psfDiffraction}).
 These \PSFs\ also include the diffraction by the mesh which supports the filter (Section~\ref{subsec:CoatingsandFilters}).
 The mesh acts as a crossed transmission grating: of the light which passes the filter, it diffracts
@@ -193,7 +195,12 @@ copies, which blur every image.
 Figure~\ref{fig:mtf} shows the \MTF\ of each \PSF.
 At \mtfFrequency, the \MTF\ is at least \mtfDiffractionDesign\ as designed and \mtfDiffractionAsBuilt\ as built, along
 and across the dispersion, at both points of the \FOV\ in Figure~\ref{fig:psfDiffraction}.
-The mesh alone lowers it by a factor of \mtfMesh.
+The mesh alone lowers it by a factor of \mtfMesh, its term in Table~\ref{table:errorBudget}.
+The model as built keeps between \mtfRatioAsBuiltMin\ and \mtfRatioAsBuiltMax\ of the \MTF\ as designed, more than the
+\mtfFigureAllocated\ that the error budget allocates to the figures of the primary mirror and grating together, so the
+optics as built cost less than their allocation despite the slope error of the primary mirror.
+The model samples the measured figures only where its rays cross the optics, about \primaryRaySpacing\ apart on the
+primary mirror, so it leaves out any structure finer than that.
 These values include only the optics, not the \CCD\ or the pointing terms of Table~\ref{table:errorBudget}."""
     )
     subsection_optimization.append(esis_instrument_paper.figures.psf_diffraction())
