@@ -79,6 +79,23 @@ def test_mtf_figure_error() -> None:
     assert np.all((result[True] < result[False]).ndarray)
 
 
+def test_cache() -> None:
+    """
+    A function remembered by :func:`_diffraction._cache` is called once for
+    the same arguments, however they are passed.
+    """
+    calls = []
+
+    @_diffraction._cache
+    def add(a: int, b: int = 2) -> int:
+        calls.append((a, b))
+        return a + b
+
+    results = [add(1), add(a=1), add(1, 2), add(1, b=2), add(b=2, a=1), add(2)]
+    assert results == [3, 3, 3, 3, 3, 4]
+    assert calls == [(1, 2), (2, 2)]
+
+
 def test_mtf_requirement_mesh() -> None:
     """
     The mesh of the filter lowers the MTF of the channel as designed at the

@@ -14,6 +14,9 @@ grating in the optical path of its rays.
 """
 
 import functools
+import inspect
+from collections.abc import Callable
+from typing import ParamSpec, TypeVar
 
 import astropy.units as u
 import esis
@@ -22,6 +25,9 @@ import numpy as np
 import optika
 
 from esis_instrument_paper import _error_budget
+
+_P = ParamSpec("_P")
+_T = TypeVar("_T")
 
 __all__ = [
     "angle_corner",
@@ -113,7 +119,33 @@ which samples the MTF out past its cutoff.
 """
 
 
-@functools.cache
+def _cache(function: "Callable[_P, _T]") -> "Callable[_P, _T]":
+    """
+    Like :func:`functools.cache`, but keyed on the arguments bound to the
+    signature of the function, with its defaults filled in.
+
+    :func:`functools.cache` keys on the arguments as they were passed, so
+    ``mtf(False)``, ``mtf(as_built=False)`` and ``mtf(False, mesh=True)``
+    would each compute the MTF again.
+
+    Parameters
+    ----------
+    function
+        The function whose results are remembered.
+    """
+    signature = inspect.signature(function)
+    cached = functools.cache(function)
+
+    @functools.wraps(function)
+    def wrapper(*args: "_P.args", **kwargs: "_P.kwargs") -> "_T":
+        bound = signature.bind(*args, **kwargs)
+        bound.apply_defaults()
+        return cached(*bound.args, **bound.kwargs)
+
+    return wrapper
+
+
+@_cache
 def system(as_built: bool) -> optika.systems.SequentialSystem:
     """
     The optical system of :data:`channel`, as designed or as built.
@@ -132,7 +164,7 @@ def system(as_built: bool) -> optika.systems.SequentialSystem:
     return instrument[{instrument.axis_channel: index}].system
 
 
-@functools.cache
+@_cache
 def psf(as_built: bool) -> na.FunctionArray:
     """
     The point-spread function of :data:`channel` at each of the field angles
@@ -161,7 +193,7 @@ def psf(as_built: bool) -> na.FunctionArray:
     )
 
 
-@functools.cache
+@_cache
 def mtf(as_built: bool, mesh: bool = True) -> na.FunctionArray:
     """
     The MTF of :data:`channel` at each of the field angles :func:`field`,
@@ -293,7 +325,7 @@ def _position(
     return rays.position.xy
 
 
-@functools.cache
+@_cache
 def field(as_built: bool) -> na.Cartesian2dVectorArray:
     """
     The field angles on the sky whose chief rays land on the field stop at
