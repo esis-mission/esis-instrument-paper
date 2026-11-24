@@ -2,13 +2,13 @@ import astropy.units as u
 import numpy as np
 import pytest
 
-from esis_instrument_paper import _error_budget
+from esis_instrument_paper import _diffraction, _error_budget
 
 
 def test_terms() -> None:
     """
     Every term is either a Gaussian blur, which leaves an MTF between zero and
-    one, or an allocation of the MTF, and the elements are grouped together.
+    one, or an MTF given some other way, and the elements are grouped together.
     """
     terms = _error_budget.terms()
     assert terms
@@ -17,7 +17,7 @@ def test_terms() -> None:
         assert term.name
         assert 0 < term.mtf <= 1
         if term.sigma is None:
-            assert term.mtf_allocated is not None
+            assert term.mtf_given is not None
         else:
             assert term.sigma >= 0 * u.um
     elements = [term.element for term in terms]
@@ -36,6 +36,25 @@ def test_terms_figure() -> None:
         "Primary": _error_budget.mtf_figure_primary,
         "Grating": _error_budget.mtf_figure_grating,
     }
+
+
+def test_terms_mesh() -> None:
+    """
+    The mesh of the filter is the factor by which it lowers the MTF of the
+    Huygens point-spread function, between the grating and the detector.
+    """
+    terms = _error_budget.terms()
+    elements = list(dict.fromkeys(term.element for term in terms))
+    assert elements.index("Grating") < elements.index("Filter")
+    assert elements.index("Filter") < elements.index(r"\CCD")
+    mesh = [term for term in terms if term.element == "Filter"]
+    expected = _error_budget.Term(
+        element="Filter",
+        name="Mesh diffraction",
+        mtf_given=_diffraction.mtf_mesh(),
+    )
+    assert mesh == [expected]
+    assert 0.75 < expected.mtf < 0.85
 
 
 def test_terms_uncompensated() -> None:
@@ -89,8 +108,8 @@ def test_mtf_total() -> None:
     terms = _error_budget.terms()
     result = _error_budget.mtf_total()
     assert np.isclose(result, np.prod([term.mtf for term in terms]))
-    allocated = np.prod([t.mtf for t in terms if t.sigma is None])
-    expected = allocated * _error_budget.mtf_gaussian(_error_budget.sigma_total())
+    given = np.prod([t.mtf for t in terms if t.sigma is None])
+    expected = given * _error_budget.mtf_gaussian(_error_budget.sigma_total())
     assert np.isclose(result, expected)
     assert 0 < result < 1
 

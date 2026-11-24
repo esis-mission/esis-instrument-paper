@@ -12,7 +12,10 @@ The tolerances are the tolerance analysis of the old draft done on the model:
 each one is moved to either end of its range, the gratings are realigned, and
 the blur is the growth of the RMS spot radius averaged over the field of view,
 in quadrature. The figure of the optics is an allocation of the MTF instead,
-which a Fourier optics model turned into the specifications of the optics.
+which a Fourier optics model turned into the specifications of the optics. The
+diffraction by the mesh which supports the filter is not a blur either: it adds
+copies of the image, and its term is the factor by which it lowers the MTF of
+the Huygens point-spread function of :mod:`esis_instrument_paper._diffraction`.
 """
 
 import dataclasses
@@ -26,6 +29,8 @@ import astropy.units as u
 import esis
 import named_arrays as na
 import numpy as np
+
+from esis_instrument_paper import _diffraction
 
 __all__ = [
     "Term",
@@ -166,14 +171,17 @@ class Term:
     :obj:`None` for a term given as an MTF.
     """
 
-    mtf_allocated: None | float = None
-    """The MTF allocated to a term which is not modeled as a Gaussian."""
+    mtf_given: None | float = None
+    """
+    The MTF of a term which is not modeled as a Gaussian: the allocation to
+    the figure of an optic, or the factor of the mesh of the filter.
+    """
 
     @property
     def mtf(self) -> float:
         """The MTF this term leaves at :func:`frequency`."""
         if self.sigma is None:
-            return self.mtf_allocated
+            return self.mtf_given
         return mtf_gaussian(self.sigma)
 
 
@@ -507,14 +515,15 @@ def terms() -> tuple[Term, ...]:
             "Primary",
             "Figure",
             tolerance=r"Table~\ref{table:error}",
-            mtf_allocated=mtf_figure_primary,
+            mtf_given=mtf_figure_primary,
         ),
         Term(
             "Grating",
             "Figure",
             tolerance=r"Table~\ref{table:error}",
-            mtf_allocated=mtf_figure_grating,
+            mtf_given=mtf_figure_grating,
         ),
+        Term("Filter", "Mesh diffraction", mtf_given=_diffraction.mtf_mesh()),
     ]
     uncertain = _uncertain()
     for tolerance, radius in zip(_tolerances(), radii, strict=True):

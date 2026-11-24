@@ -17,7 +17,9 @@ from ._grating_figure import grating_figure
 from ._grating_mount import grating_mount
 from ._grating_multilayer_schematic import grating_multilayer_schematic
 from ._layout import layout
+from ._mtf import mtf
 from ._primary_figure import primary_figure
+from ._psf_diffraction import psf_diffraction
 from ._schematic import schematic
 from ._schematic_moses import schematic_moses
 from ._spot_diagrams import spot_diagrams
@@ -41,9 +43,11 @@ __all__ = [
     "grating_mount",
     "grating_multilayer_schematic",
     "layout",
+    "mtf",
     "num_emission_lines",
     "num_lines",
     "primary_figure",
+    "psf_diffraction",
     "schematic",
     "schematic_moses",
     "spot_diagrams",
